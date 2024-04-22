@@ -1,0 +1,13 @@
+.contaniner {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 10px;
+    border: solid tomato 1px;
+  
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+  }
