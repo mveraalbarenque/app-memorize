@@ -1,33 +1,23 @@
 .contaniner {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  margin: 10px;
-  border: solid blue 1px;
-
-  width: 200px;
-  height: 85vh;
-  border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
 }
 
 .contaniner a {
+  font-size: 1.1em;
+  font-weight: 600;
   color: black;
-  padding: 20px;
+  padding: 10px 20px;
   text-decoration: none;
+  border-radius: 10px;
 }
 
-/* Active/current link */
 .contaniner a.active {
-  background-color: #04AA6D;
+  background-color: #475569;
   color: white;
 }
 
-/* Links on mouse-over */
-.contaniner a:hover:not(.active) {
-  background-color: #555;
-  color: white;
+.contaniner a:hover {
+  background-color: #f1f5f9;
+  color: black;
 }

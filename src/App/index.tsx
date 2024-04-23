@@ -1,15 +1,17 @@
 import Sidebar from "./Sidebar";
-import Main from "./Main";
-import Profile from "./Profile";
+import Game from "./Game";
 
 import styles from "./styles.module.css";
 
 const App = () => {
   return (
-    <div className={styles.contaniner}>
-      <Sidebar />
-      <Main />
-      <Profile />
+    <div className={styles.container}>
+        <div className={styles.sidebar}>
+          <Sidebar />
+        </div>
+        <div className={styles.game}>
+          <Game />
+      </div>
     </div>
   );
 };

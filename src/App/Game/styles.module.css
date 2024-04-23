@@ -1,0 +1,25 @@
+.contaniner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.display {
+  display: flex;
+  padding: 20px;
+  margin: 10px;
+
+  width: 80vw;
+}
+
+.score {
+  display: flex;
+  border: solid green 1px;
+  padding: 20px;
+  margin: 10px;
+
+  width: 20vw;
+
+}

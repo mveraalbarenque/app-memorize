@@ -1,11 +1,11 @@
 import styles from "./styles.module.css";
 
-const Profile = () => {
+const Score = () => {
   return (
     <div className={styles.contaniner}>
-      <h2>PROFILE....!!!</h2>
+      <h2>SCORES....!!!</h2>
     </div>
   );
 };
 
-export default Profile;
+export default Score;

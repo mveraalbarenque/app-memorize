@@ -5,10 +5,10 @@ const Sidebar = () => {
     <div className={styles.contaniner}>
       <h2>SIDEBAR....!!!</h2>
       <hr />
-      <a className="active" href="#home">
-        Home
+      <a href="#home">Home</a>
+      <a className={styles.active} href="#news">
+        News
       </a>
-      <a href="#news">News</a>
       <a href="#contact">Contact</a>
       <a href="#about">About</a>
     </div>
