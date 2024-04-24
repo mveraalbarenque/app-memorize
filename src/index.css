@@ -1,3 +1,9 @@
+:root {
+  --bg-primary: #bae6fd;
+  --bg-secondary: #082f49;
+  --bg-other: #e0f2fe;
+}
+
 * {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
@@ -8,5 +14,5 @@ body {
   /* align-items: center; */
   min-width: 320px;
   min-height: 100vh;
-  background-color: #cbd5e1;
+  background-color: var(--bg-primary);
 }

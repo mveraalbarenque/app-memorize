@@ -15,11 +15,22 @@
 }
 
 .score {
-  display: flex;
+  display: grid;
   border: solid green 1px;
   padding: 20px;
   margin: 10px;
 
   width: 20vw;
+}
 
+@media only screen and (max-width: 915px) {
+  .score {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .score {
+    display: none;
+  }
 }

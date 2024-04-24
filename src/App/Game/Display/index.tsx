@@ -1,17 +1,45 @@
+import React from "react";
+import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 
-const LISTADO = [2, 2, 4, 4, 1, 1, 3, 3];
-const numColumns = Math.ceil(Math.sqrt(LISTADO.length));
+interface Card {
+  id: number;
+  name: string;
+  img: string;
+}
 
-const Display = () => {
-    const renderCard = () => {
-        return LISTADO.map((item) => {
-            return <div className={styles.card}>{"CARTA "+ item}</div>;
-        })
-    }
-  const propsCards = {
-    className: styles.cards,
-    columnas: numColumns,
+interface Props {
+  data: Card[];
+}
+
+const Display: React.FC<Props> = ({ data }) => {
+  const [columns, setColumns] = useState<number>(0);
+
+  useEffect(() => {
+    const total = Math.ceil(Math.sqrt(data.length * 2))
+    setColumns(() => total);
+  }, [data]);
+
+  const renderCard = () => {
+    return data.map((obj) => {
+      const { id, name, img } = obj;
+      const propsImagen = {
+        className: styles.card,
+        key: id,
+        src: img,
+        alt: name,
+      };
+      return <img {...propsImagen} />;
+    });
+  };
+
+  const propsWrapper = {
+    style: {
+      display: "grid",
+      gridTemplateRows: `repeat(${columns}, auto)`,
+      gridGap: "8px",
+      gridAutoFlow: "column",
+    },
   };
 
   return (
@@ -20,8 +48,8 @@ const Display = () => {
         <h1>DISPLAY...</h1>
       </div>
       <div className={styles.body}>
-        <div {...propsCards}>
-            {renderCard()}
+        <div className={styles.cards}>
+          <div {...propsWrapper}>{renderCard()}</div>
         </div>
       </div>
 

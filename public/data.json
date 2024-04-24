@@ -1,0 +1,160 @@
+{
+    "tools": [
+        {
+            "id": 1,
+            "name": "visual",
+            "img": "visual.svg"
+        },
+        {
+            "id": 2,
+            "name": "figma",
+            "img": "figma.svg"
+        },
+        {
+            "id": 3,
+            "name": "discord",
+            "img": "discord.svg"
+        },
+        {
+            "id": 4,
+            "name": "github",
+            "img": "github.svg"
+        },
+        {
+            "id": 5,
+            "name": "slack",
+            "img": "slack.svg"
+        },
+        {
+            "id": 6,
+            "name": "docker",
+            "img": "docker.svg"
+        },
+        {
+            "id": 7,
+            "name": "wordpress",
+            "img": "wordpress.svg"
+        },
+        {
+            "id": 8,
+            "name": "mysql",
+            "img": "mysql.svg"
+        },
+        {
+            "id": 9,
+            "name": "graphql",
+            "img": "graphql.svg"
+        },
+        {
+            "id": 10,
+            "name": "mongodb",
+            "img": "mongodb.svg"
+        }
+            ],
+    "frameworks": [
+        {
+            "id": 1,
+            "name": "nodejs",
+            "img": "nodejs.svg"
+        },
+        {
+            "id": 2,
+            "name": "reactjs",
+            "img": "reactjs.svg"
+        },
+        {
+            "id": 3,
+            "name": "angular",
+            "img": "angular.svg"
+        },
+        {
+            "id": 4,
+            "name": "vuejs",
+            "img": "vuejs.svg"
+        },
+        {
+            "id": 5,
+            "name": "laravel",
+            "img": "laravel.svg"
+        },
+        {
+            "id": 6,
+            "name": "django",
+            "img": "django.svg"
+        },
+        {
+            "id": 7,
+            "name": "codeigniter",
+            "img": "codeigniter.svg"
+        },
+        {
+            "id": 8,
+            "name": "zend",
+            "img": "zend.svg"
+
+        },
+        {
+            "id": 9,
+            "name": "jquery",
+            "img": "jquery.svg"
+        },
+        {
+            "id": 10,
+            "name": "symfony",
+            "img": "symfony.svg"
+        }
+    ],
+    "lenguages": [
+        {
+            "id": 1,
+            "name": "java",
+            "img": "java.svg"
+        },
+        {
+            "id": 2,
+            "name": "php",
+            "img": "php.svg"
+        },
+        {
+            "id": 3,
+            "name": "go",
+            "img": "go.svg"
+        }
+        ,{
+            "id": 4,
+            "name": "javascript",
+            "img": "javascript.svg"
+        },
+        {
+            "id": 5,
+            "name": "ruby",
+            "img": "ruby.svg"
+        },
+        {
+            "id": 6,
+            "name": "swift",
+            "img": "swift.svg"
+        },
+        {
+            "id": 7,
+            "name": "kotlin",
+            "img": "kotlin.svg"
+        },
+        {
+            "id": 8,
+            "name": "cplusplus",
+            "img": "cplusplus.svg"
+        },
+        {
+            "id": 9,
+            "name": "typescript",
+            "img": "typescript.svg"
+        },
+        {
+            "id": 10,
+            "name": "python",
+            "img": "python.svg"
+        }
+
+    ]
+}

@@ -10,11 +10,11 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  
+
   width: 14vw;
   padding: 20px;
   margin: 10px;
-  
+
   border-radius: 20px;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -28,10 +28,34 @@
   justify-content: space-between;
 
   width: 78vw;
-  background-color: #f1f5f9;
+  background-color: var(--bg-other);
   border-radius: 20px;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   -ms-border-radius: 20px;
   -o-border-radius: 20px;
 }
+
+
+@media only screen and (max-width: 915px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+

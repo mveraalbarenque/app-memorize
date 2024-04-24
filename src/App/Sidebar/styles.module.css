@@ -6,18 +6,20 @@
 .contaniner a {
   font-size: 1.1em;
   font-weight: 600;
-  color: black;
+  color:  var(--bg-secondary);
+
   padding: 10px 20px;
   text-decoration: none;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .contaniner a.active {
-  background-color: #475569;
+  background-color: var(--bg-secondary);
   color: white;
 }
 
 .contaniner a:hover {
-  background-color: #f1f5f9;
-  color: black;
+  background-color: var(--bg-other);
+  color:  var(--bg-secondary);
 }
