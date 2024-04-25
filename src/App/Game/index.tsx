@@ -3,19 +3,24 @@ import { useState, useEffect } from "react";
 import Display from "./Display";
 import Score from "./Score";
 
+import { getDataImagenes } from "../../services/fetch/imagenes";
+
 import styles from "./styles.module.css";
 
 const Game = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<[]>([]);
 
   useEffect(() => {
-    const obtenerItems = async () => {
-      const response = await fetch('./data.json');
-      const data = await response.json();
-      setData(data.tools);
+    const getData = async () => {
+      try {
+        const dataFetch = await getDataImagenes("tools");
+        setData(dataFetch);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
     };
 
-    obtenerItems();
+    getData();
   }, []);
 
   return (

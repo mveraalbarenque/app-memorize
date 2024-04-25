@@ -1,0 +1,18 @@
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 10px;
+    background-color: var(--bg-other);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
