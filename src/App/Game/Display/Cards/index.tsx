@@ -16,7 +16,7 @@ const Cards: React.FC<Props> = ({ data }) => {
   const [columns, setColumns] = useState<number>(0);
 
   useEffect(() => {
-    const total = Math.ceil(Math.sqrt(data.length*2));
+    const total = Math.ceil(Math.sqrt(data.length * 2));
     setColumns(() => total);
   }, [data]);
 
@@ -29,19 +29,21 @@ const Cards: React.FC<Props> = ({ data }) => {
         src: "/aws.svg",
         alt: name,
       };
-      const propsImagen = {
+      const propsImagenBack = {
         className: styles.card,
         key: id,
         src: img,
         alt: name,
       };
       return (
-        <div>
-          {/* <div className={styles.front}>
-          <img {...propsImagenFront} />
-          </div> */}
+        <div className={styles.cardBox}>
+          <div className={styles.card}>
+          <div className={styles.front}>
+            <img {...propsImagenFront} />
+          </div>
           <div className={styles.back}>
-            <img {...propsImagen} />
+            <img {...propsImagenBack} />
+          </div>
           </div>
         </div>
       );
@@ -57,9 +59,36 @@ const Cards: React.FC<Props> = ({ data }) => {
     },
   };
 
+  const propsImagenFront = {
+    // className: styles.card,
+    key: 1,
+    src: "/aws.svg",
+    alt: "aws",
+  };
+  const propsImagenBack = {
+    // className: styles.card,
+    key: 1,
+    src: "/reactjs.svg",
+    alt: "react",
+  };
+
   return (
     <div className={styles.cards}>
       <div {...propsWrapper}>{renderCard()}</div>
+{/*       
+      <div {...propsWrapper}>
+        <div className={styles.cardBox}>
+          <div className={styles.card}>
+          <div className={styles.front}>
+            <img {...propsImagenFront} />
+          </div>
+          <div className={styles.back}>
+            <img {...propsImagenBack} />
+          </div>
+          </div>
+        </div>
+      </div>
+       */}
     </div>
   );
 };
