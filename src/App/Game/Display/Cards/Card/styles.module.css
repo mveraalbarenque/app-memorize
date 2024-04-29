@@ -1,0 +1,55 @@
+  .cards {
+    background-color: var(--bg-other);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    padding: 10px;
+    width: 4.5rem;
+    height: 4.5rem;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease 0s;
+    -webkit-transition: transform 0.4s ease 0s;
+    -moz-transition: transform 0.4s ease 0s;
+    -ms-transition: transform 0.4s ease 0s;
+    -o-transition: transform 0.4s ease 0s;
+    
+    animation: giro 1s 1;
+    -webkit-animation: giro 1s 1;
+}
+  
+  .cards:hover {
+    transform: rotateY(180deg);
+  }
+  
+  .cards .front,
+  .cards .back {
+    backface-visibility: hidden;
+    box-sizing: border-box;
+    display: block;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+  }
+  
+  .cards img {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  
+  .cards .back {
+    transform: rotateY(180deg);
+  }
+  
+  
+  @-webkit-keyframes giro {
+    from { transform: rotateY(180deg); }
+    to { transform: rotateY(0deg); }
+  }
+  
+  @keyframes giro {
+    from { transform: rotateY(180deg); }
+    to { transform: rotateY(0deg); }
+  }
