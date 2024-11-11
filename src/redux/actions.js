@@ -1,7 +1,7 @@
 // actions.js
-export const FETCH_SVG_REQUEST = "FETCH_SVG_REQUEST";
-export const FETCH_SVG_SUCCESS = "FETCH_SVG_SUCCESS";
-export const FETCH_SVG_FAILURE = "FETCH_SVG_FAILURE";
+export const FETCH_SVG_REQUEST = 'FETCH_SVG_REQUEST';
+export const FETCH_SVG_SUCCESS = 'FETCH_SVG_SUCCESS';
+export const FETCH_SVG_FAILURE = 'FETCH_SVG_FAILURE';
 
 export const fetchUsersRequest = () => ({
   type: FETCH_SVG_REQUEST,

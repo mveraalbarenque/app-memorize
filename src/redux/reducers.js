@@ -3,7 +3,7 @@ import {
   FETCH_SVG_REQUEST,
   FETCH_SVG_SUCCESS,
   FETCH_SVG_FAILURE,
-} from "./actions";
+} from './actions';
 
 const initialState = {
   users: [],

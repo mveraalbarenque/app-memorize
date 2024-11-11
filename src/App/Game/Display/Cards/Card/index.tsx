@@ -1,37 +1,38 @@
-interface Card {
-    obj: {
-        id: number,
-        name: string,
-        img: string,
-    }
-}
+import { useState } from 'react';
+import { CardProps } from '@/utils/interfaces';
+import styles from './styles.module.css';
 
-import styles from "./styles.module.css";
+const Card: React.FC<CardProps> = (props) => {
+  const { card, isSelected, isMatched, handleClick } = props;
+  const { name, img } = card;
 
-const Card : React.FC<Card> = ({obj})  => {
-    const { id, name, img } = obj;
-    const propsImagenFront = {
-      key: id,
-      src: "/aws.svg",
-      alt: name,
-    };
-    
-    const propsImagenBack = {
-      key: id,
-      src: img,
-      alt: "aws",
-    };
+  const [clicked, setClicked] = useState(false);
 
-    return (
-      <div className={styles.cards} key={id}>
-        <div className={styles.front}>
-          <img {...propsImagenFront} />
-        </div>
-        <div className={styles.back}>
-          <img {...propsImagenBack} />
-        </div>
+  const handleCardClick = () => {
+    setClicked(!clicked);
+    handleClick(card);
+  };
+
+  const classSelected = isSelected ? styles.selected : '';
+  const classMatched = isMatched ? styles.matched : '';
+  const classClicked = clicked ? styles.clicked : '';
+  const classCard = `${styles.card} ${classSelected} ${classMatched} ${classClicked}`;
+
+  const propsCard = {
+    className: classCard,
+    onClick: handleCardClick,
+  };
+
+  return (
+    <div {...propsCard}>
+      <div className={styles.front}>
+        <img src="/aws.svg" alt={name} />
       </div>
-    );
-  }
+      <div className={styles.back}>
+        <img src={img} alt="back" />
+      </div>
+    </div>
+  );
+};
 
 export default Card;

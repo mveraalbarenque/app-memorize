@@ -1,40 +1,30 @@
-import { useState, useEffect } from "react";
+import { CardsProps, ImageData } from '@/utils/interfaces';
+import Card from './Card';
+import styles from './styles.module.css';
 
-import Card from "./Card";
+const Cards: React.FC<CardsProps> = (props) => {
+  const { cards, selectedCards, matchedPairs, handleCardClick } = props;
 
-import styles from "./styles.module.css";
+  const renderCards = () => {
+    const setCard = (card: ImageData, i: number) => {
+      const isSelected = selectedCards.includes(card);
+      const isMatched = matchedPairs.has(card.id);
 
+      const propsCard = {
+        key: i,
+        card,
+        isSelected,
+        isMatched,
+        handleClick: () => handleCardClick(card),
+      };
 
-interface Props {
-  data: [];
-}
+      return <Card {...propsCard} />;
+    };
 
-const Cards: React.FC<Props> = ({ data }) => {
-  const [columns, setColumns] = useState<number>(0);
-
-  useEffect(() => {
-    const total = Math.ceil(Math.sqrt(data.length * 2));
-    setColumns(() => total);
-  }, [data]);
-
-  const propsWrapper = {
-    style: {
-      display: "grid",
-      gridTemplateRows: `repeat(${columns}, auto)`,
-      gridGap: "8px",
-      gridAutoFlow: "column",
-    },
+    return cards.map((card, i) => setCard(card, i));
   };
 
-  return (
-    <div className={styles.container}>
-      <div {...propsWrapper}>
-        {data.map((obj) => (
-          <Card obj={obj} />
-        ))}
-      </div>
-    </div>
-  );
+  return <div className={styles.container}>{renderCards()}</div>;
 };
 
 export default Cards;

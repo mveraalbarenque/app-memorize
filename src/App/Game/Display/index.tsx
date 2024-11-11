@@ -1,12 +1,16 @@
-import Cards from "./Cards";
+import { CardsProps } from '@/utils/interfaces';
+import Cards from './Cards';
+import styles from './styles.module.css';
 
-import styles from "./styles.module.css";
+const Display: React.FC<CardsProps> = (props) => {
+  const { cards, selectedCards, matchedPairs, handleCardClick } = props;
 
-interface Props {
-  data: [];
-}
-
-const Display: React.FC<Props> = ({ data }) => {
+  const propsCards = {
+    cards,
+    selectedCards,
+    matchedPairs,
+    handleCardClick,
+  };
 
   return (
     <div className={styles.container}>
@@ -14,10 +18,9 @@ const Display: React.FC<Props> = ({ data }) => {
         <h1>DISPLAY...</h1>
       </div>
       <div className={styles.body}>
-        <Cards data={data}/>
+        <Cards {...propsCards} />
       </div>
-
-      <div className={styles.footer}>INFOR PARTIDA ACTUAL</div>
+      <div className={styles.footer}>INFORMACIÓN PARTIDA ACTUAL</div>
     </div>
   );
 };

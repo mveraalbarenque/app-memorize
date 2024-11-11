@@ -1,29 +1,23 @@
-.contaniner {
+.container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-  width: 100%;
+  align-items: start;
 }
 
 .display {
   display: flex;
-  padding: 20px;
   margin: 10px;
-
   width: 80vw;
 }
 
 .score {
   display: grid;
-  border: solid green 1px;
-  padding: 20px;
   margin: 10px;
-
   width: 20vw;
 }
 
-@media only screen and (max-width: 915px) {
+@media only screen and (max-width: 932px) {
   .score {
     display: none;
   }

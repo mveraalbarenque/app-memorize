@@ -1,10 +1,9 @@
-import Sidebar from "./Sidebar";
-import Game from "./Game";
+import Sidebar from './Sidebar';
+import Game from './Game';
 
-import styles from "./styles.module.css";
+import styles from './styles.module.css';
 
 const App: React.FC = () => {
-
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>

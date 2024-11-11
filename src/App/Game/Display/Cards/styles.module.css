@@ -1,5 +1,26 @@
 .container {
-  display: flex;
+  display: grid;
+  width: 100%;
   justify-content: center;
   align-items: center;
+  padding: var(--size-card);
+  gap: var(--size-card);
+  grid-template-columns: repeat(auto-fill, minmax(var(--size-card), 1fr));
+}
+
+@media only screen and (max-width: 932px) {
+  .container {
+    padding: 50px;
+    gap: 50px;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  }
+}
+
+
+@media only screen and (max-width: 430px) {
+  .container {
+    padding: 25px;
+    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+  }
 }

@@ -1,55 +1,61 @@
-  .cards {
-    background-color: var(--bg-other);
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-    padding: 10px;
-    width: 4.5rem;
-    height: 4.5rem;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transition: transform 0.4s ease 0s;
-    -webkit-transition: transform 0.4s ease 0s;
-    -moz-transition: transform 0.4s ease 0s;
-    -ms-transition: transform 0.4s ease 0s;
-    -o-transition: transform 0.4s ease 0s;
-    
-    animation: giro 1s 1;
-    -webkit-animation: giro 1s 1;
+:root {
+  --size-card: 4.5rem;
+  --bg-other: #f0f0f0;
+  --border-radius: 10px;
+  --card-shadow: rgba(0, 128, 255, 0.5);
 }
-  
-  .cards:hover {
-    transform: rotateY(180deg);
+
+.card {
+  background-color: var(--bg-other);
+  padding: 10px;
+  width: var(--size-card);
+  height: var(--size-card);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  border-radius: var(--border-radius);
+  transition: transform 0.9s ease;
+}
+
+.card .front,
+.card .back {
+  box-sizing: border-box;
+  display: block;
+  padding: 0;
+  position: absolute;
+  text-align: center;
+  backface-visibility: hidden;
+}
+
+.card img {
+  width: var(--size-card);
+  height: var(--size-card);
+}
+
+.card .back {
+  transform: rotateY(180deg);
+}
+
+.selected {
+  box-shadow: 0 0 10px var(--card-shadow);
+}
+
+.matched {
+  opacity: 0.7;
+}
+
+.card.clicked {
+  transform: rotateY(180deg);
+}
+
+@media only screen and (max-width: 932px) {
+  .card {
+    padding: 5px;
+    width: 50px;
+    height: 50px;
   }
-  
-  .cards .front,
-  .cards .back {
-    backface-visibility: hidden;
-    box-sizing: border-box;
-    display: block;
-    padding: 0;
-    position: absolute;
-    text-align: center;
+
+  .card img {
+    width: 50px;
+    height: 50px;
   }
-  
-  .cards img {
-    width: 4.5rem;
-    height: 4.5rem;
-  }
-  
-  .cards .back {
-    transform: rotateY(180deg);
-  }
-  
-  
-  @-webkit-keyframes giro {
-    from { transform: rotateY(180deg); }
-    to { transform: rotateY(0deg); }
-  }
-  
-  @keyframes giro {
-    from { transform: rotateY(180deg); }
-    to { transform: rotateY(0deg); }
-  }
+}
