@@ -1,0 +1,40 @@
+.catBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.catBtn:hover {
+    background: var(--bg-card);
+}
+
+.catActive {
+    background: var(--accent) !important;
+    color: var(--text-light);
+}
+
+.catBtn span:last-child {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .catBtn {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.85rem;
+    }
+
+    .catBtn span:last-child {
+        display: inline;
+    }
+}

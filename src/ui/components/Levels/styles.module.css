@@ -1,0 +1,30 @@
+.pairBtn {
+  flex-shrink: 0;
+  padding: 0.3rem 0.6rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.pairBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pairActive {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-light);
+}
+
+@media (min-width: 768px) {
+  .pairBtn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+  }
+}

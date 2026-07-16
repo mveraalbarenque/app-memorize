@@ -1,0 +1,120 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  animation: fadeIn 2.9s ease;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 101;
+}
+
+.piece {
+  position: absolute;
+  top: -40px;
+  animation: fall linear forwards;
+  opacity: 0;
+}
+
+@keyframes fall {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(calc(100vh + 40px)) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+.modal {
+  background: var(--bg-sidebar);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.3s ease;
+  width: calc(100% - 2rem);
+  max-width: 300px;
+  position: relative;
+  z-index: 102;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.stat {
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+
+.btn {
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--text-light);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), transform 0.2s;
+}
+
+.btn:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.end {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    padding: 2.5rem 3rem;
+    max-width: 400px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
