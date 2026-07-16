@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: var(--bg-body);
-  transition: background var(--transition);
-  position: relative;
-  z-index: 0;
+  background-color: var(--bg-body);
+  background-image: url('/bg.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: var(--bg-blend);
+  transition: background-color var(--transition);
 }
 
 .topBar {
@@ -17,24 +19,28 @@
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   transition: background var(--transition);
   overflow-x: auto;
-  position: relative;
-  z-index: 1;
 }
 
 .themeBtn {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 50;
   flex-shrink: 0;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
+  background: var(--bg-sidebar);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  font-size: 1.4rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
   line-height: 1;
-  border-radius: 6px;
-  transition: background var(--transition);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background var(--transition), transform 0.2s;
 }
 
 .themeBtn:hover {
   background: var(--bg-card);
+  transform: scale(1.1);
 }
 
 .catNav {
@@ -69,8 +75,6 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  position: relative;
-  z-index: 1;
 }
 
 .message {
@@ -90,8 +94,6 @@
   border-top: 1px solid rgba(128, 128, 128, 0.15);
   transition: background var(--transition);
   overflow-x: auto;
-  position: relative;
-  z-index: 1;
 }
 
 .pairsLabel {

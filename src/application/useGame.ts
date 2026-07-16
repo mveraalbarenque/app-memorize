@@ -59,14 +59,15 @@ export const useGame = (category: Category, pairCount: number) => {
       timeoutRef.current.forEach(clearTimeout);
       timeoutRef.current = [];
       if (a.id === card.id) {
-        const t1 = setTimeout(
-          () => setMatchedPairs((p) => new Set(p).add(a.id)),
-          200,
-        );
+        const t1 = setTimeout(() => {
+          setMatchedPairs((p) => new Set(p).add(a.id));
+          setSelectedCards([]);
+        }, 300);
         timeoutRef.current.push(t1);
+      } else {
+        const t2 = setTimeout(() => setSelectedCards([]), 900);
+        timeoutRef.current.push(t2);
       }
-      const t2 = setTimeout(() => setSelectedCards([]), 900);
-      timeoutRef.current.push(t2);
     }
   }, []);
 
