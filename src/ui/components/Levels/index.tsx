@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { LEVELS } from '@/application/grid';
 
 import styles from './styles.module.css';
@@ -8,20 +8,26 @@ interface Props {
   onSelectLevel: (idx: number) => void;
 }
 
-const Levels = memo((props: Props) => {
-  const { levelIdx, onSelectLevel } = props;
+const Levels = memo(({ levelIdx, onSelectLevel }: Props) => {
+  const buttons = useMemo(
+    () =>
+      LEVELS.map((lvl, i) => {
+        const active = levelIdx === i;
+        return (
+          <button
+            key={i}
+            className={`${styles.pairBtn} ${active ? styles.pairActive : ''}`}
+            onClick={() => onSelectLevel(i)}
+            aria-current={active ? 'true' : undefined}
+          >
+            {lvl.label}
+          </button>
+        );
+      }),
+    [levelIdx, onSelectLevel],
+  );
 
-  return LEVELS.map((lvl, i) => {
-    const active = levelIdx === i;
-    const propsButton = {
-      key: i,
-      className: `${styles.pairBtn} ${active ? styles.pairActive : ''}`,
-      onClick: () => onSelectLevel(i),
-      'aria-current': active ? 'true' as const : undefined,
-    };
-
-    return <button {...propsButton}>{lvl.label}</button>;
-  });
+  return buttons;
 });
 
 export default Levels;

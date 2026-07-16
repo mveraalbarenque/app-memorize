@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import type { Category } from '@/core/types';
 
 import styles from './styles.module.css';
@@ -14,25 +14,27 @@ const CATEGORIES: { key: Category; label: string; icon: string }[] = [
   { key: 'lenguages', label: 'Lenguajes', icon: '💻' },
 ];
 
-const Categories = memo((props: Props) => {
-  const { onSelectCategory, category } = props;
+const Categories = memo(({ category, onSelectCategory }: Props) => {
+  const buttons = useMemo(
+    () =>
+      CATEGORIES.map((cat) => {
+        const active = category === cat.key;
+        return (
+          <button
+            key={cat.key}
+            className={`${styles.catBtn} ${active ? styles.catActive : ''}`}
+            onClick={() => onSelectCategory(cat.key)}
+            aria-current={active ? 'true' : undefined}
+          >
+            <span aria-hidden="true">{cat.icon}</span>
+            <span>{cat.label}</span>
+          </button>
+        );
+      }),
+    [category, onSelectCategory],
+  );
 
-  return CATEGORIES.map((cat) => {
-    const active = category === cat.key;
-    const propsButton = {
-      key: cat.key,
-      className: `${styles.catBtn} ${active ? styles.catActive : ''}`,
-      onClick: () => onSelectCategory(cat.key),
-      'aria-current': active ? 'true' as const : undefined,
-    };
-
-    return (
-      <button {...propsButton}>
-        <span aria-hidden="true">{cat.icon}</span>
-        <span>{cat.label}</span>
-      </button>
-    );
-  });
+  return buttons;
 });
 
 export default Categories;
