@@ -1,0 +1,17 @@
+.grid {
+  display: grid;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    gap: 0.85rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    gap: 1rem;
+  }
+}

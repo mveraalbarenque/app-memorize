@@ -6,20 +6,28 @@ import { fetchAllImages } from '@/infrastructure/dataService';
 import Display from '../Display';
 import Categories from '../Categories';
 import Levels from '../Levels';
-import BgParallax from '../BgParallax';
 
 import type { Category } from '@/core/types';
 import styles from './styles.module.css';
+
+interface LevelTime {
+  level: number;
+  label: string;
+  time: string;
+}
 
 interface Props {
   category: Category;
   level: Level;
   levelIdx: number;
   theme: string;
+  levelTimes: LevelTime[];
   onToggleTheme: () => void;
   onSelectCategory: (cat: Category) => void;
   onSelectLevel: (idx: number) => void;
   onNextLevel: (() => void) | undefined;
+  onRestart: () => void;
+  onLevelComplete: (level: number, label: string, time: string) => void;
 }
 
 const CompleteModal = lazy(() => import('../CompleteModal'));
@@ -30,10 +38,13 @@ const Game = (props: Props) => {
     level,
     levelIdx,
     theme,
+    levelTimes,
     onToggleTheme,
     onSelectCategory,
     onSelectLevel,
     onNextLevel,
+    onRestart,
+    onLevelComplete,
   } = props;
 
   const {
@@ -52,6 +63,7 @@ const Game = (props: Props) => {
   const [allImages, setAllImages] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
+  const doneRef = useRef(false);
   const startRef = useRef(0);
 
   useEffect(() => {
@@ -84,6 +96,13 @@ const Game = (props: Props) => {
     return `${m}:${s.toString().padStart(2, '0')}.${cent.toString().padStart(2, '0')}`;
   }, [cs]);
 
+  useEffect(() => {
+    if (done && !doneRef.current) {
+      doneRef.current = true;
+      onLevelComplete(levelIdx, level.label, fmt);
+    }
+  }, [done, fmt, levelIdx, level.label, onLevelComplete]);
+
   const swapOnMobile = levelIdx === 1 || levelIdx === 2 || levelIdx === 3 || levelIdx === 5;
   const columns = swapOnMobile && isMobile ? level.rows : level.cols;
 
@@ -106,9 +125,11 @@ const Game = (props: Props) => {
       time: fmt,
       levelLabel: level.label,
       onNextLevel,
+      onRestart,
+      levelTimes,
       cardImages: allImages,
     }),
-    [matchedPairs, attempts, fmt, level.label, onNextLevel, allImages],
+    [matchedPairs, attempts, fmt, level.label, onNextLevel, onRestart, levelTimes, allImages],
   );
 
   const propsCategories = useMemo(
@@ -123,7 +144,6 @@ const Game = (props: Props) => {
 
   return (
     <div className={styles.area}>
-      <BgParallax />
       <div className={styles.topBar}>
         <button className={styles.themeBtn} onClick={onToggleTheme}>
           {theme === 'dark' ? '☀️' : '🌙'}

@@ -11,6 +11,7 @@
   --radius: 12px;
   --card-size: clamp(65px, 15vmin, 150px);
   --transition: 0.3s ease;
+  --bg-blend: normal;
 }
 
 [data-theme="dark"] {
@@ -21,6 +22,7 @@
   --text: #f1f5f9;
   --text-light: #0f172a;
   --shadow: rgba(56, 189, 248, 0.3);
+  --bg-blend: overlay;
 }
 
 *,
