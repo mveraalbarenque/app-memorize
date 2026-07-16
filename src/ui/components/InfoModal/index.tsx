@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.css';
 
 interface LevelTime {
@@ -45,6 +45,13 @@ const InfoModal = memo((props: Props) => {
   );
 
   const isLast = !onNextLevel;
+  const [disabled, setDisabled] = useState(isLast);
+
+  useEffect(() => {
+    if (!isLast) return;
+    const id = setTimeout(() => setDisabled(false), 7000);
+    return () => clearTimeout(id);
+  }, [isLast]);
 
   const propsModal = {
     className: styles.modal,
@@ -56,8 +63,10 @@ const InfoModal = memo((props: Props) => {
 
   const propsButton = {
     ref: btnRef,
-    className: styles.btn,
+    className: `${styles.btn}${disabled ? ` ${styles.disabled}` : ''}`,
     onClick: onNextLevel ?? onRestart,
+    disabled,
+    'aria-disabled': disabled,
   };
 
   return (
@@ -65,8 +74,8 @@ const InfoModal = memo((props: Props) => {
       {!isLast && <span className={styles.badge}>{levelLabel}</span>}
       <h2 className={styles.title}>
         <div>
-          {isLast ? <p>'¡Juego completado!'</p> : <p>'¡Completado!'</p>}
-          {isLast ? <p>'🏆 🏆 🏆'</p> : <p>🎉 🎉 🎉'</p>}
+          {isLast ? <p>¡Juego completado!</p> : <p>¡Completado!</p>}
+          {isLast ? <p>🏆 🏆 🏆</p> : <p>🎉 🎉 🎉</p>}
         </div>
       </h2>
 
