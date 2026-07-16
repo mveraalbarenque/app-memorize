@@ -15,8 +15,8 @@ const Display = (props: Props) => {
   const { cards, isFlipped, isMatched, isSelected, onCardClick, columns } =
     props;
 
-  const renderCards = () =>
-    cards.map((card, i) => {
+  const renderCards = () => {
+    return cards.map((card, i) => {
       const propsCard = {
         key: i,
         card,
@@ -28,6 +28,7 @@ const Display = (props: Props) => {
 
       return <Card {...propsCard} />;
     });
+  };
 
   return (
     <div className={styles.container}>

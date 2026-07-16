@@ -6,6 +6,7 @@ import { fetchAllImages } from '@/infrastructure/dataService';
 import Display from '../Display';
 import Categories from '../Categories';
 import Levels from '../Levels';
+import BgParallax from '../BgParallax';
 
 import type { Category } from '@/core/types';
 import styles from './styles.module.css';
@@ -49,8 +50,17 @@ const Game = (props: Props) => {
 
   const [cs, setCs] = useState(0);
   const [allImages, setAllImages] = useState<string[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
   const startRef = useRef(0);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     fetchAllImages().then(setAllImages).catch(() => setAllImages([]));
@@ -74,14 +84,20 @@ const Game = (props: Props) => {
     return `${m}:${s.toString().padStart(2, '0')}.${cent.toString().padStart(2, '0')}`;
   }, [cs]);
 
-  const propsDisplay = {
-    cards,
-    isFlipped,
-    isMatched,
-    isSelected,
-    onCardClick: handleCardClick,
-    columns: level.cols,
-  };
+  const swapOnMobile = levelIdx === 1 || levelIdx === 2 || levelIdx === 3 || levelIdx === 5;
+  const columns = swapOnMobile && isMobile ? level.rows : level.cols;
+
+  const propsDisplay = useMemo(
+    () => ({
+      cards,
+      isFlipped,
+      isMatched,
+      isSelected,
+      onCardClick: handleCardClick,
+      columns,
+    }),
+    [cards, isFlipped, isMatched, isSelected, handleCardClick, columns],
+  );
 
   const propsCompleteModal = useMemo(
     () => ({
@@ -107,6 +123,7 @@ const Game = (props: Props) => {
 
   return (
     <div className={styles.area}>
+      <BgParallax />
       <div className={styles.topBar}>
         <button className={styles.themeBtn} onClick={onToggleTheme}>
           {theme === 'dark' ? '☀️' : '🌙'}

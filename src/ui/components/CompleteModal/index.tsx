@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import styles from './styles.module.css';
 
 interface Props {
@@ -22,7 +22,7 @@ interface Piece {
 const MOBILE = typeof window !== 'undefined' && window.innerWidth < 768;
 const PIECES = MOBILE ? 100 : 4000;
 
-const CompleteModal = (props: Props) => {
+const CompleteModal = memo((props: Props) => {
   const { matchedPairs, attempts, time, levelLabel, onNextLevel, cardImages } =
     props;
 
@@ -32,9 +32,12 @@ const CompleteModal = (props: Props) => {
     btnRef.current?.focus();
   }, []);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && onNextLevel) onNextLevel();
-  };
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape' && onNextLevel) onNextLevel();
+    },
+    [onNextLevel],
+  );
 
   const pieces = useMemo<Piece[]>(() => {
     if (!cardImages.length) return [];
@@ -48,27 +51,28 @@ const CompleteModal = (props: Props) => {
     }));
   }, [cardImages]);
 
-  const renderPieces = () =>
-    pieces.map((p, i) => {
-      const propsPiece = {
-        key: i,
-        className: styles.piece,
-        style: {
-          left: `${p.x}%`,
-          width: p.size,
-          height: p.size,
-          animationDelay: `${p.delay}s`,
-          animationDuration: `${p.duration}s`,
-          backgroundImage: `url(${p.img})`,
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          rotate: `${p.rotate}deg`,
-        },
-      };
-
-      return <div {...propsPiece} />;
-    });
+  const confettiElements = useMemo(
+    () =>
+      pieces.map((p, i) => (
+        <div
+          key={i}
+          className={styles.piece}
+          style={{
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            backgroundImage: `url(${p.img})`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            rotate: `${p.rotate}deg`,
+          }}
+        />
+      )),
+    [pieces],
+  );
 
   return (
     <div
@@ -78,7 +82,7 @@ const CompleteModal = (props: Props) => {
       aria-label="Juego completado"
       onKeyDown={onNextLevel ? handleKeyDown : undefined}
     >
-      <div className={styles.confetti}>{renderPieces()}</div>
+      <div className={styles.confetti}>{confettiElements}</div>
       <div className={styles.modal}>
         <h2 className={styles.title}>¡Completado!</h2>
         <p className={styles.stat}>
@@ -96,6 +100,6 @@ const CompleteModal = (props: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default CompleteModal;

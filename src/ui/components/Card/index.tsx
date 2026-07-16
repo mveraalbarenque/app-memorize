@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react';
 import type { ImageData } from '@/core/types';
+
 import styles from './styles.module.css';
 
 interface Props {
@@ -26,22 +27,27 @@ const Card = memo((props: Props) => {
     onClick(card);
   }, [onClick, card]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick(card);
-    }
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClick(card);
+      }
+    },
+    [onClick, card]
+  );
+
+  const propsCard = {
+    className: classes,
+    onClick: handleClick,
+    role: 'button',
+    tabIndex: 0,
+    ariaLabel: card.name,
+    onKeyDown: handleKeyDown,
   };
 
   return (
-    <div
-      className={classes}
-      onClick={handleClick}
-      role="button"
-      tabIndex={0}
-      aria-label={card.name}
-      onKeyDown={handleKeyDown}
-    >
+    <div {...propsCard}>
       <div className={styles.inner}>
         <div className={styles.front}>
           <img src="/card-back.svg" alt="" />
