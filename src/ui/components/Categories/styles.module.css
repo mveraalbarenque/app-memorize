@@ -1,13 +1,13 @@
 .catBtn {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.35rem 0.5rem;
+  gap: 0.3rem;
+  padding: 0.45rem 0.65rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: transparent;
   color: var(--text);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -30,8 +30,8 @@
 
 @media (min-width: 768px) {
   .catBtn {
-    padding: 0.45rem 0.9rem;
-    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
   }
 
   .catBtn span:last-child {

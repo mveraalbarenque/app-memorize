@@ -144,10 +144,10 @@ const Game = (props: Props) => {
 
   return (
     <div className={styles.area}>
+      <button className={styles.themeBtn} onClick={onToggleTheme}>
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </button>
       <div className={styles.topBar}>
-        <button className={styles.themeBtn} onClick={onToggleTheme}>
-          {theme === 'dark' ? '☀️' : '🌙'}
-        </button>
         <nav className={styles.catNav}>
           <Categories {...propsCategories} />
         </nav>

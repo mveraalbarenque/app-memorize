@@ -22,19 +22,25 @@
 }
 
 .themeBtn {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 50;
   flex-shrink: 0;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
+  background: var(--bg-sidebar);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  font-size: 1.4rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
   line-height: 1;
-  border-radius: 6px;
-  transition: background var(--transition);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background var(--transition), transform 0.2s;
 }
 
 .themeBtn:hover {
   background: var(--bg-card);
+  transform: scale(1.1);
 }
 
 .catNav {
