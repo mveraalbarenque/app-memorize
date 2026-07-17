@@ -327,6 +327,15 @@
   cursor: not-allowed;
 }
 
+.playIcon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin-left: 0.4em;
+  vertical-align: middle;
+  filter: brightness(0) invert(1);
+}
+
 .vsOverlay {
   position: fixed;
   inset: 0;

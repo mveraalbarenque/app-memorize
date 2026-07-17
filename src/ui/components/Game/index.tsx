@@ -13,12 +13,13 @@ interface Props {
   category: string;
   level: Level;
   levelIdx: number;
+  levelRange: [number, number];
   playerName: string;
   onLevelComplete: (time: number, attempts: number) => void;
 }
 
 const Game = (props: Props) => {
-  const { category, level, levelIdx, playerName, onLevelComplete } = props;
+  const { category, level, levelIdx, levelRange, playerName, onLevelComplete } = props;
 
   const {
     cards,
@@ -112,14 +113,17 @@ const Game = (props: Props) => {
           <span className={styles.botPlayer}>{playerName}</span>
           <div className={styles.levelNav}>
             <span className={styles.botPlayer}>Nivel Actual: </span>
-            {LEVELS.map((_, i) => (
-              <span
-                key={i}
-                className={`${styles.levelDot}${i === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
-              >
-                {i + 1}
-              </span>
-            ))}
+            {LEVELS.filter((_, i) => i >= levelRange[0] - 1 && i <= levelRange[1] - 1).map((_, i) => {
+              const actualIdx = i + levelRange[0] - 1;
+              return (
+                <span
+                  key={actualIdx}
+                  className={`${styles.levelDot}${actualIdx === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
+                >
+                  {actualIdx + 1}
+                </span>
+              );
+            })}
           </div>
         </div>
         <div className={styles.botScore}>

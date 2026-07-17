@@ -1,5 +1,6 @@
 import type { ImageData } from '@/core/types';
 import type { DataService } from '@/application/ports/dataService';
+import { shuffle } from '@/application/services/shuffle';
 
 const urlImageData = './data.json';
 
@@ -24,7 +25,7 @@ const fetchCardsByCategory = async (
   const data = await getData();
   if (!Array.isArray(data[category]))
     throw new Error(`No se encontró el grupo de imágenes para "${category}"`);
-  return data[category].slice(0, count).map((item: ImageData) => ({ ...item }));
+  return shuffle(data[category]).slice(0, count).map((item: ImageData) => ({ ...item }));
 };
 
 const fetchAllImages = async (): Promise<string[]> => {

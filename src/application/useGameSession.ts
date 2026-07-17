@@ -19,11 +19,14 @@ const initPlayerResults = (players: PlayerConfig[]): PlayerResult[] =>
     totalAttempts: 0,
   }));
 
-export const useGameSession = (players: PlayerConfig[]) => {
+export const useGameSession = (players: PlayerConfig[], levelRange: [number, number]) => {
+  const startIdx = levelRange[0] - 1;
+  const endIdx = levelRange[1] - 1;
+
   const [session, setSession] = useState<GameSession>(() => ({
     players,
     currentPlayerIdx: 0,
-    currentLevelIdx: 0,
+    currentLevelIdx: startIdx,
     results: initPlayerResults(players),
     finished: false,
   }));
@@ -75,7 +78,7 @@ export const useGameSession = (players: PlayerConfig[]) => {
       const nextLevelIdx = allPlayersDoneLevel
         ? prev.currentLevelIdx + 1
         : prev.currentLevelIdx;
-      const finished = allPlayersDoneLevel && nextLevelIdx >= LEVELS.length;
+      const finished = allPlayersDoneLevel && nextLevelIdx > endIdx;
 
       return {
         ...prev,
@@ -88,7 +91,9 @@ export const useGameSession = (players: PlayerConfig[]) => {
         finished,
       };
     });
-  }, []);
+  }, [endIdx]);
+
+  const levelCount = endIdx - startIdx + 1;
 
   return {
     currentPlayer,
@@ -99,5 +104,8 @@ export const useGameSession = (players: PlayerConfig[]) => {
     finished: session.finished,
     recordLevel,
     advanceTurn,
+    startIdx,
+    endIdx,
+    levelCount,
   };
 };

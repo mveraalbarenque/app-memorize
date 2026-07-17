@@ -1,9 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
-import { LEVELS } from '@/core/constants';
 import { useGameSession } from '@/application/useGameSession';
 import { formatTime } from '@/application/services/format';
 import { fetchAllImages } from '@/infrastructure/dataService';
+import { getLevelRange } from '../components/Categories';
 import Game from '../components/Game';
 import Confetti from '../components/Confetti';
 import styles from '../styles.module.css';
@@ -21,8 +21,9 @@ interface Props {
 const GameScreen = (props: Props) => {
   const { players, category, onBackToMenu } = props;
 
-  const session = useGameSession(players);
-  const { recordLevel, advanceTurn, currentPlayerIdx } = session;
+  const levelRange = getLevelRange(category);
+  const session = useGameSession(players, levelRange);
+  const { recordLevel, advanceTurn, currentPlayerIdx, endIdx } = session;
   const [turnVisible, setTurnVisible] = useState(false);
   const [showLevelComplete, setShowLevelComplete] = useState(false);
   const [lastTime, setLastTime] = useState(0);
@@ -42,7 +43,7 @@ const GameScreen = (props: Props) => {
       recordLevel(time, attempts);
 
       const isLast =
-        levelIdx >= LEVELS.length - 1 &&
+        levelIdx >= endIdx &&
         currentPlayerIdx >= players.length - 1;
 
       if (isLast) {
@@ -53,7 +54,7 @@ const GameScreen = (props: Props) => {
         setShowLevelComplete(true);
       }
     },
-    [recordLevel, advanceTurn, levelIdx, currentPlayerIdx, players.length],
+    [recordLevel, advanceTurn, levelIdx, endIdx, currentPlayerIdx, players.length],
   );
 
   const handleNextLevel = useCallback(() => {
@@ -81,6 +82,7 @@ const GameScreen = (props: Props) => {
     category,
     level: currentLevel,
     levelIdx,
+    levelRange,
     playerName: currentPlayer.name,
     onLevelComplete: handleLevelComplete,
   };

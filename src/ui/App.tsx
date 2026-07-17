@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
+import Categories, { DEFAULT_CATEGORY } from './components/Categories';
 import MenuScreen from './screens/MenuScreen';
 import styles from './styles.module.css';
 
@@ -20,6 +21,13 @@ const App = () => {
   const [gamePlayers, setGamePlayers] = useState<PlayerConfig[]>([]);
   const [gameCategory, setGameCategory] = useState('');
   const [isMuted, setIsMuted] = useState(false);
+  const [showCatModal, setShowCatModal] = useState(false);
+  const [category, setCategory] = useState(DEFAULT_CATEGORY);
+
+  const selectCategory = useCallback((cat: string) => {
+    setCategory(cat);
+    setShowCatModal(false);
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -32,9 +40,9 @@ const App = () => {
   );
 
   const handleStart = useCallback(
-    (players: PlayerConfig[], category: string) => {
+    (players: PlayerConfig[], cat: string) => {
       setGamePlayers(players);
-      setGameCategory(category);
+      setGameCategory(cat);
       setGameKey((k) => k + 1);
       setScreen('game');
     },
@@ -45,6 +53,10 @@ const App = () => {
     setGamePlayers([]);
     setGameCategory('');
     setScreen('menu');
+  }, []);
+
+  const handleKeyDownCat = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') setShowCatModal(false);
   }, []);
 
   const toggleTheme = useCallback(
@@ -69,7 +81,40 @@ const App = () => {
         </filter>
       </svg>
 
+      {showCatModal && (
+        <div
+          className={styles.catOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Seleccionar categoría"
+          onKeyDown={handleKeyDownCat}
+          onClick={() => setShowCatModal(false)}
+        >
+          <div className={styles.catModal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.catModalOverlay} />
+            <div className={styles.catModalInner}>
+              <p className={styles.catTitle}>Categoría</p>
+              <Categories
+                category={category}
+                onSelectCategory={selectCategory}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.fabGroup}>
+        {screen === 'menu' && (
+          <button
+            className={styles.fab}
+            onClick={() => setShowCatModal(true)}
+            title="Categorías"
+          >
+            <span className={styles.fabIcon}>
+              <img src="/icons/categories.svg" alt="Categorías" />
+            </span>
+          </button>
+        )}
         <button
           className={styles.fab}
           onClick={toggleSound}
@@ -91,7 +136,7 @@ const App = () => {
       </div>
 
       {screen === 'menu' ? (
-        <MenuScreen onStart={handleStart} />
+        <MenuScreen category={category} onStart={handleStart} />
       ) : (
         <Suspense fallback={null}>
           <GameScreen

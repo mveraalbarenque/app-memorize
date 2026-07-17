@@ -88,7 +88,10 @@ const Menu = memo((props: Props) => {
           <h1 className={styles.title}>Memorize</h1>
           <ModeButtons {...propsModeButtons} />
           <PlayerChips players={players} />
-          <button {...propsButton}>Jugar Ahora...</button>
+          <button {...propsButton}>
+            A Jugar
+            <img src="/icons/play.svg" alt="" className={styles.playIcon} />
+          </button>
         </div>
       </div>
 
