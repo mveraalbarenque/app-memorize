@@ -1,40 +1,31 @@
 .catBtn {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.45rem 0.65rem;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 2px solid rgba(128, 128, 128, 0.2);
+  border-radius: 12px;
+  background: var(--bg-body);
   color: var(--text);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--transition);
-  flex-shrink: 0;
+  transition: all 0.2s;
 }
 
 .catBtn:hover {
+  border-color: var(--accent);
   background: var(--bg-card);
 }
 
 .catActive {
-  background: var(--accent) !important;
+  border-color: var(--accent);
+  background: var(--accent);
   color: var(--text-light);
 }
 
-.catBtn span:last-child {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .catBtn {
-    padding: 0.55rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .catBtn span:last-child {
-    display: inline;
-  }
+.catBtn span:first-child {
+  font-size: 1.2rem;
+  line-height: 1;
 }

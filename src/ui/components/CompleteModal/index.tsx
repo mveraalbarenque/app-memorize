@@ -1,56 +1,87 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
+import type { PlayerResult } from '@/core/types';
 import Confetti from '../Confetti';
-import InfoModal from '../InfoModal';
+import PlayerStatsCard from './PlayerStatsCard';
+import SingleStats from './SingleStats';
+import ResultsTable from './ResultsTable';
 import styles from './styles.module.css';
 
-interface LevelTime {
-  level: number;
-  label: string;
-  time: string;
-}
-
 interface Props {
-  matchedPairs: number;
-  attempts: number;
-  time: string;
-  levelLabel: string;
-  onNextLevel: (() => void) | undefined;
-  onRestart: () => void;
-  levelTimes: LevelTime[];
+  results: PlayerResult[];
+  onBackToMenu: () => void;
   cardImages: string[];
 }
 
+const parseTime = (t: string): number => {
+  const [m, rest] = t.split(':');
+  const [s, c] = rest.split('.');
+  return parseInt(m) * 6000 + parseInt(s) * 100 + parseInt(c);
+};
+
+const getWinnerIdx = (results: PlayerResult[]): number =>
+  results.reduce(
+    (best, r, i, arr) =>
+      parseTime(r.totalTime) < parseTime(arr[best].totalTime) ? i : best,
+    0,
+  );
+
+const getLoserIdx = (results: PlayerResult[]): number =>
+  results.reduce(
+    (worst, r, i, arr) =>
+      parseTime(r.totalTime) > parseTime(arr[worst].totalTime) ? i : worst,
+    0,
+  );
+
 const CompleteModal = memo((props: Props) => {
-  const {
-    matchedPairs,
-    attempts,
-    time,
-    levelLabel,
-    onNextLevel,
-    onRestart,
-    levelTimes,
-    cardImages,
-  } = props;
+  const { results, onBackToMenu, cardImages } = props;
 
-  const propsInfo = {
-    matchedPairs,
-    attempts,
-    time,
-    levelLabel,
-    onNextLevel,
-    onRestart,
-    levelTimes,
-  };
+  const isMulti = results.length > 1;
+  const winnerIdx = isMulti ? getWinnerIdx(results) : -1;
+  const loserIdx = isMulti ? getLoserIdx(results) : -1;
 
-  const propsConfetti = {
-    images: cardImages,
-  };
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    btnRef.current?.focus();
+  }, []);
 
   return (
     <>
-      <div className={styles.overlay} />
-      <Confetti {...propsConfetti} />
-      <InfoModal {...propsInfo} />
+      <Confetti images={cardImages} />
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Juego completado"
+      >
+        <h2 className={styles.title}>
+          <div>
+            <p>¡Juego completado!</p>
+          </div>
+        </h2>
+
+        {isMulti ? (
+          <div className={styles.stats}>
+            {results.map((r, i) => (
+              <PlayerStatsCard
+                key={r.name}
+                result={r}
+                index={i}
+                isWinner={i === winnerIdx}
+                isLoser={isMulti && i === loserIdx}
+              />
+            ))}
+          </div>
+        ) : (
+          <SingleStats result={results[0]} />
+        )}
+
+        <ResultsTable results={results} isMulti={isMulti} />
+
+        <button ref={btnRef} className={styles.btn} onClick={onBackToMenu}>
+          Volver al menú
+        </button>
+      </div>
     </>
   );
 });

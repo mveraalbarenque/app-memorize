@@ -1,14 +1,14 @@
 import { memo, useMemo } from 'react';
-import type { Category } from '@/core/types';
+
 
 import styles from './styles.module.css';
 
 interface Props {
-  category: Category;
-  onSelectCategory: (cat: Category) => void;
+  category: string;
+  onSelectCategory: (cat: string) => void;
 }
 
-const CATEGORIES: { key: Category; label: string; icon: string }[] = [
+const CATEGORIES: { key: string; label: string; icon: string }[] = [
   { key: 'tools', label: 'Herramientas', icon: '🛠' },
   { key: 'frameworks', label: 'Frameworks', icon: '⚙' },
   { key: 'lenguages', label: 'Lenguajes', icon: '💻' },

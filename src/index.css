@@ -12,10 +12,15 @@
   --card-size: clamp(65px, 15vmin, 150px);
   --transition: 0.3s ease;
   --bg-blend: normal;
+  --player-0: #0284c7;
+  --player-1: #ca8a04;
+  --player-2: #059669;
+  --player-3: #7c3aed;
 }
 
 [data-theme="dark"] {
   --bg-body: #0b1120;
+  --bg-card: #1e293b;
   --bg-sidebar: #1e293b;
   --accent: #38bdf8;
   --accent-hover: #7dd3fc;
@@ -23,6 +28,10 @@
   --text-light: #0f172a;
   --shadow: rgba(56, 189, 248, 0.3);
   --bg-blend: overlay;
+  --player-0: #38bdf8;
+  --player-1: #facc15;
+  --player-2: #34d399;
+  --player-3: #a78bfa;
 }
 
 *,

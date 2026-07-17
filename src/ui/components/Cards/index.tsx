@@ -18,21 +18,22 @@ const Cards = (props: Props) => {
 
   const gridStyle = useMemo(
     () => ({ gridTemplateColumns: `repeat(${columns}, var(--card-size))` }),
-    [columns],
+    [columns]
   );
 
   return (
     <div className={styles.grid} style={gridStyle}>
-      {cards.map((card, i) => (
-        <Card
-          key={i}
-          card={card}
-          flipped={isFlipped(card)}
-          matched={isMatched(card)}
-          selected={isSelected(card)}
-          onClick={onCardClick}
-        />
-      ))}
+      {cards.map((card, i) => {
+        const propsCard = {
+          card,
+          flipped: isFlipped(card),
+          matched: isMatched(card),
+          selected: isSelected(card),
+          onClick: onCardClick,
+        };
+
+        return <Card key={i} {...propsCard} />;
+      })}
     </div>
   );
 };

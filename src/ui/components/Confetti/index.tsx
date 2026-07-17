@@ -11,7 +11,7 @@ interface Piece {
 }
 
 const MOBILE = typeof window !== 'undefined' && window.innerWidth < 768;
-const PIECES = MOBILE ? 100 : 1000;
+const PIECES = MOBILE ? 100 : 150;
 
 interface Props {
   images: string[];
