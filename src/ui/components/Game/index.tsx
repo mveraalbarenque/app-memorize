@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { Level } from '@/application/grid';
+import type { Level } from '@/core/constants';
 import type { ImageData } from '@/core/types';
-import { LEVELS } from '@/application/grid';
+import { LEVELS } from '@/core/constants';
 import { useGame } from '@/application/useGame';
+import { useTimer } from '@/application/hooks/useTimer';
+import { formatTime } from '@/application/services/format';
+import Cards from '../Cards';
 
-import Display from '../Display';
 import styles from './styles.module.css';
 
 interface Props {
@@ -30,14 +32,11 @@ const Game = (props: Props) => {
     matchedPairs,
   } = useGame(category, level.pairs);
 
-  const [cs, setCs] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
   const doneRef = useRef(false);
-  const startRef = useRef(0);
-  const accruedRef = useRef(0);
-  const intervalRef = useRef<number>();
+  const { cs } = useTimer(!done && !isPaused);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -46,25 +45,6 @@ const Game = (props: Props) => {
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
-
-  useEffect(() => {
-    if (done) return;
-
-    if (isPaused) {
-      accruedRef.current += Math.floor((Date.now() - startRef.current) / 10);
-      clearInterval(intervalRef.current);
-      return;
-    }
-
-    startRef.current = Date.now();
-    const tick = () => {
-      setCs(accruedRef.current + Math.floor((Date.now() - startRef.current) / 10));
-    };
-    tick();
-    intervalRef.current = window.setInterval(tick, 50);
-
-    return () => clearInterval(intervalRef.current);
-  }, [done, isPaused]);
 
   const togglePause = useCallback(() => setIsPaused((p) => !p), []);
 
@@ -76,12 +56,7 @@ const Game = (props: Props) => {
     [isPaused, handleCardClick]
   );
 
-  const fmt = useMemo(() => {
-    const m = Math.floor(cs / 6000);
-    const s = Math.floor((cs % 6000) / 100);
-    const cent = cs % 100;
-    return `${m}:${s.toString().padStart(2, '0')}.${cent.toString().padStart(2, '0')}`;
-  }, [cs]);
+  const fmt = useMemo(() => formatTime(cs), [cs]);
 
   useEffect(() => {
     if (done && !doneRef.current) {
@@ -94,7 +69,7 @@ const Game = (props: Props) => {
     levelIdx === 1 || levelIdx === 2 || levelIdx === 3 || levelIdx === 5;
   const columns = swapOnMobile && isMobile ? level.rows : level.cols;
 
-  const propsDisplay = useMemo(
+  const propsCards = useMemo(
     () => ({
       cards,
       isFlipped,
@@ -114,7 +89,10 @@ const Game = (props: Props) => {
         title={isPaused ? 'Reanudar' : 'Pausar'}
       >
         <span className={styles.pauseIcon}>
-          <img src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'} alt={isPaused ? 'Reanudar' : 'Pausar'} />
+          <img
+            src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'}
+            alt={isPaused ? 'Reanudar' : 'Pausar'}
+          />
         </span>
       </button>
       <div className={styles.cardArea}>
@@ -123,7 +101,9 @@ const Game = (props: Props) => {
         ) : !cards.length ? (
           <p className={styles.message}>Cargando...</p>
         ) : (
-          <Display {...propsDisplay} />
+          <div className={styles.cardContainer}>
+            <Cards {...propsCards} />
+          </div>
         )}
       </div>
 

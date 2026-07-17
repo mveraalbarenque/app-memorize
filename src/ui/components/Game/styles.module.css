@@ -18,6 +18,16 @@
   padding: 0.5rem;
 }
 
+.cardContainer {
+  background: var(--bg-card-area);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
 .message {
   text-align: center;
   color: var(--text);
@@ -157,6 +167,10 @@
     padding: 1.5rem;
   }
 
+  .cardContainer {
+    padding: 1.5rem;
+  }
+
   .bottomBar {
     flex-direction: row;
     align-items: center;
@@ -181,5 +195,11 @@
   .botScore strong {
     color: var(--accent);
     font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cardContainer {
+    padding: 2rem;
   }
 }

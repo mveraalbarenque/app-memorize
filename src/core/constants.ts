@@ -13,3 +13,5 @@ export const LEVELS: Level[] = [
   { rows: 4, cols: 4, pairs: 8, label: '5' },
   { rows: 4, cols: 5, pairs: 10, label: '6' },
 ];
+
+export const DEFAULT_NAMES = ['Jugador 1', 'Jugador 2', 'Jugador 3', 'Jugador 4'];

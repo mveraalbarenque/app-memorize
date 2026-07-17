@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import type { PlayerConfig, PlayerResult, LevelResult } from '@/core/types';
-import { LEVELS } from '@/application/grid';
+import { LEVELS } from '@/core/constants';
+import { formatTime } from '@/application/services/format';
 
 interface GameSession {
   players: PlayerConfig[];
@@ -9,13 +10,6 @@ interface GameSession {
   results: PlayerResult[];
   finished: boolean;
 }
-
-const formatTime = (cs: number): string => {
-  const m = Math.floor(cs / 6000);
-  const s = Math.floor((cs % 6000) / 100);
-  const cent = cs % 100;
-  return `${m}:${s.toString().padStart(2, '0')}.${cent.toString().padStart(2, '0')}`;
-};
 
 const initPlayerResults = (players: PlayerConfig[]): PlayerResult[] =>
   players.map((p) => ({
