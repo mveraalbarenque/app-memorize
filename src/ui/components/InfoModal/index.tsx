@@ -71,7 +71,7 @@ const InfoModal = memo((props: Props) => {
 
   return (
     <div {...propsModal}>
-      {!isLast && <span className={styles.badge}>{levelLabel}</span>}
+      {!isLast && <span className={styles.badge}>Nivel: {levelLabel}</span>}
       <h2 className={styles.title}>
         <div>
           {isLast ? <p>¡Juego completado!</p> : <p>¡Completado!</p>}

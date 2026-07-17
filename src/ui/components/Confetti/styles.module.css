@@ -10,11 +10,13 @@
   top: -40px;
   animation: fall linear forwards;
   opacity: 0;
+  will-change: transform, opacity;
 }
 
 @keyframes fall {
   0% {
     opacity: 1;
+    transform: translateY(0) rotate(0deg);
   }
 
   100% {

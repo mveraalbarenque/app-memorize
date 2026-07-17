@@ -1,51 +1,22 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Level } from '@/application/grid';
+import type { ImageData } from '@/core/types';
+import { LEVELS } from '@/application/grid';
 import { useGame } from '@/application/useGame';
-import { fetchAllImages } from '@/infrastructure/dataService';
 
 import Display from '../Display';
-import Categories from '../Categories';
-import Levels from '../Levels';
-
-import type { Category } from '@/core/types';
 import styles from './styles.module.css';
 
-interface LevelTime {
-  level: number;
-  label: string;
-  time: string;
-}
-
 interface Props {
-  category: Category;
+  category: string;
   level: Level;
   levelIdx: number;
-  theme: string;
-  levelTimes: LevelTime[];
-  onToggleTheme: () => void;
-  onSelectCategory: (cat: Category) => void;
-  onSelectLevel: (idx: number) => void;
-  onNextLevel: (() => void) | undefined;
-  onRestart: () => void;
-  onLevelComplete: (level: number, label: string, time: string) => void;
+  playerName: string;
+  onLevelComplete: (time: number, attempts: number) => void;
 }
 
-const CompleteModal = lazy(() => import('../CompleteModal'));
-
 const Game = (props: Props) => {
-  const {
-    category,
-    level,
-    levelIdx,
-    theme,
-    levelTimes,
-    onToggleTheme,
-    onSelectCategory,
-    onSelectLevel,
-    onNextLevel,
-    onRestart,
-    onLevelComplete,
-  } = props;
+  const { category, level, levelIdx, playerName, onLevelComplete } = props;
 
   const {
     cards,
@@ -60,11 +31,13 @@ const Game = (props: Props) => {
   } = useGame(category, level.pairs);
 
   const [cs, setCs] = useState(0);
-  const [allImages, setAllImages] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
   const doneRef = useRef(false);
   const startRef = useRef(0);
+  const accruedRef = useRef(0);
+  const intervalRef = useRef<number>();
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -75,19 +48,33 @@ const Game = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    fetchAllImages().then(setAllImages).catch(() => setAllImages([]));
-  }, []);
-
-  useEffect(() => {
     if (done) return;
+
+    if (isPaused) {
+      accruedRef.current += Math.floor((Date.now() - startRef.current) / 10);
+      clearInterval(intervalRef.current);
+      return;
+    }
+
     startRef.current = Date.now();
-    setCs(0);
-    const id = setInterval(
-      () => setCs(Math.floor((Date.now() - startRef.current) / 10)),
-      50,
-    );
-    return () => clearInterval(id);
-  }, [done]);
+    const tick = () => {
+      setCs(accruedRef.current + Math.floor((Date.now() - startRef.current) / 10));
+    };
+    tick();
+    intervalRef.current = window.setInterval(tick, 50);
+
+    return () => clearInterval(intervalRef.current);
+  }, [done, isPaused]);
+
+  const togglePause = useCallback(() => setIsPaused((p) => !p), []);
+
+  const wrappedHandleCardClick = useCallback(
+    (card: ImageData) => {
+      if (isPaused) return;
+      handleCardClick(card);
+    },
+    [isPaused, handleCardClick]
+  );
 
   const fmt = useMemo(() => {
     const m = Math.floor(cs / 6000);
@@ -99,11 +86,12 @@ const Game = (props: Props) => {
   useEffect(() => {
     if (done && !doneRef.current) {
       doneRef.current = true;
-      onLevelComplete(levelIdx, level.label, fmt);
+      onLevelComplete(cs, attempts);
     }
-  }, [done, fmt, levelIdx, level.label, onLevelComplete]);
+  }, [done, cs, attempts, onLevelComplete]);
 
-  const swapOnMobile = levelIdx === 1 || levelIdx === 2 || levelIdx === 3 || levelIdx === 5;
+  const swapOnMobile =
+    levelIdx === 1 || levelIdx === 2 || levelIdx === 3 || levelIdx === 5;
   const columns = swapOnMobile && isMobile ? level.rows : level.cols;
 
   const propsDisplay = useMemo(
@@ -112,46 +100,49 @@ const Game = (props: Props) => {
       isFlipped,
       isMatched,
       isSelected,
-      onCardClick: handleCardClick,
+      onCardClick: wrappedHandleCardClick,
       columns,
     }),
-    [cards, isFlipped, isMatched, isSelected, handleCardClick, columns],
-  );
-
-  const propsCompleteModal = useMemo(
-    () => ({
-      matchedPairs: matchedPairs.size,
-      attempts,
-      time: fmt,
-      levelLabel: level.label,
-      onNextLevel,
-      onRestart,
-      levelTimes,
-      cardImages: allImages,
-    }),
-    [matchedPairs, attempts, fmt, level.label, onNextLevel, onRestart, levelTimes, allImages],
-  );
-
-  const propsCategories = useMemo(
-    () => ({ category, onSelectCategory }),
-    [category, onSelectCategory],
-  );
-
-  const propsLevels = useMemo(
-    () => ({ levelIdx, onSelectLevel }),
-    [levelIdx, onSelectLevel],
+    [cards, isFlipped, isMatched, isSelected, wrappedHandleCardClick, columns]
   );
 
   return (
-    <div className={styles.area}>
-      <button className={styles.themeBtn} onClick={onToggleTheme}>
-        {theme === 'dark' ? '☀️' : '🌙'}
+    <main className={styles.area}>
+      <button
+        className={styles.pauseBtn}
+        onClick={togglePause}
+        title={isPaused ? 'Reanudar' : 'Pausar'}
+      >
+        <span className={styles.pauseIcon}>
+          <img src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'} alt={isPaused ? 'Reanudar' : 'Pausar'} />
+        </span>
       </button>
-      <div className={styles.topBar}>
-        <nav className={styles.catNav}>
-          <Categories {...propsCategories} />
-        </nav>
-        <div className={styles.hudScore}>
+      <div className={styles.cardArea}>
+        {error ? (
+          <p className={styles.message}>{error}</p>
+        ) : !cards.length ? (
+          <p className={styles.message}>Cargando...</p>
+        ) : (
+          <Display {...propsDisplay} />
+        )}
+      </div>
+
+      <div className={styles.bottomBar}>
+        <div className={styles.botRow}>
+          <span className={styles.botPlayer}>{playerName}</span>
+          <div className={styles.levelNav}>
+            <span className={styles.botPlayer}>Nivel Actual: </span>
+            {LEVELS.map((_, i) => (
+              <span
+                key={i}
+                className={`${styles.levelDot}${i === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
+              >
+                {i + 1}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className={styles.botScore}>
           <span>
             Pares{' '}
             <strong>
@@ -165,38 +156,11 @@ const Game = (props: Props) => {
             Tiempo <strong>{fmt}</strong>
           </span>
         </div>
-        <div
-          aria-live="polite"
-          aria-atomic="true"
-          className={styles.srOnly}
-        >
+        <div aria-live="polite" aria-atomic="true" className={styles.srOnly}>
           {matchedPairs.size} pares de {totalPairs}, {attempts} intentos
         </div>
       </div>
-
-      <div className={styles.cardArea}>
-        {error ? (
-          <p className={styles.message}>{error}</p>
-        ) : !cards.length ? (
-          <p className={styles.message}>Cargando...</p>
-        ) : (
-          <Display {...propsDisplay} />
-        )}
-      </div>
-
-      <div className={styles.bottomBar}>
-        <span className={styles.pairsLabel}>Nivel</span>
-        <nav className={styles.pairNav}>
-          <Levels {...propsLevels} />
-        </nav>
-      </div>
-
-      {done && (
-        <Suspense fallback={null}>
-          <CompleteModal {...propsCompleteModal} />
-        </Suspense>
-      )}
-    </div>
+    </main>
   );
 };
 
