@@ -25,6 +25,57 @@
   font-size: 0.9rem;
 }
 
+.pauseBtn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  cursor: pointer;
+  line-height: 1;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pauseBtn:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.pauseBtn:active {
+  transform: scale(0.96);
+}
+
+.pauseIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.pauseIcon img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+}
+
 .bottomBar {
   display: flex;
   flex-direction: column;

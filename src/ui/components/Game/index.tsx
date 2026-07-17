@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Level } from '@/application/grid';
+import type { ImageData } from '@/core/types';
 import { LEVELS } from '@/application/grid';
 import { useGame } from '@/application/useGame';
 
@@ -31,9 +32,12 @@ const Game = (props: Props) => {
 
   const [cs, setCs] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
   const doneRef = useRef(false);
   const startRef = useRef(0);
+  const accruedRef = useRef(0);
+  const intervalRef = useRef<number>();
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -45,14 +49,32 @@ const Game = (props: Props) => {
 
   useEffect(() => {
     if (done) return;
+
+    if (isPaused) {
+      accruedRef.current += Math.floor((Date.now() - startRef.current) / 10);
+      clearInterval(intervalRef.current);
+      return;
+    }
+
     startRef.current = Date.now();
-    setCs(0);
-    const id = setInterval(
-      () => setCs(Math.floor((Date.now() - startRef.current) / 10)),
-      50
-    );
-    return () => clearInterval(id);
-  }, [done]);
+    const tick = () => {
+      setCs(accruedRef.current + Math.floor((Date.now() - startRef.current) / 10));
+    };
+    tick();
+    intervalRef.current = window.setInterval(tick, 50);
+
+    return () => clearInterval(intervalRef.current);
+  }, [done, isPaused]);
+
+  const togglePause = useCallback(() => setIsPaused((p) => !p), []);
+
+  const wrappedHandleCardClick = useCallback(
+    (card: ImageData) => {
+      if (isPaused) return;
+      handleCardClick(card);
+    },
+    [isPaused, handleCardClick]
+  );
 
   const fmt = useMemo(() => {
     const m = Math.floor(cs / 6000);
@@ -78,14 +100,23 @@ const Game = (props: Props) => {
       isFlipped,
       isMatched,
       isSelected,
-      onCardClick: handleCardClick,
+      onCardClick: wrappedHandleCardClick,
       columns,
     }),
-    [cards, isFlipped, isMatched, isSelected, handleCardClick, columns]
+    [cards, isFlipped, isMatched, isSelected, wrappedHandleCardClick, columns]
   );
 
   return (
     <main className={styles.area}>
+      <button
+        className={styles.pauseBtn}
+        onClick={togglePause}
+        title={isPaused ? 'Reanudar' : 'Pausar'}
+      >
+        <span className={styles.pauseIcon}>
+          <img src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'} alt={isPaused ? 'Reanudar' : 'Pausar'} />
+        </span>
+      </button>
       <div className={styles.cardArea}>
         {error ? (
           <p className={styles.message}>{error}</p>
