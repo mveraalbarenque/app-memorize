@@ -15,11 +15,12 @@ interface Props {
   levelIdx: number;
   levelRange: [number, number];
   playerName: string;
+  paused?: boolean;
   onLevelComplete: (time: number, attempts: number) => void;
 }
 
 const Game = (props: Props) => {
-  const { category, level, levelIdx, levelRange, playerName, onLevelComplete } = props;
+  const { category, level, levelIdx, levelRange, playerName, paused = false, onLevelComplete } = props;
 
   const {
     cards,
@@ -37,7 +38,7 @@ const Game = (props: Props) => {
   const [isPaused, setIsPaused] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
   const doneRef = useRef(false);
-  const { cs } = useTimer(!done && !isPaused);
+  const { cs } = useTimer(!done && !isPaused && !paused);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -51,10 +52,10 @@ const Game = (props: Props) => {
 
   const wrappedHandleCardClick = useCallback(
     (card: ImageData) => {
-      if (isPaused) return;
+      if (isPaused || paused) return;
       handleCardClick(card);
     },
-    [isPaused, handleCardClick]
+    [isPaused, paused, handleCardClick]
   );
 
   const fmt = useMemo(() => formatTime(cs), [cs]);

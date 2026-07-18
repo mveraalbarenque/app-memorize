@@ -1,0 +1,85 @@
+.btn {
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  color: var(--text-light);
+  font-weight: 800;
+  box-shadow:
+    -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
+    0.0375em 0.0375em 0.0675em 0 rgba(5, 5, 5, 0.1),
+    0 0.05em 0.05em -0.01em rgba(5, 5, 5, 1),
+    0 0.01em 0.01em -0.01em rgba(5, 5, 5, 0.5),
+    0.15em 0.3em 0.1em -0.01em rgba(5, 5, 5, 0.25),
+    inset 0 0.025em 0.05em 0.1em rgba(255, 255, 255, 0.15),
+    inset 0.025em 0.05em 0.1em 0 rgba(255, 255, 255, 0.2),
+    inset -0.05em -0.1em 0.15em 0.05em rgba(0, 0, 0, 0.15);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(-135deg, rgba(5, 5, 5, 0.4), transparent 30%);
+  filter: blur(0.03em);
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.btn:hover::after {
+  opacity: 0.15;
+}
+
+.btn:active {
+  transform: scale(0.97);
+  filter: brightness(0.95);
+}
+
+.primary {
+  background: var(--btn-primary);
+}
+
+.success {
+  background: var(--btn-success);
+}
+
+.warning {
+  background: var(--btn-warning);
+}
+
+.danger {
+  background: var(--btn-danger);
+}
+
+.sm {
+  padding: 0.5rem 0.3rem;
+  font-size: 0.75rem;
+  border-radius: 10px;
+}
+
+.md {
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+}
+
+.lg {
+  padding: 1rem 2.5rem;
+  font-size: 1.15rem;
+  border-radius: 16px;
+}
+
+

@@ -3,6 +3,7 @@ import type { CatEntry } from './categories';
 import { CATEGORIES } from './categories';
 import { fetchCardsByCategory } from '@/infrastructure/dataService';
 import type { ImageData } from '@/core/types';
+import Button from '@/ui/components/Button';
 import styles from './styles.module.css';
 
 interface Props {
@@ -64,8 +65,15 @@ const Categories = memo(({ category, onSelectCategory }: Props) => {
       <span className={styles.sectionLabel}>Dificultad</span>
       <div className={styles.diffRow}>
         {GROUPS.map((g) => {
+          const diffClass =
+            g.diff === 'easy'
+              ? styles.diffEasy
+              : g.diff === 'normal'
+                ? styles.diffNormal
+                : styles.diffHard
+
           const propsGrup = {
-            className: `${styles.diffBtn}${difficulty === g.diff ? ` ${styles.diffActive}` : ''}`,
+            className: `${styles.diffBtn} ${diffClass}${difficulty === g.diff ? ` ${styles.diffActive}` : ''}`,
             onClick: () => {
               setDifficulty(g.diff);
               const first = CATEGORIES.find((c) => c.difficulty === g.diff);
@@ -125,12 +133,14 @@ const Categories = memo(({ category, onSelectCategory }: Props) => {
           )}
         </div>
 
-        <button
+        <Button
+          variant="success"
+          size="md"
           className={styles.confirmBtn}
           onClick={() => onSelectCategory(previewCat ?? category)}
         >
           Cargar al Juego
-        </button>
+        </Button>
       </div>
     </>
   );

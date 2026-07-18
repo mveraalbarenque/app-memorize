@@ -1,140 +1,71 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import type { PlayerConfig } from '@/core/types';
-import Categories from './components/Categories';
-import { DEFAULT_CATEGORY } from './components/Categories/categories';
-import MenuScreen from './screens/MenuScreen';
-import styles from './styles.module.css';
+import { lazy, Suspense, useCallback, useState } from 'react'
+import type { PlayerConfig } from '@/core/types'
+import { useTheme } from '@/ui/hooks/useTheme'
+import { DEFAULT_CATEGORY } from './components/Categories/categories'
+import CategoryModal from './components/CategoryModal'
+import FABGroup from './components/FABGroup'
+import LiquidFilter from './components/LiquidFilter'
+import MenuScreen from './screens/MenuScreen'
+import styles from './styles.module.css'
 
-const GameScreen = lazy(() => import('./screens/GameScreen'));
-
-const getInitial = (): string => {
-  const stored = localStorage.getItem('theme');
-  if (stored === 'dark' || stored === 'light') return stored;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light';
-};
+const GameScreen = lazy(() => import('./screens/GameScreen'))
 
 const App = () => {
-  const [theme, setTheme] = useState(getInitial);
-  const [screen, setScreen] = useState<'menu' | 'game'>('menu');
-  const [gameKey, setGameKey] = useState(0);
-  const [gamePlayers, setGamePlayers] = useState<PlayerConfig[]>([]);
-  const [gameCategory, setGameCategory] = useState('');
-  const [isMuted, setIsMuted] = useState(false);
-  const [showCatModal, setShowCatModal] = useState(false);
-  const [category, setCategory] = useState(DEFAULT_CATEGORY);
+  const { theme, toggleTheme } = useTheme()
 
-  const selectCategory = useCallback((cat: string) => {
-    setCategory(cat);
-    setShowCatModal(false);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  const [screen, setScreen] = useState<'menu' | 'game'>('menu')
+  const [gameKey, setGameKey] = useState(0)
+  const [gamePlayers, setGamePlayers] = useState<PlayerConfig[]>([])
+  const [gameCategory, setGameCategory] = useState('')
+  const [isMuted, setIsMuted] = useState(false)
+  const [showCatModal, setShowCatModal] = useState(false)
+  const [category, setCategory] = useState(DEFAULT_CATEGORY)
 
   const toggleSound = useCallback(
     () => setIsMuted((m) => !m),
     [],
-  );
+  )
+
+  const selectCategory = useCallback((cat: string) => {
+    setCategory(cat)
+    setShowCatModal(false)
+  }, [])
 
   const handleStart = useCallback(
     (players: PlayerConfig[], cat: string) => {
-      setGamePlayers(players);
-      setGameCategory(cat);
-      setGameKey((k) => k + 1);
-      setScreen('game');
+      setGamePlayers(players)
+      setGameCategory(cat)
+      setGameKey((k) => k + 1)
+      setScreen('game')
     },
     [],
-  );
+  )
 
   const handleBackToMenu = useCallback(() => {
-    setGamePlayers([]);
-    setGameCategory('');
-    setScreen('menu');
-  }, []);
-
-  const handleKeyDownCat = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') setShowCatModal(false);
-  }, []);
-
-  const toggleTheme = useCallback(
-    () => setTheme((t) => (t === 'dark' ? 'light' : 'dark')),
-    [],
-  );
+    setGamePlayers([])
+    setGameCategory('')
+    setScreen('menu')
+  }, [])
 
   return (
     <div className={styles.layout}>
-      <svg style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, zIndex: -1 }} aria-hidden="true">
-        <filter id="liquidSpecular" x="-20%" y="-20%" width="140%" height="140%">
-          <feSpecularLighting
-            in="SourceAlpha"
-            specularExponent={40}
-            lightingColor="#fff"
-            result="spec"
-          >
-            <fePointLight x={100} y={50} z={120} />
-          </feSpecularLighting>
-          <feComposite in="spec" in2="SourceAlpha" operator="in" result="specMasked" />
-          <feBlend in="SourceGraphic" in2="specMasked" mode="screen" />
-        </filter>
-      </svg>
+      <LiquidFilter />
 
-      {showCatModal && (
-        <div
-          className={styles.catOverlay}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Seleccionar categoría"
-          onKeyDown={handleKeyDownCat}
-          onClick={() => setShowCatModal(false)}
-        >
-          <div className={styles.catModal} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.catModalOverlay} />
-            <div className={styles.catModalInner}>
-              <p className={styles.catTitle}>Categoría</p>
-              <Categories
-                category={category}
-                onSelectCategory={selectCategory}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      <CategoryModal
+        show={showCatModal}
+        category={category}
+        onSelect={selectCategory}
+        onClose={() => setShowCatModal(false)}
+      />
 
-      <div className={styles.fabGroup}>
-        {screen === 'menu' && (
-          <button
-            className={styles.fab}
-            onClick={() => setShowCatModal(true)}
-            title="Categorías"
-          >
-            <span className={styles.fabIcon}>
-              <img src="/icons/categories.svg" alt="Categorías" />
-            </span>
-          </button>
-        )}
-        <button
-          className={styles.fab}
-          onClick={toggleSound}
-          title={isMuted ? 'Activar sonido' : 'Silenciar'}
-        >
-          <span className={styles.fabIcon}>
-            <img src={isMuted ? '/icons/off.svg' : '/icons/on.svg'} alt={isMuted ? 'Activar sonido' : 'Silenciar'} />
-          </span>
-        </button>
-        <button
-          className={styles.fab}
-          onClick={toggleTheme}
-          title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-        >
-          <span className={styles.fabIcon}>
-            <img src={theme === 'dark' ? '/icons/sun.svg' : '/icons/moon.svg'} alt={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'} />
-          </span>
-        </button>
-      </div>
+      <FABGroup
+        showCatButton={screen === 'menu'}
+        isMuted={isMuted}
+        onToggleSound={toggleSound}
+        onToggleTheme={toggleTheme}
+        onOpenCategories={() => setShowCatModal(true)}
+        theme={theme}
+      />
 
       {screen === 'menu' ? (
         <MenuScreen category={category} onStart={handleStart} />
@@ -149,7 +80,7 @@ const App = () => {
         </Suspense>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

@@ -14,15 +14,6 @@ interface Props {
 const Card = memo((props: Props) => {
   const { card, flipped, matched, selected, onClick } = props;
 
-  const classes = [
-    styles.card,
-    flipped ? styles.flipped : '',
-    selected ? styles.selected : '',
-    matched ? styles.matched : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   const handleClick = useCallback(() => {
     onClick(card);
   }, [onClick, card]);
@@ -36,6 +27,15 @@ const Card = memo((props: Props) => {
     },
     [onClick, card]
   );
+
+  const classes = [
+    styles.card,
+    flipped ? styles.flipped : '',
+    selected ? styles.selected : '',
+    matched ? styles.matched : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const propsCard = {
     className: classes,

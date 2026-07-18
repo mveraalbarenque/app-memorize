@@ -1,6 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
 import { DEFAULT_NAMES } from '@/core/constants';
+import Button from '@/ui/components/Button';
 import ModeButtons from './ModeButtons';
 import PlayerChips from './PlayerChips';
 import VsModal from './VsModal';
@@ -61,12 +62,6 @@ const Menu = memo((props: Props) => {
     onOpenVs: openVsModal,
   };
 
-  const propsButton = {
-    className: styles.startBtn,
-    onClick: () => onStart(players),
-    disabled: players.length === 0,
-  };
-
   const propsVsModal = {
     show: showVsModal,
     vsCount,
@@ -87,10 +82,16 @@ const Menu = memo((props: Props) => {
           <h1 className={styles.title}>Memorize</h1>
           <ModeButtons {...propsModeButtons} />
           <PlayerChips players={players} />
-          <button {...propsButton}>
+          <Button
+            variant="success"
+            size="lg"
+            className={styles.startBtn}
+            onClick={() => onStart(players)}
+            disabled={players.length === 0}
+          >
             A Jugar
             <img src="/icons/play.svg" alt="" className={styles.playIcon} />
-          </button>
+          </Button>
         </div>
       </div>
 

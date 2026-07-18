@@ -8,7 +8,9 @@ export const useTimer = (running: boolean) => {
 
   useEffect(() => {
     if (!running) {
-      accruedRef.current += Math.floor((Date.now() - startRef.current) / 10);
+      if (startRef.current > 0) {
+        accruedRef.current += Math.floor((Date.now() - startRef.current) / 10);
+      }
       clearInterval(intervalRef.current);
       return;
     }

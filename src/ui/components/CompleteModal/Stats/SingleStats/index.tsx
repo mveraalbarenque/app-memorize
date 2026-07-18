@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import type { PlayerResult } from '@/core/types';
-import styles from './styles.module.css';
+import styles from '../../styles.module.css';
 
 interface Props {
   result: PlayerResult;

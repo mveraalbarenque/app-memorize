@@ -77,6 +77,8 @@ const GameScreen = (props: Props) => {
       time: l.time,
     })) ?? [];
 
+  const showTurn = turnVisible && !session.finished;
+  const isGamePaused = showTurn;
   const gameKey = `${levelIdx}-${session.currentPlayerIdx}`
 
   const propsGame = {
@@ -85,6 +87,7 @@ const GameScreen = (props: Props) => {
     levelIdx,
     levelRange,
     playerName: currentPlayer.name,
+    paused: isGamePaused,
     onLevelComplete: handleLevelComplete,
   };
 
@@ -109,8 +112,6 @@ const GameScreen = (props: Props) => {
     onBackToMenu,
     cardImages,
   };
-
-  const showTurn = turnVisible && !session.finished;
 
   return (
     <>

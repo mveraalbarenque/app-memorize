@@ -1,0 +1,67 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: overlayIn 0.2s ease;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  --bg: var(--bg-card);
+  --contrast: var(--bg-body);
+  --grey: rgba(128, 128, 128, 0.2);
+  position: relative;
+  padding: 9px;
+  background-color: var(--bg);
+  border-radius: 35px;
+  max-width: 380px;
+  width: 100%;
+  animation: modalPop 0.3s ease;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modalOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-conic-gradient(var(--bg) 0.0000001%, var(--grey) 0.000104%) 60% 60% / 600% 600%;
+  filter: opacity(10%) contrast(105%);
+  border-radius: inherit;
+}
+
+.modalInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: var(--contrast);
+  border-radius: 30px;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+}

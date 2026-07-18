@@ -20,6 +20,7 @@
   --btn-primary: linear-gradient(135deg, #3b82f6, #2563eb);
   --btn-success: linear-gradient(135deg, #22c55e, #16a34a);
   --btn-danger: linear-gradient(135deg, #f43f5e, #e11d48);
+  --btn-warning: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
 [data-theme="dark"] {

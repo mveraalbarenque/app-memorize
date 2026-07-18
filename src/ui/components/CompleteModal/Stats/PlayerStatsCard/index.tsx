@@ -1,21 +1,23 @@
 import { memo } from 'react';
 import type { PlayerResult } from '@/core/types';
-import styles from './styles.module.css';
+import styles from '../../styles.module.css';
 
 interface Props {
   result: PlayerResult;
   index: number;
   isWinner: boolean;
   isLoser: boolean;
+  hidden?: boolean;
 }
 
 const PlayerStatsCard = memo((props: Props) => {
-  const { result: r, index: i, isWinner, isLoser } = props;
+  const { result: r, index: i, isWinner, isLoser, hidden } = props;
 
   const cls = [
     styles.statCard,
     isWinner ? styles.winnerCard : '',
     isLoser ? styles.loserCard : '',
+    hidden ? styles.hidden : '',
   ]
     .filter(Boolean)
     .join(' ');

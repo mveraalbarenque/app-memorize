@@ -34,7 +34,7 @@
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: scaleIn 1.6s ease;
-  max-width: 600px;
+  max-width: 800px;
   width: calc(100% - 2rem);
   max-height: 85vh;
   overflow-y: auto;
@@ -63,24 +63,84 @@
 
 .stats {
   display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  margin-bottom: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
 }
 
 .statCard {
-  background: var(--bg-body);
-  border-radius: 12px;
-  padding: 0.6rem 0.5rem;
-  flex: 1;
-  min-width: 80px;
-  max-width: 180px;
   display: flex;
   flex-direction: column;
+  background: var(--bg-body);
+  border-radius: 12px;
+  padding: 1rem;
+  flex: 1;
+  min-width: 120px;
+  max-width: 180px;
   align-items: center;
   gap: 0.15rem;
   transition: box-shadow 0.3s;
+}
+
+.dots {
+  display: none;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 767px) {
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .statCard {
+    width: 100%;
+    max-width: 220px;
+    min-width: unset;
+    flex: none;
+    padding: 1rem 0.2rem;
+  }
+
+  .statCard:not(.hidden) {
+    animation: cardIn 1.75s ease;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .dots {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s;
+  }
+
+  .dotActive {
+    background: var(--accent);
+  }
 }
 
 .winnerCard {
@@ -128,7 +188,7 @@
   content: '';
   position: absolute;
   bottom: 4px;
-  right: 2px;
+  right: -4px;
   width: 56px;
   height: 56px;
   background: url('/sad.svg') no-repeat center / contain;
@@ -306,9 +366,6 @@
     padding: 2.5rem 3rem;
   }
 
-  .statCard {
-    padding: 0.8rem 0.75rem;
-  }
 
   .statValue {
     font-size: 1.3rem;

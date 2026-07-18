@@ -16,25 +16,65 @@
 .diffBtn {
   flex: 1;
   padding: 0.5rem 0.3rem;
-  border: 2px solid rgba(128, 128, 128, 0.2);
+  border: none;
   border-radius: 10px;
-  background: var(--bg-body);
-  color: var(--text);
   font-size: 0.75rem;
   font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s;
+  position: relative;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  color: var(--text);
+  background: var(--bg-body);
+  box-shadow:
+    -0.1em -0.1em 0.1em -0.05em rgba(5, 5, 5, 0.15),
+    0.08em 0.15em 0.12em -0.05em rgba(5, 5, 5, 0.15);
 }
 
 .diffBtn:hover {
-  border-color: var(--accent);
-  background: var(--bg-card);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.diffBtn:active {
+  transform: scale(0.97);
+  filter: brightness(0.95);
+}
+
+.diffEasy {
+  color: #16a34a;
+}
+
+.diffNormal {
+  color: #d97706;
+}
+
+.diffHard {
+  color: #e11d48;
 }
 
 .diffActive {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--text-light);
+  color: var(--text-light) !important;
+  box-shadow:
+    -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
+    0.0375em 0.0375em 0.0675em 0 rgba(5, 5, 5, 0.1),
+    0 0.05em 0.05em -0.01em rgba(5, 5, 5, 1),
+    0 0.01em 0.01em -0.01em rgba(5, 5, 5, 0.5),
+    0.15em 0.3em 0.1em -0.01em rgba(5, 5, 5, 0.25),
+    inset 0 0.025em 0.05em 0.1em rgba(255, 255, 255, 0.15),
+    inset 0.025em 0.05em 0.1em 0 rgba(255, 255, 255, 0.2),
+    inset -0.05em -0.1em 0.15em 0.05em rgba(0, 0, 0, 0.15);
+}
+
+.diffActive.diffEasy {
+  background: var(--btn-success);
+}
+
+.diffActive.diffNormal {
+  background: var(--btn-warning);
+}
+
+.diffActive.diffHard {
+  background: var(--btn-danger);
 }
 
 .mainRow {
@@ -143,22 +183,4 @@
 .confirmBtn {
   width: 100%;
   margin-top: 0.25rem;
-  padding: 0.6rem;
-  border: none;
-  border-radius: 12px;
-  background: var(--btn-success);
-  color: var(--text-light);
-  font-size: 0.8rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 16px var(--shadow);
-}
-
-.confirmBtn:hover {
-  transform: scale(1.03);
-}
-
-.confirmBtn:active {
-  transform: scale(0.97);
 }

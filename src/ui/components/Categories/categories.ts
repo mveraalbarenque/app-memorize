@@ -16,7 +16,7 @@ export const CATEGORIES: CatEntry[] = [
     icon: '',
     iconImg: 'categorias/emojis/cool.svg',
     difficulty: 'easy',
-    levelRange: [1, 3],
+    levelRange: [1, 1],
   },
   {
     key: 'mario',
