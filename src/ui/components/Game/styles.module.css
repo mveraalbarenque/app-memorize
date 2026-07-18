@@ -192,10 +192,6 @@
     flex-shrink: 0;
   }
 
-  .botScore strong {
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-  }
 }
 
 @media (min-width: 1024px) {

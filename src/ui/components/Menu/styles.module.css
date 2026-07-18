@@ -134,7 +134,7 @@
 }
 
 .soloBtn {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: var(--btn-primary);
   color: var(--text-light);
   box-shadow:
     -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
@@ -148,7 +148,7 @@
 }
 
 .vsBtn {
-  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  background: var(--btn-danger);
   color: var(--text-light);
   box-shadow:
     -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
@@ -274,7 +274,7 @@
   padding: 1rem 2.5rem;
   border: none;
   border-radius: 16px;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: var(--btn-success);
   color: var(--text-light);
   font-size: 1.15rem;
   font-weight: 800;

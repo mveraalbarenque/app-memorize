@@ -66,8 +66,7 @@ const Game = (props: Props) => {
     }
   }, [done, cs, attempts, onLevelComplete]);
 
-  const swapOnMobile =
-    levelIdx === 1 || levelIdx === 2 || levelIdx === 3 || levelIdx === 5;
+  const swapOnMobile = [1, 2, 3, 5].includes(levelIdx);
   const columns = swapOnMobile && isMobile ? level.rows : level.cols;
 
   const propsCards = useMemo(

@@ -9,13 +9,17 @@
   --text-light: #f8fafc;
   --shadow: rgba(2, 132, 199, 0.3);
   --radius: 12px;
-  --card-size: clamp(65px, 15vmin, 150px);
+  --card-size: clamp(90px, 15vmin, 150px);
   --transition: 0.3s ease;
   --bg-blend: normal;
   --player-0: #0284c7;
   --player-1: #ca8a04;
   --player-2: #059669;
   --player-3: #7c3aed;
+
+  --btn-primary: linear-gradient(135deg, #3b82f6, #2563eb);
+  --btn-success: linear-gradient(135deg, #22c55e, #16a34a);
+  --btn-danger: linear-gradient(135deg, #f43f5e, #e11d48);
 }
 
 [data-theme="dark"] {

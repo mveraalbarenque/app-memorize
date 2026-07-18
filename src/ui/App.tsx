@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
-import Categories, { DEFAULT_CATEGORY } from './components/Categories';
+import Categories from './components/Categories';
+import { DEFAULT_CATEGORY } from './components/Categories/categories';
 import MenuScreen from './screens/MenuScreen';
 import styles from './styles.module.css';
 

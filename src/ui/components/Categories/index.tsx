@@ -1,78 +1,14 @@
-import { memo, useMemo } from 'react';
-
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import type { CatEntry } from './categories';
+import { CATEGORIES } from './categories';
+import { fetchCardsByCategory } from '@/infrastructure/dataService';
+import type { ImageData } from '@/core/types';
 import styles from './styles.module.css';
-
-export const DEFAULT_CATEGORY = 'emojis';
 
 interface Props {
   category: string;
   onSelectCategory: (cat: string) => void;
 }
-
-interface CatEntry {
-  key: string;
-  label: string;
-  icon: string;
-  iconImg?: string;
-  difficulty: 'easy' | 'normal' | 'hard';
-  levelRange: [number, number];
-}
-
-const CATEGORIES: CatEntry[] = [
-  {
-    key: 'emojis',
-    label: 'Emojis',
-    icon: '😀',
-    difficulty: 'easy',
-    levelRange: [1, 3],
-  },
-  {
-    key: 'lenguages',
-    label: 'Lenguajes',
-    icon: '💻',
-    difficulty: 'normal',
-    levelRange: [3, 4],
-  },
-  {
-    key: 'frameworks',
-    label: 'Frameworks',
-    icon: '⚙',
-    difficulty: 'normal',
-    levelRange: [3, 4],
-  },
-  {
-    key: 'tools',
-    label: 'Herramientas',
-    icon: '🛠',
-    difficulty: 'normal',
-    levelRange: [3, 4],
-  },
-  {
-    key: 'pokers',
-    label: 'Pokers',
-    icon: '🃏',
-    difficulty: 'hard',
-    levelRange: [4, 6],
-  },
-  {
-    key: 'mario',
-    label: 'Mario',
-    icon: '🍄',
-    difficulty: 'easy',
-    levelRange: [1, 3],
-  },
-  {
-    key: 'dices',
-    label: 'Dados',
-    icon: '',
-    iconImg: 'categorias/dices/azul-6.svg',
-    difficulty: 'hard',
-    levelRange: [4, 6],
-  },
-];
-
-export const getLevelRange = (cat: string): [number, number] =>
-  CATEGORIES.find((c) => c.key === cat)?.levelRange ?? [0, 0];
 
 const GROUPS: { diff: CatEntry['difficulty']; label: string }[] = [
   { diff: 'easy', label: 'Fácil' },
@@ -80,37 +16,124 @@ const GROUPS: { diff: CatEntry['difficulty']; label: string }[] = [
   { diff: 'hard', label: 'Difícil' },
 ];
 
-const Categories = memo(({ category, onSelectCategory }: Props) => {
-  const sections = useMemo(
-    () =>
-      GROUPS.map((group) => {
-        const items = CATEGORIES.filter((c) => c.difficulty === group.diff);
-        if (items.length === 0) return null;
+const PREVIEW_COUNT = 6;
 
-        return (
-          <div key={group.diff} className={styles.group}>
-            <p className={styles.groupLabel}>{group.label}</p>
+const getCategoryDifficulty = (cat: string): CatEntry['difficulty'] =>
+  CATEGORIES.find((c) => c.key === cat)?.difficulty ?? 'easy';
+
+const Categories = memo(({ category, onSelectCategory }: Props) => {
+  const [difficulty, setDifficulty] = useState<CatEntry['difficulty']>(
+    getCategoryDifficulty(category)
+  );
+  const [previewCat, setPreviewCat] = useState<string | null>(category);
+  const [previewCards, setPreviewCards] = useState<ImageData[]>([]);
+
+  useEffect(() => {
+    if (!previewCat) {
+      setPreviewCards([]);
+      return;
+    }
+    let cancelled = false;
+    fetchCardsByCategory(previewCat, PREVIEW_COUNT)
+      .then((cards) => {
+        if (!cancelled) setPreviewCards(cards);
+      })
+      .catch(() => {
+        if (!cancelled) setPreviewCards([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [previewCat]);
+
+  const handleCategoryClick = useCallback(
+    (cat: string) => {
+      if (previewCat === cat) onSelectCategory(cat);
+      else setPreviewCat(cat);
+    },
+    [previewCat, onSelectCategory]
+  );
+
+  const items = useMemo(
+    () => CATEGORIES.filter((c) => c.difficulty === difficulty),
+    [difficulty]
+  );
+
+  return (
+    <>
+      <span className={styles.sectionLabel}>Dificultad</span>
+      <div className={styles.diffRow}>
+        {GROUPS.map((g) => {
+          const propsGrup = {
+            className: `${styles.diffBtn}${difficulty === g.diff ? ` ${styles.diffActive}` : ''}`,
+            onClick: () => {
+              setDifficulty(g.diff);
+              const first = CATEGORIES.find((c) => c.difficulty === g.diff);
+              setPreviewCat(first?.key ?? null);
+            },
+          };
+
+          return (
+            <button
+              key={g.diff}
+              aria-pressed={difficulty === g.diff}
+              {...propsGrup}
+            >
+              {g.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className={styles.mainRow}>
+        <span className={styles.sectionLabel}>Vista previa</span>
+        <div className={styles.test}>
+          <div className={styles.catCol}>
             {items.map((cat) => {
-              const active = category === cat.key;
+              const active = previewCat
+                ? previewCat === cat.key
+                : category === cat.key;
               return (
                 <button
                   key={cat.key}
                   className={`${styles.catBtn} ${active ? styles.catActive : ''}`}
-                  onClick={() => onSelectCategory(cat.key)}
+                  onClick={() => handleCategoryClick(cat.key)}
                   aria-current={active ? 'true' : undefined}
+                  aria-label={cat.label}
                 >
-                  <span aria-hidden="true">{cat.iconImg ? <img src={cat.iconImg} alt="" className={styles.catIcon} /> : cat.icon}</span>
-                  <span>{cat.label}</span>
+                  {cat.iconImg ? (
+                    <img src={cat.iconImg} alt="" className={styles.catIcon} />
+                  ) : (
+                    <span aria-hidden="true">{cat.icon}</span>
+                  )}
                 </button>
               );
             })}
           </div>
-        );
-      }),
-    [category, onSelectCategory]
-  );
 
-  return <>{sections}</>;
+          {previewCat && previewCards.length > 0 && (
+            <div className={styles.previewCol}>
+              <div className={styles.previewGrid}>
+                {previewCards.map((card) => (
+                  <div key={card.id} className={styles.previewCard}>
+                    <img src={card.img} alt={card.name} />
+                    <span className={styles.previewCardName}>{card.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button
+          className={styles.confirmBtn}
+          onClick={() => onSelectCategory(previewCat ?? category)}
+        >
+          Cargar al Juego
+        </button>
+      </div>
+    </>
+  );
 });
 
 export default Categories;

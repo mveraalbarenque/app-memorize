@@ -3,7 +3,7 @@ import type { PlayerConfig } from '@/core/types';
 import { useGameSession } from '@/application/useGameSession';
 import { formatTime } from '@/application/services/format';
 import { fetchAllImages } from '@/infrastructure/dataService';
-import { getLevelRange } from '../components/Categories';
+import { getLevelRange } from '../components/Categories/categories';
 import Game from '../components/Game';
 import Confetti from '../components/Confetti';
 import styles from '../styles.module.css';
@@ -77,8 +77,9 @@ const GameScreen = (props: Props) => {
       time: l.time,
     })) ?? [];
 
+  const gameKey = `${levelIdx}-${session.currentPlayerIdx}`
+
   const propsGame = {
-    key: `${levelIdx}-${session.currentPlayerIdx}`,
     category,
     level: currentLevel,
     levelIdx,
@@ -113,7 +114,7 @@ const GameScreen = (props: Props) => {
 
   return (
     <>
-      <Game {...propsGame} />
+      <Game key={gameKey} {...propsGame} />
 
       {showLevelComplete && (
         <>

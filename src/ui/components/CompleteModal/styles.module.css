@@ -113,12 +113,8 @@
 }
 
 .winnerCard .statPlayer {
-  color: var(--text-light) !important;
   font-size: 0.85rem;
   font-weight: 800;
-  padding: 0.25rem 1.75rem;
-  border-radius: 50px;
-  background: var(--player-0);
   display: inline-block;
   margin-bottom: 0.4rem;
 }
@@ -131,11 +127,11 @@
 .loserCard::after {
   content: '';
   position: absolute;
-  bottom: -4px;
-  right: -4px;
+  bottom: 4px;
+  right: 2px;
   width: 56px;
   height: 56px;
-  background: url('/baile.gif') no-repeat center / contain;
+  background: url('/sad.svg') no-repeat center / contain;
   pointer-events: none;
   image-rendering: auto;
 }
@@ -147,6 +143,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: var(--player-0);
+  color: var(--text-light) !important;
+  border-radius: 50px;
+  padding: 0.25rem 1.75rem;
 }
 
 .statPlayer[data-player="0"] {
