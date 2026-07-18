@@ -35,7 +35,6 @@ const VsModal = memo((props: Props) => {
       aria-modal="true"
       aria-label="Configurar VS"
       onKeyDown={onKeyDown}
-      onClick={onClose}
     >
       <div className={styles.vsModal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.vsModalOverlay} />

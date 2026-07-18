@@ -1,8 +1,9 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import type { PlayerResult } from '@/core/types';
-import PlayerStatsCard from './PlayerStatsCard';
 import SingleStats from './SingleStats';
-import styles from '../styles.module.css';
+import PlayerStatsCard from './PlayerStatsCard';
+
+import styles from './styles.module.css';
 
 interface Props {
   results: PlayerResult[];

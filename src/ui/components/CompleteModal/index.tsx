@@ -37,6 +37,7 @@ const CompleteModal = memo((props: Props) => {
       >
         <h2 className={styles.title}>
           <p>¡¡¡Partida Finalizada!!!</p>
+          <p>🏆 🏆 🏆</p>
         </h2>
         <Stats results={results} />
         <ResultsTable results={results} isMulti={results.length > 1} />

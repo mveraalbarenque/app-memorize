@@ -9,7 +9,9 @@ interface Props {
   variant?: Variant
   size?: Size
   className?: string
-  children: React.ReactNode
+  children?: React.ReactNode
+  icon?: string
+  iconPosition?: 'left' | 'right'
 }
 
 const VARIANTS: Record<Variant, string> = {
@@ -26,7 +28,11 @@ const SIZES: Record<Size, string> = {
 }
 
 const Button = memo((props: Props & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  const { variant = 'primary', size = 'md', className = '', children, ...rest } = props
+  const { variant = 'primary', size = 'md', icon, iconPosition = 'left', className = '', children, ...rest } = props
+
+  const iconEl = icon
+    ? <img src={`/${icon}`} alt="" className={`${styles.icon} ${iconPosition === 'right' ? styles.iconRight : ''}`} />
+    : null
 
   const classes = [styles.btn, VARIANTS[variant], SIZES[size], className]
     .filter(Boolean)
@@ -34,7 +40,9 @@ const Button = memo((props: Props & React.ButtonHTMLAttributes<HTMLButtonElement
 
   return (
     <button className={classes} {...rest}>
+      {iconPosition === 'left' && iconEl}
       {children}
+      {iconPosition === 'right' && iconEl}
     </button>
   )
 })

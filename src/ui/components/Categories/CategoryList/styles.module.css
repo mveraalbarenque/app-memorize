@@ -1,0 +1,41 @@
+.catCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.catBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 2px solid rgba(128, 128, 128, 0.2);
+  border-radius: 12px;
+  background: var(--bg-body);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.catBtn:hover {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.catActive {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.catBtn span {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.catIcon {
+  width: 1.3rem;
+  height: 1.3rem;
+  object-fit: contain;
+  display: block;
+}

@@ -7,6 +7,23 @@ import PlayerChips from './PlayerChips';
 import VsModal from './VsModal';
 import styles from './styles.module.css';
 
+const VS_STORAGE_KEY = 'vs-config';
+
+const loadVsConfig = (): { count: number; names: string[] } => {
+  try {
+    const raw = localStorage.getItem(VS_STORAGE_KEY);
+    if (raw) {
+      const { count, names } = JSON.parse(raw);
+      if (count >= 2 && count <= 4 && Array.isArray(names)) {
+        return { count, names };
+      }
+    }
+  } catch {
+    void 0;
+  }
+  return { count: 2, names: DEFAULT_NAMES.slice(0, 2) };
+};
+
 interface Props {
   onStart: (players: PlayerConfig[]) => void;
 }
@@ -14,18 +31,17 @@ interface Props {
 const Menu = memo((props: Props) => {
   const { onStart } = props;
 
+  const [saved] = useState(loadVsConfig);
   const [players, setPlayers] = useState<PlayerConfig[]>([]);
   const [showVsModal, setShowVsModal] = useState(false);
-  const [vsCount, setVsCount] = useState(2);
-  const [vsNames, setVsNames] = useState(DEFAULT_NAMES.slice(0, 2));
+  const [vsCount, setVsCount] = useState(saved.count);
+  const [vsNames, setVsNames] = useState(saved.names);
 
   const handleSolo = useCallback(() => {
     setPlayers([{ name: DEFAULT_NAMES[0] }]);
   }, []);
 
   const openVsModal = useCallback(() => {
-    setVsCount(2);
-    setVsNames(DEFAULT_NAMES.slice(0, 2));
     setShowVsModal(true);
   }, []);
 
@@ -45,9 +61,13 @@ const Menu = memo((props: Props) => {
   }, []);
 
   const acceptVs = useCallback(() => {
+    localStorage.setItem(
+      VS_STORAGE_KEY,
+      JSON.stringify({ count: vsCount, names: vsNames })
+    );
     setPlayers(vsNames.map((name) => ({ name })));
     setShowVsModal(false);
-  }, [vsNames]);
+  }, [vsCount, vsNames]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -74,6 +94,16 @@ const Menu = memo((props: Props) => {
     onKeyDown: handleKeyDown,
   };
 
+  const propsBtnStart = {
+    className: styles.startBtn,
+    onClick: () => onStart(players),
+    variant: 'success' as const,
+    size: 'lg' as const,
+    icon: 'icons/play.svg' as const,
+    iconPosition: 'right' as const,
+    disabled: players.length === 0,
+  };
+
   return (
     <div className={styles.menu}>
       <div className={styles.card}>
@@ -82,16 +112,7 @@ const Menu = memo((props: Props) => {
           <h1 className={styles.title}>Memorize</h1>
           <ModeButtons {...propsModeButtons} />
           <PlayerChips players={players} />
-          <Button
-            variant="success"
-            size="lg"
-            className={styles.startBtn}
-            onClick={() => onStart(players)}
-            disabled={players.length === 0}
-          >
-            A Jugar
-            <img src="/icons/play.svg" alt="" className={styles.playIcon} />
-          </Button>
+          <Button {...propsBtnStart}>A Jugar</Button>
         </div>
       </div>
 

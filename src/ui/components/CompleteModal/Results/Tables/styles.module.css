@@ -1,0 +1,62 @@
+.timesSection {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.table th {
+  padding: 6px 4px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text);
+  border: none;
+}
+
+.table th[data-player="0"] { color: var(--player-0); }
+.table th[data-player="1"] { color: var(--player-1); }
+.table th[data-player="2"] { color: var(--player-2); }
+.table th[data-player="3"] { color: var(--player-3); }
+
+.table td {
+  padding: 6px 4px;
+  text-align: center !important;
+  border: none;
+  vertical-align: middle;
+}
+
+.table tbody tr:nth-child(even) { background: rgba(128, 128, 128, 0.06); }
+.table tbody tr:hover { background: rgba(128, 128, 128, 0.1); }
+
+.levelCell {
+  font-weight: 600;
+  opacity: 0.85;
+  text-align: left !important;
+  padding-right: 8px !important;
+}
+
+.resultTime {
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.72rem;
+}
+
+.attemptsCell { opacity: 0.75; font-size: 0.7rem; }
+
+.totalRow td {
+  font-weight: 800;
+  border-top: none;
+  background: rgba(128, 128, 128, 0.08);
+  font-size: 0.75rem;
+}
