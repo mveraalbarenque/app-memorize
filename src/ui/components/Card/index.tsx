@@ -50,7 +50,7 @@ const Card = memo((props: Props) => {
     <div {...propsCard}>
       <div className={styles.inner}>
         <div className={styles.front}>
-          <img src="/card-back.svg" alt="" fetchPriority="high" decoding="sync" />
+          <img src="/card-back.svg" alt="" decoding="sync" />
         </div>
         <div className={styles.back}>
           <img src={card.img} alt={card.name} />

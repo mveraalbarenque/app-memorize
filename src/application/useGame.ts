@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ImageData } from '@/core/types';
 import { fetchCardsByCategory } from '@/infrastructure/dataService';
-import { shuffle } from '@/application/shuffle';
+import { shuffle } from '@/application/services/shuffle';
 
 export const useGame = (category: string, pairCount: number) => {
   const [cards, setCards] = useState<ImageData[]>([]);

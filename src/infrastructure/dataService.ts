@@ -1,4 +1,6 @@
 import type { ImageData } from '@/core/types';
+import type { DataService } from '@/application/ports/dataService';
+import { shuffle } from '@/application/services/shuffle';
 
 const urlImageData = './data.json';
 
@@ -11,22 +13,22 @@ const getData = async (): Promise<Record<string, ImageData[]>> => {
   return dataCache;
 };
 
-export const fetchCategories = async (): Promise<string[]> => {
+const fetchCategories = async (): Promise<string[]> => {
   const data = await getData();
   return Object.keys(data);
 };
 
-export const fetchCardsByCategory = async (
+const fetchCardsByCategory = async (
   category: string,
   count: number,
 ): Promise<ImageData[]> => {
   const data = await getData();
   if (!Array.isArray(data[category]))
     throw new Error(`No se encontró el grupo de imágenes para "${category}"`);
-  return data[category].slice(0, count).map((item: ImageData) => ({ ...item }));
+  return shuffle(data[category]).slice(0, count).map((item: ImageData) => ({ ...item }));
 };
 
-export const fetchAllImages = async (): Promise<string[]> => {
+const fetchAllImages = async (): Promise<string[]> => {
   const data = await getData();
   const imgs: string[] = [];
   for (const cat of Object.keys(data))
@@ -34,3 +36,11 @@ export const fetchAllImages = async (): Promise<string[]> => {
       for (const item of data[cat]) imgs.push(item.img);
   return imgs;
 };
+
+export const dataService: DataService = {
+  fetchCategories,
+  fetchCardsByCategory,
+  fetchAllImages,
+};
+
+export { fetchCategories, fetchCardsByCategory, fetchAllImages };

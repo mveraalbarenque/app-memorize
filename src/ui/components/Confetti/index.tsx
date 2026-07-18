@@ -36,7 +36,6 @@ const Confetti = memo((props: Props) => {
     () =>
       pieces.map((p, i) => {
         const propsPiece = {
-          key: i,
           className: styles.piece,
           style: {
             left: `${p.x}%`,
@@ -52,7 +51,7 @@ const Confetti = memo((props: Props) => {
           },
         };
 
-        return <div {...propsPiece} />;
+        return <div key={i} {...propsPiece} />;
       }),
     [pieces]
   );

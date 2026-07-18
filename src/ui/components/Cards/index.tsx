@@ -17,7 +17,7 @@ const Cards = (props: Props) => {
     props;
 
   const gridStyle = useMemo(
-    () => ({ gridTemplateColumns: `repeat(${columns}, var(--card-size))` }),
+    () => ({ gridTemplateColumns: `repeat(${columns}, minmax(var(--card-size), 1fr))` }),
     [columns]
   );
 

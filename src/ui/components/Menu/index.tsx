@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
+import { DEFAULT_NAMES } from '@/core/constants';
 import ModeButtons from './ModeButtons';
 import PlayerChips from './PlayerChips';
 import VsModal from './VsModal';
@@ -8,8 +9,6 @@ import styles from './styles.module.css';
 interface Props {
   onStart: (players: PlayerConfig[]) => void;
 }
-
-const DEFAULT_NAMES = ['Jugador 1', 'Jugador 2', 'Jugador 3', 'Jugador 4'];
 
 const Menu = memo((props: Props) => {
   const { onStart } = props;
@@ -88,7 +87,10 @@ const Menu = memo((props: Props) => {
           <h1 className={styles.title}>Memorize</h1>
           <ModeButtons {...propsModeButtons} />
           <PlayerChips players={players} />
-          <button {...propsButton}>Jugar Ahora...</button>
+          <button {...propsButton}>
+            A Jugar
+            <img src="/icons/play.svg" alt="" className={styles.playIcon} />
+          </button>
         </div>
       </div>
 

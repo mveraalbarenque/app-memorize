@@ -154,5 +154,243 @@
       "name": "python",
       "img": "categorias/lenguages/python.svg"
     }
+  ],
+  "emojis": [
+    {
+      "id": 1,
+      "name": "cool",
+      "img": "categorias/emojis/cool.svg"
+    },
+    {
+      "id": 2,
+      "name": "inLove",
+      "img": "categorias/emojis/inLove.svg"
+    },
+    {
+      "id": 3,
+      "name": "kiss",
+      "img": "categorias/emojis/kiss.svg"
+    },
+    {
+      "id": 4,
+      "name": "astonished",
+      "img": "categorias/emojis/astonished.svg"
+    },
+    {
+      "id": 5,
+      "name": "cry",
+      "img": "categorias/emojis/cry.svg"
+    },
+    {
+      "id": 6,
+      "name": "dizzy",
+      "img": "categorias/emojis/dizzy.svg"
+    },
+    {
+      "id": 7,
+      "name": "injury",
+      "img": "categorias/emojis/injury.svg"
+    },
+    {
+      "id": 8,
+      "name": "scared",
+      "img": "categorias/emojis/scared.svg"
+    },
+    {
+      "id": 9,
+      "name": "smirking",
+      "img": "categorias/emojis/smirking.svg"
+    },
+    {
+      "id": 10,
+      "name": "tongue",
+      "img": "categorias/emojis/tongue.svg"
+    }
+  ],
+  "pokers": [
+    {
+      "id": 1,
+      "name": "1",
+      "img": "categorias/pokers/1.svg"
+    },
+    {
+      "id": 2,
+      "name": "2",
+      "img": "categorias/pokers/2.svg"
+    },
+    {
+      "id": 3,
+      "name": "3",
+      "img": "categorias/pokers/3.svg"
+    },
+    {
+      "id": 4,
+      "name": "5",
+      "img": "categorias/pokers/5.svg"
+    },
+    {
+      "id": 5,
+      "name": "7",
+      "img": "categorias/pokers/7.svg"
+    },
+    {
+      "id": 6,
+      "name": "10",
+      "img": "categorias/pokers/10.svg"
+    },
+    {
+      "id": 7,
+      "name": "j",
+      "img": "categorias/pokers/j.svg"
+    },
+    {
+      "id": 8,
+      "name": "k",
+      "img": "categorias/pokers/k.svg"
+    },
+    {
+      "id": 9,
+      "name": "par",
+      "img": "categorias/pokers/par.svg"
+    },
+    {
+      "id": 10,
+      "name": "q",
+      "img": "categorias/pokers/q.svg"
+    }
+  ],
+  "mario": [
+    {
+      "id": 1,
+      "name": "block",
+      "img": "categorias/mario/block.svg"
+    },
+    {
+      "id": 2,
+      "name": "blue-flower",
+      "img": "categorias/mario/blue-flower.svg"
+    },
+    {
+      "id": 3,
+      "name": "carnivoran",
+      "img": "categorias/mario/carnivoran.svg"
+    },
+    {
+      "id": 4,
+      "name": "cloud",
+      "img": "categorias/mario/cloud.svg"
+    },
+    {
+      "id": 5,
+      "name": "coin",
+      "img": "categorias/mario/coin.svg"
+    },
+    {
+      "id": 6,
+      "name": "egg",
+      "img": "categorias/mario/egg.svg"
+    },
+    {
+      "id": 7,
+      "name": "red-flower",
+      "img": "categorias/mario/red-flower.svg"
+    },
+    {
+      "id": 8,
+      "name": "star",
+      "img": "categorias/mario/star.svg"
+    },
+    {
+      "id": 9,
+      "name": "toad",
+      "img": "categorias/mario/toad.svg"
+    },
+    {
+      "id": 10,
+      "name": "tube",
+      "img": "categorias/mario/tube.svg"
+    },
+    {
+      "id": 11,
+      "name": "billball",
+      "img": "categorias/mario/billball.svg"
+    },
+    {
+      "id": 12,
+      "name": "carniflower",
+      "img": "categorias/mario/carniflower.svg"
+    },
+    {
+      "id": 13,
+      "name": "fish",
+      "img": "categorias/mario/fish.svg"
+    },
+    {
+      "id": 14,
+      "name": "turttle",
+      "img": "categorias/mario/turttle.svg"
+    }
+  ],
+  "dices": [
+    {
+      "id": 1,
+      "name": "rojo-1",
+      "img": "categorias/dices/rojo-1.svg"
+    },
+    {
+      "id": 2,
+      "name": "rojo-2",
+      "img": "categorias/dices/rojo-2.svg"
+    },
+    {
+      "id": 3,
+      "name": "rojo-3",
+      "img": "categorias/dices/rojo-3.svg"
+    },
+    {
+      "id": 4,
+      "name": "rojo-4",
+      "img": "categorias/dices/rojo-4.svg"
+    },
+    {
+      "id": 5,
+      "name": "rojo-5",
+      "img": "categorias/dices/rojo-5.svg"
+    },
+    {
+      "id": 6,
+      "name": "rojo-6",
+      "img": "categorias/dices/rojo-6.svg"
+    },
+    {
+      "id": 7,
+      "name": "azul-1",
+      "img": "categorias/dices/azul-1.svg"
+    },
+    {
+      "id": 8,
+      "name": "azul-2",
+      "img": "categorias/dices/azul-2.svg"
+    },
+    {
+      "id": 9,
+      "name": "azul-3",
+      "img": "categorias/dices/azul-3.svg"
+    },
+    {
+      "id": 10,
+      "name": "azul-4",
+      "img": "categorias/dices/azul-4.svg"
+    },
+    {
+      "id": 11,
+      "name": "azul-5",
+      "img": "categorias/dices/azul-5.svg"
+    },
+    {
+      "id": 12,
+      "name": "azul-6",
+      "img": "categorias/dices/azul-6.svg"
+    }
   ]
 }

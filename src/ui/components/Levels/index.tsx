@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { LEVELS } from '@/application/grid';
+import { LEVELS } from '@/core/constants';
 
 import styles from './styles.module.css';
 

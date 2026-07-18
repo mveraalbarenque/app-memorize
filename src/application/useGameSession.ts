@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import type { PlayerConfig, PlayerResult, LevelResult } from '@/core/types';
-import { LEVELS } from '@/application/grid';
+import { LEVELS } from '@/core/constants';
+import { formatTime } from '@/application/services/format';
 
 interface GameSession {
   players: PlayerConfig[];
@@ -10,13 +11,6 @@ interface GameSession {
   finished: boolean;
 }
 
-const formatTime = (cs: number): string => {
-  const m = Math.floor(cs / 6000);
-  const s = Math.floor((cs % 6000) / 100);
-  const cent = cs % 100;
-  return `${m}:${s.toString().padStart(2, '0')}.${cent.toString().padStart(2, '0')}`;
-};
-
 const initPlayerResults = (players: PlayerConfig[]): PlayerResult[] =>
   players.map((p) => ({
     name: p.name,
@@ -25,11 +19,14 @@ const initPlayerResults = (players: PlayerConfig[]): PlayerResult[] =>
     totalAttempts: 0,
   }));
 
-export const useGameSession = (players: PlayerConfig[]) => {
+export const useGameSession = (players: PlayerConfig[], levelRange: [number, number]) => {
+  const startIdx = levelRange[0] - 1;
+  const endIdx = levelRange[1] - 1;
+
   const [session, setSession] = useState<GameSession>(() => ({
     players,
     currentPlayerIdx: 0,
-    currentLevelIdx: 0,
+    currentLevelIdx: startIdx,
     results: initPlayerResults(players),
     finished: false,
   }));
@@ -81,7 +78,7 @@ export const useGameSession = (players: PlayerConfig[]) => {
       const nextLevelIdx = allPlayersDoneLevel
         ? prev.currentLevelIdx + 1
         : prev.currentLevelIdx;
-      const finished = allPlayersDoneLevel && nextLevelIdx >= LEVELS.length;
+      const finished = allPlayersDoneLevel && nextLevelIdx > endIdx;
 
       return {
         ...prev,
@@ -94,7 +91,9 @@ export const useGameSession = (players: PlayerConfig[]) => {
         finished,
       };
     });
-  }, []);
+  }, [endIdx]);
+
+  const levelCount = endIdx - startIdx + 1;
 
   return {
     currentPlayer,
@@ -105,5 +104,8 @@ export const useGameSession = (players: PlayerConfig[]) => {
     finished: session.finished,
     recordLevel,
     advanceTurn,
+    startIdx,
+    endIdx,
+    levelCount,
   };
 };
