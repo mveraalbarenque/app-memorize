@@ -1,19 +1,19 @@
 import { memo, useCallback } from 'react'
-import type { CatEntry } from '../categories'
+import type { Difficulty } from '../categories'
 import styles from './styles.module.css'
 
 interface Props {
-  difficulty: CatEntry['difficulty']
-  onChange: (diff: CatEntry['difficulty']) => void
+  difficulty: Difficulty
+  onChange: (diff: Difficulty) => void
 }
 
-const GROUPS: { diff: CatEntry['difficulty']; label: string }[] = [
+const GROUPS: { diff: Difficulty; label: string }[] = [
   { diff: 'easy', label: 'Fácil' },
   { diff: 'normal', label: 'Normal' },
   { diff: 'hard', label: 'Difícil' },
 ]
 
-const DIFF_CLASS: Record<CatEntry['difficulty'], string> = {
+const DIFF_CLASS: Record<Difficulty, string> = {
   easy: styles.diffEasy,
   normal: styles.diffNormal,
   hard: styles.diffHard,
@@ -21,7 +21,7 @@ const DIFF_CLASS: Record<CatEntry['difficulty'], string> = {
 
 const DifficultySelector = memo(({ difficulty, onChange }: Props) => {
   const handleClick = useCallback(
-    (diff: CatEntry['difficulty']) => {
+    (diff: Difficulty) => {
       onChange(diff)
     },
     [onChange]

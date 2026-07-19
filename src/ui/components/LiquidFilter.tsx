@@ -1,4 +1,6 @@
-const LiquidFilter = () => (
+import { memo } from 'react'
+
+const LiquidFilter = memo(() => (
   <svg style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, zIndex: -1 }} aria-hidden="true">
     <filter id="liquidSpecular" x="-20%" y="-20%" width="140%" height="140%">
       <feSpecularLighting
@@ -13,6 +15,6 @@ const LiquidFilter = () => (
       <feBlend in="SourceGraphic" in2="specMasked" mode="screen" />
     </filter>
   </svg>
-)
+))
 
 export default LiquidFilter

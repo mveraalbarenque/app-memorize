@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
+import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
 import styles from './styles.module.css';
 
 interface Props {
@@ -11,6 +12,7 @@ const TurnModal = memo((props: Props) => {
   const { playerName, levelLabel, onStart } = props;
 
   const btnRef = useRef<HTMLButtonElement>(null);
+  const trapRef = useFocusTrap(true);
 
   useEffect(() => {
     btnRef.current?.focus();
@@ -20,6 +22,9 @@ const TurnModal = memo((props: Props) => {
     (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
+        onStart();
+      }
+      if (e.key === 'Escape') {
         onStart();
       }
     },
@@ -34,7 +39,7 @@ const TurnModal = memo((props: Props) => {
   };
 
   return (
-    <div {...propsOverlay}>
+    <div {...propsOverlay} ref={trapRef}>
       <div className={styles.modal} onKeyDown={handleKeyDown}>
         <p className={styles.turnLabel}>Turno de</p>
         <p className={styles.playerName}>{playerName}</p>

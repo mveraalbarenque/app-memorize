@@ -21,15 +21,36 @@
   gap: 2px;
   border-radius: 10px;
   overflow: hidden;
-  background: #f1f5f9;
+  background: var(--bg-card);
   padding: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px var(--shadow);
 }
 
 .previewCard img {
   width: 80%;
   aspect-ratio: 1;
   object-fit: contain;
+}
+
+.previewSkeleton {
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: var(--bg-body);
+  opacity: 0.3;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .previewSkeleton {
+    animation: none;
+    opacity: 0.2;
+  }
 }
 
 .previewCardName {

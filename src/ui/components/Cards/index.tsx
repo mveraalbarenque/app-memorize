@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import type { ImageData } from '@/core/types';
 import Card from '../Card';
 import styles from './styles.module.css';
@@ -12,7 +12,7 @@ interface Props {
   columns: number;
 }
 
-const Cards = (props: Props) => {
+const Cards = memo((props: Props) => {
   const { cards, isFlipped, isMatched, isSelected, onCardClick, columns } =
     props
 
@@ -36,6 +36,6 @@ const Cards = (props: Props) => {
       })}
     </div>
   )
-}
+})
 
 export default Cards;

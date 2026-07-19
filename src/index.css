@@ -1,42 +1,50 @@
 :root {
-  --bg-body: #e0f2fe;
-  --bg-card-area: #082f49;
-  --bg-card: #f8fafc;
+  --bg-body: #eff6ff;
+  --bg-card-area: #dbeafe;
+  --bg-card: #ffffff;
   --bg-sidebar: #ffffff;
-  --accent: #0284c7;
-  --accent-hover: #0369a1;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
   --text: #0f172a;
-  --text-light: #f8fafc;
-  --shadow: rgba(2, 132, 199, 0.3);
+  --text-light: #ffffff;
+  --shadow: rgba(37, 99, 235, 0.35);
   --radius: 12px;
   --card-size: clamp(75px, 14vmin, 140px);
   --transition: 0.3s ease;
   --bg-blend: normal;
-  --player-0: #0284c7;
-  --player-1: #ca8a04;
-  --player-2: #059669;
-  --player-3: #7c3aed;
+  --player-0: #2563eb;
+  --player-1: #16a34a;
+  --player-2: #dc2626;
+  --player-3: #d97706;
 
-  --btn-primary: linear-gradient(135deg, #3b82f6, #2563eb);
-  --btn-success: linear-gradient(135deg, #22c55e, #16a34a);
-  --btn-danger: linear-gradient(135deg, #f43f5e, #e11d48);
-  --btn-warning: linear-gradient(135deg, #f59e0b, #d97706);
+  --btn-primary: linear-gradient(135deg, #2563eb, #132a69);
+  --btn-success: linear-gradient(135deg, #16a34a, #15803d);
+  --btn-danger: linear-gradient(135deg, #dc2626, #801010);
+  --btn-warning: linear-gradient(135deg, #d97706, #8a430d);
+  --btn-primary-base: #2563eb;
+  --btn-danger-base: #dc2626;
+  --stat-card-bg: #dbeafe;
 }
 
 [data-theme="dark"] {
-  --bg-body: #0b1120;
+  --bg-body: #0f172a;
   --bg-card: #1e293b;
+  --bg-card-area: #1e293b;
   --bg-sidebar: #1e293b;
-  --accent: #38bdf8;
-  --accent-hover: #7dd3fc;
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
   --text: #f1f5f9;
   --text-light: #0f172a;
-  --shadow: rgba(56, 189, 248, 0.3);
+  --shadow: rgba(96, 165, 250, 0.35);
   --bg-blend: overlay;
-  --player-0: #38bdf8;
-  --player-1: #facc15;
-  --player-2: #34d399;
-  --player-3: #a78bfa;
+  --player-0: #60a5fa;
+  --player-1: #fbbf24;
+  --player-2: #a78bfa;
+  --player-3: #67e8f9;
+
+  --btn-primary: linear-gradient(135deg, #60a5fa, #3b82f6);
+  --btn-danger: linear-gradient(135deg, #f87171, #ef4444);
+  --stat-card-bg: #0f172a;
 }
 
 *,
@@ -53,7 +61,7 @@ html {
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: 'Nunito', Inter, system-ui, -apple-system, sans-serif;
   background: var(--bg-body);
   color: var(--text);
   min-height: 100dvh;
@@ -65,4 +73,35 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: var(--text-light);
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
 }

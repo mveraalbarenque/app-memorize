@@ -66,17 +66,19 @@ Categories (7): `emojis`, `lenguages`, `frameworks`, `tools`, `pokers`, `mario`,
 
 ## Coding Conventions (CRITICAL for AI agents)
 - **No comments** in source code
-- **`memo`** wrapping every component
+- **`memo`** wrapping every component (when beneficial — not strictly required for trivial components)
 - **`interface Props`** local, destructuring at top
-- **`useCallback`** for ALL event handlers
-- **Props objects** grouped before JSX return
+- **`useCallback`** for event handlers (when beneficial — not strictly required for every handler)
+- **Props object + spread:** agrupar props normales (sin guión) en un objeto antes del return y esparcirlas con `<div {...propsObj}>`. Props con guión (`aria-label`, etc.), `children`, `ref` van directo en el elemento JSX
+- **Classes array:** `[styles.a, cond ? styles.b : ''].filter(Boolean).join(' ')`
+- **`handle` prefix** para event handlers (`handleClick`, `handleKeyDown`)
 - **CSS Modules** (no inline styles except dynamic values)
 - **Accessibility:** `aria-label`, `aria-*`, role attributes, keyboard handling
 - **No semicolons** (Prettier)
 - **No barrel imports** (import from specific file, not `index.ts`)
 - **Default export** for every component
 - **Self-closing tags** when no children
-- **Semicolons:** NO (Prettier default)
+- **Orden de imports:** React → type imports → otros imports → CSS module (grupos separados por línea en blanco)
 
 ## State Flow
 1. `App` renders `MenuScreen` → `Menu` → user selects mode (solo/VS)

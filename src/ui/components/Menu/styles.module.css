@@ -1,15 +1,14 @@
 .menu {
-  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100dvh;
   background-color: var(--bg-body);
   background-image: url('/bg.svg');
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: var(--bg-blend);
   transition: background-color var(--transition);
-  padding: 1rem;
   position: relative;
   overflow: hidden;
 }
@@ -30,7 +29,6 @@
   --contrast: var(--bg-body);
   --grey: rgba(128, 128, 128, 0.2);
   position: relative;
-  padding: 10px;
   background-color: var(--bg);
   border-radius: 35px;
   width: 100%;
@@ -56,109 +54,61 @@
   align-items: center;
   width: 100%;
   border-radius: 30px;
-  padding: 2rem 2rem;
   position: relative;
   z-index: 1;
 }
 
 .title {
-  font-size: 3.8rem;
-  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  width: 100%;
   background: linear-gradient(135deg, var(--player-0), #e91e63, var(--player-1));
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
-  animation: titleBounce 2s ease-in-out infinite;
-  filter: drop-shadow(0 2px 8px rgba(233, 30, 99, 0.2));
-}
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 3px #fff;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.02rem;
+  filter:
+    drop-shadow(5px 3px 4px rgba(0, 0, 0, 0.3)) drop-shadow(5px 6px 12px rgba(0, 0, 0, 0.15)) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.1));
 
-@keyframes titleBounce {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
 
-  0%,
-  100% {
-    transform: translateY(0);
-  }
 
-  50% {
-    transform: translateY(-6px);
-  }
 }
 
 .modeRow {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  gap: 0.6rem;
 }
 
 .modeBtn {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 50%;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  padding: 1.75rem 1rem;
+  padding: 1.2rem 1rem;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  position: relative;
-  transition: transform 0.2s ease;
-  box-shadow:
-    -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
-    0.0375em 0.0375em 0.0675em 0 rgba(5, 5, 5, 0.1),
-    0 0.05em 0.05em -0.01em rgba(5, 5, 5, 1),
-    0 0.01em 0.01em -0.01em rgba(5, 5, 5, 0.5),
-    0.15em 0.3em 0.1em -0.01em rgba(5, 5, 5, 0.25);
-  width: 160px;
-}
-
-.modeBtn::after {
-  content: '';
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(-135deg, rgba(5, 5, 5, 0.4), transparent 30%);
-  filter: blur(0.03em);
-  opacity: 0.3;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-.modeBtn>* {
-  position: relative;
-  z-index: 1;
-  color: white !important;
+  min-width: 0;
+  font-weight: 800;
+  transition: transform 0.2s ease, box-shadow 0.2s;
 }
 
 .soloBtn {
   background: var(--btn-primary);
-  color: var(--text-light);
-  box-shadow:
-    -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
-    0.0375em 0.0375em 0.0675em 0 rgba(5, 5, 5, 0.1),
-    0 0.05em 0.05em -0.01em rgba(5, 5, 5, 1),
-    0 0.01em 0.01em -0.01em rgba(5, 5, 5, 0.5),
-    0.15em 0.3em 0.1em -0.01em rgba(5, 5, 5, 0.25),
-    inset 0 0.025em 0.05em 0.1em rgba(255, 255, 255, 0.15),
-    inset 0.025em 0.05em 0.1em 0 rgba(255, 255, 255, 0.2),
-    inset -0.05em -0.1em 0.15em 0.05em rgba(0, 0, 0, 0.15);
 }
 
 .vsBtn {
   background: var(--btn-danger);
-  color: var(--text-light);
-  box-shadow:
-    -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
-    0.0375em 0.0375em 0.0675em 0 rgba(5, 5, 5, 0.1),
-    0 0.05em 0.05em -0.01em rgba(5, 5, 5, 1),
-    0 0.01em 0.01em -0.01em rgba(5, 5, 5, 0.5),
-    0.15em 0.3em 0.1em -0.01em rgba(5, 5, 5, 0.25),
-    inset 0 0.025em 0.05em 0.1em rgba(255, 255, 255, 0.15),
-    inset 0.025em 0.05em 0.1em 0 rgba(255, 255, 255, 0.2),
-    inset -0.05em -0.1em 0.15em 0.05em rgba(0, 0, 0, 0.15);
 }
 
 .modeBtn:hover {
@@ -173,6 +123,11 @@
 .modeBtn:active {
   transform: scale(0.97);
   filter: brightness(0.95);
+}
+
+.modeBtn:focus-visible {
+  outline: 3px solid var(--text-light);
+  outline-offset: 3px;
 }
 
 .modeActive {
@@ -201,19 +156,22 @@
   }
 }
 
+.modeBtn span {
+  font-size: 1.2rem;
+}
+
 .modeIcon {
-  width: 5rem;
-  height: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+
 .modeIcon img {
   display: block;
-  width: 5rem;
-  height: 5rem;
   filter: brightness(0) invert(1);
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
 .modeLabel {
@@ -274,11 +232,21 @@
   width: 100%;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  color: #fff !important;
+}
+
+.startBtn:not(:disabled) {
+  animation: pulseCta 2s ease-in-out infinite;
 }
 
 .startBtn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+@keyframes pulseCta {
+  0%, 100% { filter: brightness(1) }
+  50% { filter: brightness(1.1) }
 }
 
 .nameList {
@@ -291,74 +259,144 @@
 
 .nameCard {
   padding: 0.6rem 1.2rem;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--text-light);
-  background: var(--accent);
   text-align: center;
-  box-shadow: 0 4px 12px var(--shadow);
+  box-shadow:
+    -3px -3px 8px rgba(255, 255, 255, 0.5),
+    4px 4px 12px rgba(0, 0, 0, 0.2);
   transform-style: preserve-3d;
-  perspective: 600px;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.nameFlip {
-  animation: flip3d 0.2s ease;
+[data-theme="dark"] .nameCard {
+  box-shadow:
+    -3px -3px 8px rgba(255, 255, 255, 0.05),
+    4px 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes flip3d {
+.nameCard[data-player="0"] {
+  background: var(--player-0);
+}
+
+.nameCard[data-player="1"] {
+  background: var(--player-1);
+}
+
+.nameCard[data-player="2"] {
+  background: var(--player-2);
+}
+
+.nameCard[data-player="3"] {
+  background: var(--player-3);
+}
+
+.nameFlip {
+  animation: flipNeumorph 0.2s ease;
+}
+
+@keyframes flipNeumorph {
   0% {
-    transform: rotateY(0deg) scale(1);
+    box-shadow:
+      -3px -3px 8px rgba(255, 255, 255, 0.5),
+      4px 4px 12px rgba(0, 0, 0, 0.2);
+    transform: rotateX(0deg) scale(1);
     opacity: 1;
   }
 
   50% {
-    transform: rotateY(90deg) scale(0.9);
-    opacity: 0.5;
+    box-shadow:
+      inset -2px -2px 5px rgba(255, 255, 255, 0.4),
+      inset 3px 3px 8px rgba(0, 0, 0, 0.15);
+    transform: rotateX(90deg) scale(0.95);
+    opacity: 0.6;
   }
 
   100% {
-    transform: rotateY(0deg) scale(1);
+    box-shadow:
+      -3px -3px 8px rgba(255, 255, 255, 0.5),
+      4px 4px 12px rgba(0, 0, 0, 0.2);
+    transform: rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+[data-theme="dark"] .nameFlip {
+  animation: flipNeumorphDark 0.2s ease;
+}
+
+@keyframes flipNeumorphDark {
+  0% {
+    box-shadow:
+      -3px -3px 8px rgba(255, 255, 255, 0.05),
+      4px 4px 12px rgba(0, 0, 0, 0.5);
+    transform: rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    box-shadow:
+      inset -2px -2px 5px rgba(255, 255, 255, 0.06),
+      inset 3px 3px 8px rgba(0, 0, 0, 0.35);
+    transform: rotateX(90deg) scale(0.95);
+    opacity: 0.6;
+  }
+
+  100% {
+    box-shadow:
+      -3px -3px 8px rgba(255, 255, 255, 0.05),
+      4px 4px 12px rgba(0, 0, 0, 0.5);
+    transform: rotateX(0deg) scale(1);
     opacity: 1;
   }
 }
 
 .nameSettle {
-  animation: settleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: settleNeumorph 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   opacity: 0;
 }
 
-@keyframes settleIn {
+@keyframes settleNeumorph {
   from {
-    transform: rotateY(180deg) scale(0.8);
+    box-shadow: none;
+    transform: rotateX(180deg) scale(0.8);
     opacity: 0;
   }
 
   to {
-    transform: rotateY(0deg) scale(1);
+    box-shadow:
+      -3px -3px 8px rgba(255, 255, 255, 0.5),
+      4px 4px 12px rgba(0, 0, 0, 0.2);
+    transform: rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+[data-theme="dark"] .nameSettle {
+  animation: settleNeumorphDark 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes settleNeumorphDark {
+  from {
+    box-shadow: none;
+    transform: rotateX(180deg) scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    box-shadow:
+      -3px -3px 8px rgba(255, 255, 255, 0.05),
+      4px 4px 12px rgba(0, 0, 0, 0.5);
+    transform: rotateX(0deg) scale(1);
     opacity: 1;
   }
 }
 
 .countdownWrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   margin-top: 0.75rem;
-}
-
-.countdownCircle {
-  transition: stroke-dashoffset 1s linear;
-}
-
-.countdownNum {
-  position: absolute;
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
 }
 
 .vsOverlay {
@@ -475,6 +513,11 @@
   color: var(--text-light);
 }
 
+.vsCountBtn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .vsNames {
   display: flex;
   flex-direction: column;
@@ -526,6 +569,11 @@
   background: var(--bg-card);
 }
 
+.vsCancelBtn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .vsAcceptBtn {
   flex: 1;
   padding: 0.7rem;
@@ -544,19 +592,50 @@
   transform: scale(1.03);
 }
 
+.vsAcceptBtn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 @media (max-width: 767px) {
-  .modeBtn {
-    padding: 1rem 0.75rem;
+  .card {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .cardInner {
+    padding: 2rem 2rem;
+  }
+
+  .title {
+    font-size: 2.8rem;
+    -webkit-text-stroke: 2px #fff;
+    filter:
+      drop-shadow(6px 2px 3px rgba(0, 0, 0, 0.3)) drop-shadow(6px 4px 8px rgba(0, 0, 0, 0.15));
+  }
+
+  .modeRow {
+    gap: 0.2rem;
   }
 
   .modeIcon {
-    width: clamp(3.5rem, 12vw, 5rem);
-    height: clamp(3.5rem, 12vw, 5rem);
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   .modeIcon img {
     width: 100%;
     height: 100%;
+  }
+
+  .modeLabel {
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  .startBtn {
+    font-size: 0.95rem;
+    padding: 0.75rem 2rem;
   }
 }
 
@@ -571,14 +650,58 @@
   }
 
   .modeBtn {
-    padding: 2.25rem 1.5rem;
+    padding: 1.25rem 1.5rem;
   }
 
-  .modeIcon {
-    font-size: 2.8rem;
+  .modeBtn span {
+    color: #fff;
+    font-size: 1.4rem;
   }
 
   .modeLabel {
     font-size: 1.3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modeBtn {
+    transition-duration: 0.01ms;
+  }
+
+  .modeBtn:hover {
+    transform: none;
+    filter: none;
+  }
+
+  .modeBtn:active {
+    transform: none;
+    filter: none;
+  }
+
+  .playerChip {
+    animation: none;
+  }
+
+  .nameCard {
+    transition-duration: 0.01ms;
+  }
+
+  .nameFlip,
+  .nameSettle {
+    animation: none;
+    opacity: 1;
+  }
+
+  .vsOverlay,
+  .vsModal {
+    animation: none;
+  }
+
+  .startBtn:not(:disabled) {
+    animation: none;
+  }
+
+  .startBtn:disabled {
+    opacity: 0.4;
   }
 }

@@ -48,16 +48,19 @@ const Stats = memo(({ results }: Props) => {
     return () => clearInterval(intervalRef.current);
   }, [isMulti, results.length]);
 
-  const stopAuto = useCallback(() => {
+  const restartAuto = useCallback(() => {
     clearInterval(intervalRef.current);
-  }, []);
+    intervalRef.current = window.setInterval(() => {
+      setCardIndex((i) => (i + 1) % results.length);
+    }, INTERVAL_MS);
+  }, [results.length]);
 
   const goToCard = useCallback(
     (i: number) => {
-      stopAuto();
       setCardIndex(i);
+      restartAuto();
     },
-    [stopAuto]
+    [restartAuto]
   );
 
   if (!isMulti) return <SingleStats result={results[0]} />;

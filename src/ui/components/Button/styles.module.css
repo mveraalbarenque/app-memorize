@@ -49,6 +49,11 @@
   filter: brightness(0.95);
 }
 
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .primary {
   background: var(--btn-primary);
 }
@@ -94,6 +99,22 @@
 .iconRight {
   margin-right: 0;
   margin-left: 0.4em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition-duration: 0.01ms;
+  }
+
+  .btn:hover {
+    transform: none;
+    filter: none;
+  }
+
+  .btn:active {
+    transform: none;
+    filter: none;
+  }
 }
 
 

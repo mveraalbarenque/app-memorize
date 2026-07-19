@@ -23,6 +23,7 @@
   font-size: 1.2rem;
   line-height: 1;
   color: var(--text);
+  touch-action: manipulation;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.15),
     inset 0 0 0 1px rgba(255, 255, 255, 0.25),
@@ -75,6 +76,11 @@
   transform: scale(0.96);
 }
 
+.fab:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .fabIcon {
   display: flex;
   align-items: center;
@@ -88,4 +94,18 @@
   width: 24px;
   height: 24px;
   filter: brightness(0) invert(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    transition-duration: 0.01ms;
+  }
+
+  .fab:hover {
+    transform: none;
+  }
+
+  .fab:active {
+    transform: none;
+  }
 }

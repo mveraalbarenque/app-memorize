@@ -1,21 +1,22 @@
+import { memo } from 'react';
 import styles from '../styles.module.css';
 
 interface Props {
   onOpenCategories: () => void;
 }
 
-const Categories = (props: Props) => {
+const Categories = memo((props: Props) => {
   const { onOpenCategories } = props;
 
   const propsBntCategories = {
     className: styles.fab,
     onClick: onOpenCategories,
-    title: 'Categorías',
+    'aria-label': 'Categorías',
   };
 
   const propsImgCategorie = {
     src: '/icons/categories.svg',
-    alt: 'Categorías',
+    alt: '',
   };
 
   return (
@@ -25,6 +26,6 @@ const Categories = (props: Props) => {
       </span>
     </button>
   );
-};
+});
 
 export default Categories;

@@ -59,14 +59,17 @@ const Menu = memo((props: Props) => {
     setVsNames((prev) => prev.map((n, i) => (i === idx ? name : n)));
   }, []);
 
-  const handleVsDone = useCallback((playersList: PlayerConfig[]) => {
-    localStorage.setItem(
-      VS_STORAGE_KEY,
-      JSON.stringify({ count: vsCount, names: vsNames })
-    );
-    setPlayers(playersList);
-    setShowVsModal(false);
-  }, [vsCount, vsNames]);
+  const handleVsDone = useCallback(
+    (playersList: PlayerConfig[]) => {
+      localStorage.setItem(
+        VS_STORAGE_KEY,
+        JSON.stringify({ count: vsCount, names: vsNames })
+      );
+      setPlayers(playersList);
+      setShowVsModal(false);
+    },
+    [vsCount, vsNames]
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -108,7 +111,7 @@ const Menu = memo((props: Props) => {
       <div className={styles.card}>
         <div className={styles.cardOverlay} />
         <div className={styles.cardInner}>
-          <h1 className={styles.title}>Memorize</h1>
+          <h1 className={styles.title}>Memorize...!!!</h1>
           <ModeButtons {...propsModeButtons} />
           <Button {...propsBtnStart}>A Jugar</Button>
         </div>

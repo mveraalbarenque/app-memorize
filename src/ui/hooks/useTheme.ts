@@ -8,12 +8,26 @@ const getInitial = (): string => {
     : 'light'
 }
 
+const applyTheme = (t: string) => {
+  document.documentElement.setAttribute('data-theme', t)
+  localStorage.setItem('theme', t)
+}
+
 export const useTheme = () => {
   const [theme, setTheme] = useState(getInitial)
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
+    applyTheme(theme)
+  }, [theme])
+
+  useEffect(() => {
+    const handler = (e: StorageEvent) => {
+      if (e.key === 'theme' && e.newValue && e.newValue !== theme) {
+        setTheme(e.newValue)
+      }
+    }
+    window.addEventListener('storage', handler)
+    return () => window.removeEventListener('storage', handler)
   }, [theme])
 
   const toggleTheme = useCallback(

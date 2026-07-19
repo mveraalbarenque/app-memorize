@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
+import type { Difficulty } from '@/ui/components/Categories/categories';
 import { useGameSession } from '@/application/useGameSession';
 import { formatTime } from '@/application/services/format';
 import { fetchAllImages } from '@/infrastructure/dataService';
@@ -13,17 +14,24 @@ const CompleteModal = lazy(() => import('../components/CompleteModal'));
 const InfoModal = lazy(() => import('../components/InfoModal'));
 const TurnModal = lazy(() => import('../components/TurnModal'));
 
+const Spinner = () => (
+  <div className={styles.spinnerWrap}>
+    <div className={styles.spinner} />
+  </div>
+);
+
 interface Props {
   players: PlayerConfig[];
   category: string;
+  difficulty: Difficulty;
   onBackToMenu: () => void;
   isMuted: boolean;
 }
 
 const GameScreen = (props: Props) => {
-  const { players, category, onBackToMenu, isMuted } = props;
+  const { players, category, difficulty, onBackToMenu, isMuted } = props;
 
-  const levelRange = getLevelRange(category);
+  const levelRange = getLevelRange(category, difficulty);
   const session = useGameSession(players, levelRange);
   const { recordLevel, advanceTurn, currentPlayerIdx, endIdx } = session;
   const [turnVisible, setTurnVisible] = useState(false);
@@ -59,9 +67,15 @@ const GameScreen = (props: Props) => {
     (result: 'match' | 'mismatch') => {
       if (result === 'match') playMatch();
       else playMismatch();
+      if (navigator.vibrate) navigator.vibrate(result === 'match' ? 15 : 30);
     },
     [playMatch, playMismatch],
   );
+
+  const handleCardFlip = useCallback(() => {
+    playFlip();
+    if (navigator.vibrate) navigator.vibrate(5);
+  }, [playFlip]);
 
   const currentPlayer = session.currentPlayer;
   const currentLevel = session.currentLevel;
@@ -120,7 +134,7 @@ const GameScreen = (props: Props) => {
     paused: isGamePaused,
     hideUI: session.finished,
     onLevelComplete: handleLevelComplete,
-    onCardFlip: playFlip,
+    onCardFlip: handleCardFlip,
     onPairResult: handlePairResult,
   };
 
@@ -147,21 +161,21 @@ const GameScreen = (props: Props) => {
   };
 
   return (
-    <>
+    <div id="main-content">
       <Game key={gameKey} {...propsGame} />
 
       {showLevelComplete && (
         <>
           <div className={styles.overlay} />
           <Confetti images={cardImages} />
-          <Suspense fallback={null}>
+          <Suspense fallback={<Spinner />}>
             <InfoModal {...propsInfo} />
           </Suspense>
         </>
       )}
 
       {showTurn && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<Spinner />}>
           <TurnModal {...propsTurn} />
         </Suspense>
       )}
@@ -169,12 +183,12 @@ const GameScreen = (props: Props) => {
       {session.finished && (
         <>
           <div className={styles.overlay} />
-          <Suspense fallback={null}>
+          <Suspense fallback={<Spinner />}>
             <CompleteModal {...propsComplete} />
           </Suspense>
         </>
       )}
-    </>
+    </div>
   );
 };
 

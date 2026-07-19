@@ -1,36 +1,47 @@
-import { memo, useEffect, useRef, useState } from 'react'
-import type { PlayerResult } from '@/core/types'
-import Confetti from '../Confetti'
-import Stats from './Stats'
-import ResultsTable from './Results'
-import styles from './styles.module.css'
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import type { PlayerResult } from '@/core/types';
+import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
+import Confetti from '../Confetti';
+import Stats from './Stats';
+import ResultsTable from './Results';
+import styles from './styles.module.css';
 
 interface Props {
-  results: PlayerResult[]
-  onBackToMenu: () => void
-  cardImages: string[]
+  results: PlayerResult[];
+  onBackToMenu: () => void;
+  cardImages: string[];
 }
 
-const WAIT_SECONDS = 10
+const WAIT_SECONDS = 10;
 
 const CompleteModal = memo((props: Props) => {
-  const { results, onBackToMenu, cardImages } = props
+  const { results, onBackToMenu, cardImages } = props;
 
-  const btnRef = useRef<HTMLButtonElement>(null)
-  const [countdown, setCountdown] = useState(WAIT_SECONDS)
-
-  useEffect(() => {
-    if (countdown <= 0) return
-    const id = setInterval(() => setCountdown((c) => c - 1), 1000)
-    return () => clearInterval(id)
-  }, [countdown])
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const trapRef = useFocusTrap(true);
+  const [countdown, setCountdown] = useState(WAIT_SECONDS);
 
   useEffect(() => {
-    if (countdown > 0) return
-    btnRef.current?.focus()
-  }, [countdown])
+    if (countdown <= 0) return;
+    const id = setInterval(() => setCountdown((c) => c - 1), 1000);
+    return () => clearInterval(id);
+  }, [countdown]);
 
-  const disabled = countdown > 0
+  useEffect(() => {
+    if (countdown > 0) return;
+    btnRef.current?.focus();
+  }, [countdown]);
+
+  const disabled = countdown > 0;
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape' || (e.key === 'Enter' && !disabled)) {
+        onBackToMenu();
+      }
+    },
+    [onBackToMenu, disabled]
+  );
 
   return (
     <>
@@ -40,10 +51,16 @@ const CompleteModal = memo((props: Props) => {
         role="dialog"
         aria-modal="true"
         aria-label="Partida Finalizada"
+        onKeyDown={handleKeyDown}
+        ref={trapRef}
       >
         <h2 className={styles.title}>
           <p>¡¡¡Partida Finalizada!!!</p>
-          <p>🏆 🏆 🏆</p>
+          <div className={styles.celebrationIcons}>
+            <img src="/icons/cup.svg" alt="" className={styles.celebIcon} />
+            <img src="/icons/cup.svg" alt="" className={styles.celebIcon} />
+            <img src="/icons/cup.svg" alt="" className={styles.celebIcon} />
+          </div>
         </h2>
         <Stats results={results} />
         <ResultsTable results={results} isMulti={results.length > 1} />
@@ -58,7 +75,7 @@ const CompleteModal = memo((props: Props) => {
         </button>
       </div>
     </>
-  )
-})
+  );
+});
 
-export default CompleteModal
+export default CompleteModal;

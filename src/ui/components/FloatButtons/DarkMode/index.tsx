@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from '../styles.module.css';
 
 interface Props {
@@ -5,18 +6,18 @@ interface Props {
   theme: string;
 }
 
-const DarkMode = (props: Props) => {
+const DarkMode = memo((props: Props) => {
   const { onToggleTheme, theme } = props;
 
   const propsBtnDarkMode = {
     className: styles.fab,
     onClick: onToggleTheme,
-    title: theme === 'dark' ? 'Modo claro' : 'Modo oscuro',
+    'aria-label': theme === 'dark' ? 'Modo claro' : 'Modo oscuro',
   };
 
   const propsImgDarkMode = {
     src: theme === 'dark' ? '/icons/sun.svg' : '/icons/moon.svg',
-    alt: theme === 'dark' ? 'Modo claro' : 'Modo oscuro',
+    alt: '',
   };
 
   return (
@@ -26,6 +27,6 @@ const DarkMode = (props: Props) => {
       </span>
     </button>
   );
-};
+});
 
 export default DarkMode;

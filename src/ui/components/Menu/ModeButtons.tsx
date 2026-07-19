@@ -10,25 +10,29 @@ interface Props {
 const ModeButtons = memo((props: Props) => {
   const { playerCount, onSolo, onOpenVs } = props;
 
+  const propsBntSolo = {
+    className: `${styles.modeBtn} ${styles.soloBtn}${playerCount === 1 ? ` ${styles.modeActive}` : ''}`,
+    onClick: onSolo,
+  };
+
+  const propsBntVS = {
+    className: `${styles.modeBtn} ${styles.vsBtn}${playerCount > 1 ? ` ${styles.modeActive}` : ''}`,
+    onClick: onOpenVs,
+  };
+
   return (
     <div className={styles.modeRow}>
-      <button
-        className={`${styles.modeBtn} ${styles.soloBtn}${playerCount === 1 ? ` ${styles.modeActive}` : ''}`}
-        onClick={onSolo}
-        aria-pressed={playerCount === 1}
-      >
+      <button aria-pressed={playerCount === 1} {...propsBntSolo}>
         <span className={styles.modeIcon}>
-          <img src="/icons/player.svg" alt="1 jugador" />
+          <img src="/icons/player.svg" alt="" />
         </span>
+        <span className={styles.modeLabel}>Solo</span>
       </button>
-      <button
-        className={`${styles.modeBtn} ${styles.vsBtn}${playerCount > 1 ? ` ${styles.modeActive}` : ''}`}
-        onClick={onOpenVs}
-        aria-pressed={playerCount > 1}
-      >
+      <button aria-pressed={playerCount > 1} {...propsBntVS}>
         <span className={styles.modeIcon}>
-          <img src="/icons/players.svg" alt="2-4 jugadores" />
+          <img src="/icons/players.svg" alt="" />
         </span>
+        <span className={styles.modeLabel}>VS</span>
       </button>
     </div>
   );

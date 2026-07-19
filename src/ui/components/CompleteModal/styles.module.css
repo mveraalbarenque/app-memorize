@@ -1,6 +1,13 @@
 @keyframes scaleIn {
-  from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-  to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  from {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
 }
 
 .modal {
@@ -14,7 +21,7 @@
   padding: 2rem 1.5rem 1.5rem;
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: scaleIn 1.6s ease;
+  animation: scaleIn 0.4s ease;
   max-width: 800px;
   width: calc(100% - 2rem);
   max-height: 85vh;
@@ -27,6 +34,20 @@
   font-weight: 900;
   color: var(--accent);
   margin-bottom: 1.5rem;
+}
+
+.celebrationIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row !important;
+  margin-top: 1rem;
+}
+
+.celebIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: block;
 }
 
 .btn {
@@ -52,6 +73,11 @@
   transform: scale(0.98);
 }
 
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -66,5 +92,13 @@
 }
 
 @media (min-width: 768px) {
-  .modal { padding: 2.5rem 3rem; }
+  .modal {
+    padding: 2.5rem 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+  }
 }

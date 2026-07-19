@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Level } from '@/core/constants'
 import type { ImageData } from '@/core/types'
 import { LEVELS } from '@/core/constants'
@@ -22,7 +22,7 @@ interface Props {
   onPairResult?: (result: 'match' | 'mismatch') => void
 }
 
-const Game = (props: Props) => {
+const Game = memo((props: Props) => {
   const { category, level, levelIdx, levelRange, playerName, paused = false, hideUI = false, onLevelComplete, onCardFlip, onPairResult } = props
 
   const {
@@ -91,21 +91,25 @@ const Game = (props: Props) => {
         <button
           className={styles.pauseBtn}
           onClick={togglePause}
-          title={isPaused ? 'Reanudar' : 'Pausar'}
+          aria-label={isPaused ? 'Reanudar' : 'Pausar'}
         >
           <span className={styles.pauseIcon}>
             <img
               src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'}
-              alt={isPaused ? 'Reanudar' : 'Pausar'}
+              alt=""
             />
           </span>
         </button>
       )}
       <div className={styles.cardArea}>
         {error ? (
-          <p className={styles.message}>{error}</p>
-        ) : !cards.length ? (
-          <p className={styles.message}>Cargando...</p>
+          <p className={styles.message} role="alert">{error}</p>
+        ) : !cards.length && !error ? (
+          <div className={styles.skeletonGrid} style={{ gridTemplateColumns: `repeat(${columns}, minmax(var(--card-size), 1fr))` }}>
+            {Array.from({ length: level.pairs * 2 }).map((_, i) => (
+              <div key={i} className={styles.skeletonCard} />
+            ))}
+          </div>
         ) : (
           <div className={styles.cardContainer}>
             <Cards {...propsCards} />
@@ -118,7 +122,7 @@ const Game = (props: Props) => {
           <div className={styles.botRow}>
             <span className={styles.botPlayer}>{playerName}</span>
             <div className={styles.levelNav}>
-              <span className={styles.botPlayer}>Nivel Actual: </span>
+              <span className={`${styles.botPlayer} ${styles.levelLabelHiddenMobile}`}>Nivel Actual: </span>
               {LEVELS.filter((_, i) => i >= levelRange[0] - 1 && i <= levelRange[1] - 1).map((_, i) => {
                 const actualIdx = i + levelRange[0] - 1
                 return (
@@ -153,6 +157,6 @@ const Game = (props: Props) => {
       )}
     </main>
   )
-}
+})
 
 export default Game;

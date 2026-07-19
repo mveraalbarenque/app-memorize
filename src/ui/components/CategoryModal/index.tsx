@@ -1,15 +1,25 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
+import type { Difficulty } from '../Categories/categories';
+import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
 import Categories from '../Categories';
 import styles from './styles.module.css';
 
 interface Props {
   show: boolean;
   category: string;
-  onSelect: (cat: string) => void;
+  onSelect: (cat: string, diff?: Difficulty) => void;
 }
 
 const CategoryModal = memo((props: Props) => {
   const { show, category, onSelect } = props;
+  const trapRef = useFocusTrap(show);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') onSelect(category);
+    },
+    [onSelect, category],
+  );
 
   if (!show) return null;
 
@@ -24,6 +34,8 @@ const CategoryModal = memo((props: Props) => {
       role="dialog"
       aria-modal="true"
       aria-label="Seleccionar categoría"
+      ref={trapRef}
+      onKeyDown={handleKeyDown}
     >
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalOverlay} />
