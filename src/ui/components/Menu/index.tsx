@@ -3,7 +3,6 @@ import type { PlayerConfig } from '@/core/types';
 import { DEFAULT_NAMES } from '@/core/constants';
 import Button from '@/ui/components/Button';
 import ModeButtons from './ModeButtons';
-import PlayerChips from './PlayerChips';
 import VsModal from './VsModal';
 import styles from './styles.module.css';
 
@@ -60,12 +59,12 @@ const Menu = memo((props: Props) => {
     setVsNames((prev) => prev.map((n, i) => (i === idx ? name : n)));
   }, []);
 
-  const acceptVs = useCallback(() => {
+  const handleVsDone = useCallback((playersList: PlayerConfig[]) => {
     localStorage.setItem(
       VS_STORAGE_KEY,
       JSON.stringify({ count: vsCount, names: vsNames })
     );
-    setPlayers(vsNames.map((name) => ({ name })));
+    setPlayers(playersList);
     setShowVsModal(false);
   }, [vsCount, vsNames]);
 
@@ -89,7 +88,7 @@ const Menu = memo((props: Props) => {
     defaultNames: DEFAULT_NAMES,
     onChangeCount: changeVsCount,
     onChangeName: handleVsName,
-    onAccept: acceptVs,
+    onDone: handleVsDone,
     onClose: closeVsModal,
     onKeyDown: handleKeyDown,
   };
@@ -111,7 +110,6 @@ const Menu = memo((props: Props) => {
         <div className={styles.cardInner}>
           <h1 className={styles.title}>Memorize</h1>
           <ModeButtons {...propsModeButtons} />
-          <PlayerChips players={players} />
           <Button {...propsBtnStart}>A Jugar</Button>
         </div>
       </div>

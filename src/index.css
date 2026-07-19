@@ -9,7 +9,7 @@
   --text-light: #f8fafc;
   --shadow: rgba(2, 132, 199, 0.3);
   --radius: 12px;
-  --card-size: clamp(90px, 15vmin, 150px);
+  --card-size: clamp(75px, 14vmin, 140px);
   --transition: 0.3s ease;
   --bg-blend: normal;
   --player-0: #0284c7;
