@@ -1,30 +1,36 @@
-import { memo, useEffect, useRef } from 'react';
-import type { PlayerResult } from '@/core/types';
-import Confetti from '../Confetti';
-import Stats from './Stats';
-import ResultsTable from './Results';
-import styles from './styles.module.css';
+import { memo, useEffect, useRef, useState } from 'react'
+import type { PlayerResult } from '@/core/types'
+import Confetti from '../Confetti'
+import Stats from './Stats'
+import ResultsTable from './Results'
+import styles from './styles.module.css'
 
 interface Props {
-  results: PlayerResult[];
-  onBackToMenu: () => void;
-  cardImages: string[];
+  results: PlayerResult[]
+  onBackToMenu: () => void
+  cardImages: string[]
 }
 
-const CompleteModal = memo((props: Props) => {
-  const { results, onBackToMenu, cardImages } = props;
+const WAIT_SECONDS = 10
 
-  const btnRef = useRef<HTMLButtonElement>(null);
+const CompleteModal = memo((props: Props) => {
+  const { results, onBackToMenu, cardImages } = props
+
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const [countdown, setCountdown] = useState(WAIT_SECONDS)
 
   useEffect(() => {
-    btnRef.current?.focus();
-  }, []);
+    if (countdown <= 0) return
+    const id = setInterval(() => setCountdown((c) => c - 1), 1000)
+    return () => clearInterval(id)
+  }, [countdown])
 
-  const propsButton = {
-    className: styles.btn,
-    onClick: onBackToMenu,
-    ref: btnRef,
-  };
+  useEffect(() => {
+    if (countdown > 0) return
+    btnRef.current?.focus()
+  }, [countdown])
+
+  const disabled = countdown > 0
 
   return (
     <>
@@ -41,10 +47,18 @@ const CompleteModal = memo((props: Props) => {
         </h2>
         <Stats results={results} />
         <ResultsTable results={results} isMulti={results.length > 1} />
-        <button {...propsButton}>Volver al menú</button>
+        <button
+          ref={btnRef}
+          className={`${styles.btn}${disabled ? ` ${styles.disabled}` : ''}`}
+          onClick={onBackToMenu}
+          disabled={disabled}
+          aria-disabled={disabled}
+        >
+          {disabled ? `Volver al menú (${countdown})` : 'Volver al menú'}
+        </button>
       </div>
     </>
-  );
-});
+  )
+})
 
-export default CompleteModal;
+export default CompleteModal

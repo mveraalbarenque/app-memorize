@@ -88,6 +88,7 @@ const GameScreen = (props: Props) => {
     levelRange,
     playerName: currentPlayer.name,
     paused: isGamePaused,
+    hideUI: session.finished,
     onLevelComplete: handleLevelComplete,
   };
 

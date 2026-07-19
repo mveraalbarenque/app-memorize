@@ -52,6 +52,19 @@
   transform: scale(0.98);
 }
 
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-body);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 @media (min-width: 768px) {
   .modal { padding: 2.5rem 3rem; }
 }
