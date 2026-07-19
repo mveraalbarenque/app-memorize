@@ -3,7 +3,12 @@ import type { ImageData } from '@/core/types';
 import { fetchCardsByCategory } from '@/infrastructure/dataService';
 import { shuffle } from '@/application/services/shuffle';
 
-export const useGame = (category: string, pairCount: number) => {
+export const useGame = (
+  category: string,
+  pairCount: number,
+  onCardFlip?: () => void,
+  onPairResult?: (result: 'match' | 'mismatch') => void,
+) => {
   const [cards, setCards] = useState<ImageData[]>([]);
   const [selectedCards, setSelectedCards] = useState<ImageData[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<Set<number>>(new Set());
@@ -52,6 +57,7 @@ export const useGame = (category: string, pairCount: number) => {
 
     const newSelected = [...selectedRef.current, card];
     setSelectedCards(newSelected);
+    onCardFlip?.();
 
     if (newSelected.length === 2) {
       setAttempts((n) => n + 1);
@@ -59,17 +65,19 @@ export const useGame = (category: string, pairCount: number) => {
       timeoutRef.current.forEach(clearTimeout);
       timeoutRef.current = [];
       if (a.id === card.id) {
+        onPairResult?.('match');
         const t1 = setTimeout(() => {
           setMatchedPairs((p) => new Set(p).add(a.id));
           setSelectedCards([]);
         }, 300);
         timeoutRef.current.push(t1);
       } else {
+        onPairResult?.('mismatch');
         const t2 = setTimeout(() => setSelectedCards([]), 900);
         timeoutRef.current.push(t2);
       }
     }
-  }, []);
+  }, [onCardFlip, onPairResult]);
 
   const isFlipped = useCallback(
     (card: ImageData) =>

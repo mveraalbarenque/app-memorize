@@ -41,6 +41,26 @@ const App = () => {
     setScreen('menu');
   }, []);
 
+  const renderScreen = () => {
+    const propsMenuScreen = {
+      onStart: handleStart,
+      category,
+    };
+
+    const propsGameScreen = {
+      players: gamePlayers,
+      category: gameCategory,
+      onBackToMenu: handleBackToMenu,
+      isMuted,
+    };
+    if (screen === 'menu') return <MenuScreen {...propsMenuScreen} />;
+
+    return (
+      <Suspense fallback={null}>
+        <GameScreen key={gameKey} {...propsGameScreen} />
+      </Suspense>
+    );
+  };
   const propsCategoryModal = {
     show: showCatModal,
     onSelect: selectCategory,
@@ -56,24 +76,11 @@ const App = () => {
     theme,
   };
 
-  const propsGameScreen = {
-    players: gamePlayers,
-    category: gameCategory,
-    onBackToMenu: handleBackToMenu,
-  };
-
   return (
     <div className={styles.layout}>
-      <LiquidFilter />
       <CategoryModal {...propsCategoryModal} />
       <FloatButtons {...propsFloatButtons} />
-      {screen === 'menu' ? (
-        <MenuScreen category={category} onStart={handleStart} />
-      ) : (
-        <Suspense fallback={null}>
-          <GameScreen key={gameKey} {...propsGameScreen} />
-        </Suspense>
-      )}
+      {renderScreen()}
     </div>
   );
 };

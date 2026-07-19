@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import Categories from './Categories';
 import Mute from './Mute';
+import DarkMode from './DarkMode';
 
 import styles from './styles.module.css';
 
@@ -25,22 +26,13 @@ const FloatButtons = memo((props: Props) => {
 
   const propsBtnMute = { isMuted, onToggleSound };
 
+  const propsBtnDarkMode = { onToggleTheme, theme };
+
   return (
     <div className={styles.group}>
       {showCatButton && <Categories onOpenCategories={onOpenCategories} />}
       <Mute {...propsBtnMute} />
-      <button
-        className={styles.fab}
-        onClick={onToggleTheme}
-        title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-      >
-        <span className={styles.fabIcon}>
-          <img
-            src={theme === 'dark' ? '/icons/sun.svg' : '/icons/moon.svg'}
-            alt={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-          />
-        </span>
-      </button>
+      <DarkMode {...propsBtnDarkMode} />
     </div>
   );
 });

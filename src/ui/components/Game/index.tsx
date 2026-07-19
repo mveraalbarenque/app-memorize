@@ -18,10 +18,12 @@ interface Props {
   paused?: boolean;
   hideUI?: boolean;
   onLevelComplete: (time: number, attempts: number) => void;
+  onCardFlip?: () => void;
+  onPairResult?: (result: 'match' | 'mismatch') => void;
 }
 
 const Game = (props: Props) => {
-  const { category, level, levelIdx, levelRange, playerName, paused = false, hideUI = false, onLevelComplete } = props;
+  const { category, level, levelIdx, levelRange, playerName, paused = false, hideUI = false, onLevelComplete, onCardFlip, onPairResult } = props;
 
   const {
     cards,
@@ -33,7 +35,7 @@ const Game = (props: Props) => {
     attempts,
     totalPairs,
     matchedPairs,
-  } = useGame(category, level.pairs);
+  } = useGame(category, level.pairs, onCardFlip, onPairResult);
 
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
