@@ -1,25 +1,6 @@
 @keyframes scaleIn {
-  from {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-  }
-
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes bounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-4px);
-  }
+  from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
 .modal {
@@ -34,7 +15,7 @@
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: scaleIn 1.6s ease;
-  max-width: 600px;
+  max-width: 800px;
   width: calc(100% - 2rem);
   max-height: 85vh;
   overflow-y: auto;
@@ -46,236 +27,6 @@
   font-weight: 900;
   color: var(--accent);
   margin-bottom: 1.5rem;
-}
-
-.title div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.trophies {
-  font-size: 2rem;
-  line-height: 1;
-  animation: bounce 1s ease infinite;
-}
-
-.stats {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.statCard {
-  background: var(--bg-body);
-  border-radius: 12px;
-  padding: 0.6rem 0.5rem;
-  flex: 1;
-  min-width: 80px;
-  max-width: 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  transition: box-shadow 0.3s;
-}
-
-.winnerCard {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  box-shadow:
-    rgba(5, 150, 105, 0.4) 0px 10px 20px -8px,
-    rgba(0, 0, 0, 0.2) 0px 6px 12px -6px,
-    rgba(5, 150, 105, 0.3) 0px -1px 3px 0px inset;
-  position: relative;
-  overflow: visible;
-}
-
-.winnerCard::after {
-  content: '🏆';
-  position: absolute;
-  top: -12px;
-  right: -8px;
-  font-size: 2.5rem;
-  line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.winnerCard .statValue {
-  color: var(--text-light);
-}
-
-.winnerCard .statLabel {
-  color: var(--text) !important;
-  opacity: 0.85;
-}
-
-.winnerCard .statPlayer {
-  font-size: 0.85rem;
-  font-weight: 800;
-  display: inline-block;
-  margin-bottom: 0.4rem;
-}
-
-.loserCard {
-  position: relative;
-  overflow: hidden;
-}
-
-.loserCard::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  right: 2px;
-  width: 56px;
-  height: 56px;
-  background: url('/sad.svg') no-repeat center / contain;
-  pointer-events: none;
-  image-rendering: auto;
-}
-
-.statPlayer {
-  font-size: 0.65rem;
-  font-weight: 700;
-  margin-bottom: 0.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: var(--player-0);
-  color: var(--text-light) !important;
-  border-radius: 50px;
-  padding: 0.25rem 1.75rem;
-}
-
-.statPlayer[data-player="0"] {
-  color: var(--player-0);
-}
-
-.statPlayer[data-player="1"] {
-  color: var(--player-1);
-}
-
-.statPlayer[data-player="2"] {
-  color: var(--player-2);
-}
-
-.statPlayer[data-player="3"] {
-  color: var(--player-3);
-}
-
-.statCardRow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.statLabel {
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  opacity: 0.65;
-}
-
-.statValue {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.3;
-}
-
-.winnerCard .statValue {
-  color: var(--text-light);
-}
-
-.winnerCard .statLabel {
-  color: var(--text-light);
-  opacity: 0.85;
-}
-
-.timesSection {
-  display: flex;
-  justify-content: center;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(128, 128, 128, 0.15);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.72rem;
-  white-space: nowrap;
-}
-
-.table th {
-  padding: 6px 4px;
-  text-align: center;
-  font-weight: 700;
-  color: var(--text);
-  border: none;
-}
-
-.table th[data-player="0"] {
-  color: var(--player-0);
-}
-
-.table th[data-player="1"] {
-  color: var(--player-1);
-}
-
-.table th[data-player="2"] {
-  color: var(--player-2);
-}
-
-.table th[data-player="3"] {
-  color: var(--player-3);
-}
-
-.table td {
-  padding: 6px 4px;
-  text-align: center !important;
-  border: none;
-  vertical-align: middle;
-}
-
-.table tbody tr:nth-child(even) {
-  background: rgba(128, 128, 128, 0.06);
-}
-
-.table tbody tr:hover {
-  background: rgba(128, 128, 128, 0.1);
-}
-
-.levelCell {
-  font-weight: 600;
-  opacity: 0.85;
-  text-align: left !important;
-  padding-right: 8px !important;
-}
-
-.resultTime {
-  font-weight: 700;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  font-size: 0.72rem;
-}
-
-.attemptsCell {
-  opacity: 0.75;
-  font-size: 0.7rem;
-}
-
-.totalRow td {
-  font-weight: 800;
-  border-top: none;
-  background: rgba(128, 128, 128, 0.08);
-  font-size: 0.75rem;
 }
 
 .btn {
@@ -301,16 +52,19 @@
   transform: scale(0.98);
 }
 
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-body);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 @media (min-width: 768px) {
-  .modal {
-    padding: 2.5rem 3rem;
-  }
-
-  .statCard {
-    padding: 0.8rem 0.75rem;
-  }
-
-  .statValue {
-    font-size: 1.3rem;
-  }
+  .modal { padding: 2.5rem 3rem; }
 }

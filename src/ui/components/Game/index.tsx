@@ -15,11 +15,15 @@ interface Props {
   levelIdx: number;
   levelRange: [number, number];
   playerName: string;
+  paused?: boolean;
+  hideUI?: boolean;
   onLevelComplete: (time: number, attempts: number) => void;
+  onCardFlip?: () => void;
+  onPairResult?: (result: 'match' | 'mismatch') => void;
 }
 
 const Game = (props: Props) => {
-  const { category, level, levelIdx, levelRange, playerName, onLevelComplete } = props;
+  const { category, level, levelIdx, levelRange, playerName, paused = false, hideUI = false, onLevelComplete, onCardFlip, onPairResult } = props;
 
   const {
     cards,
@@ -31,13 +35,13 @@ const Game = (props: Props) => {
     attempts,
     totalPairs,
     matchedPairs,
-  } = useGame(category, level.pairs);
+  } = useGame(category, level.pairs, onCardFlip, onPairResult);
 
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const done = matchedPairs.size === totalPairs && totalPairs > 0;
   const doneRef = useRef(false);
-  const { cs } = useTimer(!done && !isPaused);
+  const { cs } = useTimer(!done && !isPaused && !paused);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -51,10 +55,10 @@ const Game = (props: Props) => {
 
   const wrappedHandleCardClick = useCallback(
     (card: ImageData) => {
-      if (isPaused) return;
+      if (isPaused || paused) return;
       handleCardClick(card);
     },
-    [isPaused, handleCardClick]
+    [isPaused, paused, handleCardClick]
   );
 
   const fmt = useMemo(() => formatTime(cs), [cs]);
@@ -83,18 +87,20 @@ const Game = (props: Props) => {
 
   return (
     <main className={styles.area}>
-      <button
-        className={styles.pauseBtn}
-        onClick={togglePause}
-        title={isPaused ? 'Reanudar' : 'Pausar'}
-      >
-        <span className={styles.pauseIcon}>
-          <img
-            src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'}
-            alt={isPaused ? 'Reanudar' : 'Pausar'}
-          />
-        </span>
-      </button>
+      {!hideUI && (
+        <button
+          className={styles.pauseBtn}
+          onClick={togglePause}
+          title={isPaused ? 'Reanudar' : 'Pausar'}
+        >
+          <span className={styles.pauseIcon}>
+            <img
+              src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'}
+              alt={isPaused ? 'Reanudar' : 'Pausar'}
+            />
+          </span>
+        </button>
+      )}
       <div className={styles.cardArea}>
         {error ? (
           <p className={styles.message}>{error}</p>
@@ -107,42 +113,44 @@ const Game = (props: Props) => {
         )}
       </div>
 
-      <div className={styles.bottomBar}>
-        <div className={styles.botRow}>
-          <span className={styles.botPlayer}>{playerName}</span>
-          <div className={styles.levelNav}>
-            <span className={styles.botPlayer}>Nivel Actual: </span>
-            {LEVELS.filter((_, i) => i >= levelRange[0] - 1 && i <= levelRange[1] - 1).map((_, i) => {
-              const actualIdx = i + levelRange[0] - 1;
-              return (
-                <span
-                  key={actualIdx}
-                  className={`${styles.levelDot}${actualIdx === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
-                >
-                  {actualIdx + 1}
-                </span>
-              );
-            })}
+      {!hideUI && (
+        <div className={styles.bottomBar}>
+          <div className={styles.botRow}>
+            <span className={styles.botPlayer}>{playerName}</span>
+            <div className={styles.levelNav}>
+              <span className={styles.botPlayer}>Nivel Actual: </span>
+              {LEVELS.filter((_, i) => i >= levelRange[0] - 1 && i <= levelRange[1] - 1).map((_, i) => {
+                const actualIdx = i + levelRange[0] - 1;
+                return (
+                  <span
+                    key={actualIdx}
+                    className={`${styles.levelDot}${actualIdx === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
+                  >
+                    {actualIdx + 1}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.botScore}>
+            <span>
+              Pares{' '}
+              <strong>
+                {matchedPairs.size}/{totalPairs}
+              </strong>
+            </span>
+            <span>
+              Intentos <strong>{attempts}</strong>
+            </span>
+            <span>
+              Tiempo <strong>{fmt}</strong>
+            </span>
+          </div>
+          <div aria-live="polite" aria-atomic="true" className={styles.srOnly}>
+            {matchedPairs.size} pares de {totalPairs}, {attempts} intentos
           </div>
         </div>
-        <div className={styles.botScore}>
-          <span>
-            Pares{' '}
-            <strong>
-              {matchedPairs.size}/{totalPairs}
-            </strong>
-          </span>
-          <span>
-            Intentos <strong>{attempts}</strong>
-          </span>
-          <span>
-            Tiempo <strong>{fmt}</strong>
-          </span>
-        </div>
-        <div aria-live="polite" aria-atomic="true" className={styles.srOnly}>
-          {matchedPairs.size} pares de {totalPairs}, {attempts} intentos
-        </div>
-      </div>
+      )}
     </main>
   );
 };

@@ -3,18 +3,16 @@ import type { CatEntry } from './categories';
 import { CATEGORIES } from './categories';
 import { fetchCardsByCategory } from '@/infrastructure/dataService';
 import type { ImageData } from '@/core/types';
+import Button from '@/ui/components/Button';
+import DifficultySelector from './DifficultySelector';
+import CategoryList from './CategoryList';
+import PreviewPanel from './PreviewPanel';
 import styles from './styles.module.css';
 
 interface Props {
   category: string;
   onSelectCategory: (cat: string) => void;
 }
-
-const GROUPS: { diff: CatEntry['difficulty']; label: string }[] = [
-  { diff: 'easy', label: 'Fácil' },
-  { diff: 'normal', label: 'Normal' },
-  { diff: 'hard', label: 'Difícil' },
-];
 
 const PREVIEW_COUNT = 6;
 
@@ -54,83 +52,48 @@ const Categories = memo(({ category, onSelectCategory }: Props) => {
     [previewCat, onSelectCategory]
   );
 
+  const handleDifficultyChange = useCallback((diff: CatEntry['difficulty']) => {
+    setDifficulty(diff);
+    const first = CATEGORIES.find((c) => c.difficulty === diff);
+    setPreviewCat(first?.key ?? null);
+  }, []);
+
   const items = useMemo(
     () => CATEGORIES.filter((c) => c.difficulty === difficulty),
     [difficulty]
   );
 
+  const propsDifficultySelector = {
+    onChange: handleDifficultyChange,
+    difficulty,
+  };
+
+  const propsCategoryList = {
+    onSelect: handleCategoryClick,
+    items,
+    previewCat,
+    category,
+  };
+
+  const propsBtnLoacOnGame = {
+    className: styles.confirmBtn,
+    onClick: () => onSelectCategory(previewCat ?? category),
+    variant: 'success' as const,
+    size: 'md' as const,
+  };
+
   return (
     <>
       <span className={styles.sectionLabel}>Dificultad</span>
-      <div className={styles.diffRow}>
-        {GROUPS.map((g) => {
-          const propsGrup = {
-            className: `${styles.diffBtn}${difficulty === g.diff ? ` ${styles.diffActive}` : ''}`,
-            onClick: () => {
-              setDifficulty(g.diff);
-              const first = CATEGORIES.find((c) => c.difficulty === g.diff);
-              setPreviewCat(first?.key ?? null);
-            },
-          };
-
-          return (
-            <button
-              key={g.diff}
-              aria-pressed={difficulty === g.diff}
-              {...propsGrup}
-            >
-              {g.label}
-            </button>
-          );
-        })}
-      </div>
+      <DifficultySelector {...propsDifficultySelector} />
 
       <div className={styles.mainRow}>
         <span className={styles.sectionLabel}>Vista previa</span>
         <div className={styles.test}>
-          <div className={styles.catCol}>
-            {items.map((cat) => {
-              const active = previewCat
-                ? previewCat === cat.key
-                : category === cat.key;
-              return (
-                <button
-                  key={cat.key}
-                  className={`${styles.catBtn} ${active ? styles.catActive : ''}`}
-                  onClick={() => handleCategoryClick(cat.key)}
-                  aria-current={active ? 'true' : undefined}
-                  aria-label={cat.label}
-                >
-                  {cat.iconImg ? (
-                    <img src={cat.iconImg} alt="" className={styles.catIcon} />
-                  ) : (
-                    <span aria-hidden="true">{cat.icon}</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {previewCat && previewCards.length > 0 && (
-            <div className={styles.previewCol}>
-              <div className={styles.previewGrid}>
-                {previewCards.map((card) => (
-                  <div key={card.id} className={styles.previewCard}>
-                    <img src={card.img} alt={card.name} />
-                    <span className={styles.previewCardName}>{card.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <CategoryList {...propsCategoryList} />
+          <PreviewPanel cards={previewCards} />
         </div>
-
-        <button
-          className={styles.confirmBtn}
-          onClick={() => onSelectCategory(previewCat ?? category)}
-        >
-          Cargar al Juego
-        </button>
+        <Button {...propsBtnLoacOnGame}>Cargar al Juego</Button>
       </div>
     </>
   );

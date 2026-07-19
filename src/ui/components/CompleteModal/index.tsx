@@ -1,49 +1,36 @@
-import { memo, useEffect, useRef } from 'react';
-import type { PlayerResult } from '@/core/types';
-import Confetti from '../Confetti';
-import PlayerStatsCard from './PlayerStatsCard';
-import SingleStats from './SingleStats';
-import ResultsTable from './ResultsTable';
-import styles from './styles.module.css';
+import { memo, useEffect, useRef, useState } from 'react'
+import type { PlayerResult } from '@/core/types'
+import Confetti from '../Confetti'
+import Stats from './Stats'
+import ResultsTable from './Results'
+import styles from './styles.module.css'
 
 interface Props {
-  results: PlayerResult[];
-  onBackToMenu: () => void;
-  cardImages: string[];
+  results: PlayerResult[]
+  onBackToMenu: () => void
+  cardImages: string[]
 }
 
-const parseTime = (t: string): number => {
-  const [m, rest] = t.split(':');
-  const [s, c] = rest.split('.');
-  return parseInt(m) * 6000 + parseInt(s) * 100 + parseInt(c);
-};
-
-const getWinnerIdx = (results: PlayerResult[]): number =>
-  results.reduce(
-    (best, r, i, arr) =>
-      parseTime(r.totalTime) < parseTime(arr[best].totalTime) ? i : best,
-    0,
-  );
-
-const getLoserIdx = (results: PlayerResult[]): number =>
-  results.reduce(
-    (worst, r, i, arr) =>
-      parseTime(r.totalTime) > parseTime(arr[worst].totalTime) ? i : worst,
-    0,
-  );
+const WAIT_SECONDS = 10
 
 const CompleteModal = memo((props: Props) => {
-  const { results, onBackToMenu, cardImages } = props;
+  const { results, onBackToMenu, cardImages } = props
 
-  const isMulti = results.length > 1;
-  const winnerIdx = isMulti ? getWinnerIdx(results) : -1;
-  const loserIdx = isMulti ? getLoserIdx(results) : -1;
-
-  const btnRef = useRef<HTMLButtonElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const [countdown, setCountdown] = useState(WAIT_SECONDS)
 
   useEffect(() => {
-    btnRef.current?.focus();
-  }, []);
+    if (countdown <= 0) return
+    const id = setInterval(() => setCountdown((c) => c - 1), 1000)
+    return () => clearInterval(id)
+  }, [countdown])
+
+  useEffect(() => {
+    if (countdown > 0) return
+    btnRef.current?.focus()
+  }, [countdown])
+
+  const disabled = countdown > 0
 
   return (
     <>
@@ -52,38 +39,26 @@ const CompleteModal = memo((props: Props) => {
         className={styles.modal}
         role="dialog"
         aria-modal="true"
-        aria-label="Juego completado"
+        aria-label="Partida Finalizada"
       >
         <h2 className={styles.title}>
-          <div>
-            <p>¡Juego completado!</p>
-          </div>
+          <p>¡¡¡Partida Finalizada!!!</p>
+          <p>🏆 🏆 🏆</p>
         </h2>
-
-        {isMulti ? (
-          <div className={styles.stats}>
-            {results.map((r, i) => (
-              <PlayerStatsCard
-                key={r.name}
-                result={r}
-                index={i}
-                isWinner={i === winnerIdx}
-                isLoser={isMulti && i === loserIdx}
-              />
-            ))}
-          </div>
-        ) : (
-          <SingleStats result={results[0]} />
-        )}
-
-        <ResultsTable results={results} isMulti={isMulti} />
-
-        <button ref={btnRef} className={styles.btn} onClick={onBackToMenu}>
-          Volver al menú
+        <Stats results={results} />
+        <ResultsTable results={results} isMulti={results.length > 1} />
+        <button
+          ref={btnRef}
+          className={`${styles.btn}${disabled ? ` ${styles.disabled}` : ''}`}
+          onClick={onBackToMenu}
+          disabled={disabled}
+          aria-disabled={disabled}
+        >
+          {disabled ? `Volver al menú (${countdown})` : 'Volver al menú'}
         </button>
       </div>
     </>
-  );
-});
+  )
+})
 
-export default CompleteModal;
+export default CompleteModal

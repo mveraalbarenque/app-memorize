@@ -9,7 +9,7 @@
   --text-light: #f8fafc;
   --shadow: rgba(2, 132, 199, 0.3);
   --radius: 12px;
-  --card-size: clamp(90px, 15vmin, 150px);
+  --card-size: clamp(75px, 14vmin, 140px);
   --transition: 0.3s ease;
   --bg-blend: normal;
   --player-0: #0284c7;
@@ -20,6 +20,7 @@
   --btn-primary: linear-gradient(135deg, #3b82f6, #2563eb);
   --btn-success: linear-gradient(135deg, #22c55e, #16a34a);
   --btn-danger: linear-gradient(135deg, #f43f5e, #e11d48);
+  --btn-warning: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
 [data-theme="dark"] {

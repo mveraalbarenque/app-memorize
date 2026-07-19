@@ -138,40 +138,24 @@
   font-variant-numeric: tabular-nums;
 }
 
-.btn {
+.countdownWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 1.25rem;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-  color: var(--text-light);
-  font-size: 1rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 16px var(--shadow);
 }
 
-.btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 6px 24px var(--shadow);
+.countdownCircle {
+  transition: stroke-dashoffset 1s linear;
 }
 
-.btn:active {
-  transform: scale(0.98);
-}
-
-.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: var(--bg-body);
-  color: var(--text);
-  box-shadow: none;
-}
-
-.disabled:hover {
-  transform: none;
-  box-shadow: none;
+.countdownNum {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
 
 @media (min-width: 768px) {
