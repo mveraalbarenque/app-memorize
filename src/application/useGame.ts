@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ImageData } from '@/core/types';
-import { fetchCardsByCategory } from '@/infrastructure/dataService';
-import { shuffle } from '@/application/services/shuffle';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
+import type { ImageData } from '@/core/types'
+import { fetchCardsByCategory } from '@/infrastructure/dataService'
+import { shuffle } from '@/application/services/shuffle'
+import {
+  cardMachine,
+  createInitialCardState,
+} from '@/application/gameMachine'
 
 export const useGame = (
   category: string,
@@ -9,93 +13,89 @@ export const useGame = (
   onCardFlip?: () => void,
   onPairResult?: (result: 'match' | 'mismatch') => void,
 ) => {
-  const [cards, setCards] = useState<ImageData[]>([]);
-  const [selectedCards, setSelectedCards] = useState<ImageData[]>([]);
-  const [matchedPairs, setMatchedPairs] = useState<Set<number>>(new Set());
-  const [attempts, setAttempts] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const matchedRef = useRef(matchedPairs);
-  const selectedRef = useRef(selectedCards);
+  const [state, dispatch] = useReducer(
+    cardMachine,
+    pairCount,
+    createInitialCardState,
+  )
+  const [cards, setCards] = useState<ImageData[]>([])
+  const [error, setError] = useState<string | null>(null)
 
-  matchedRef.current = matchedPairs;
-  selectedRef.current = selectedCards;
+  const prevPhaseRef = useRef(state.phase)
 
   useEffect(() => {
-    let cancelled = false;
+    const prevPhase = prevPhaseRef.current
+    prevPhaseRef.current = state.phase
+
+    if (prevPhase === 'idle' && state.phase === 'oneSelected') {
+      onCardFlip?.()
+    } else if (prevPhase === 'oneSelected' && state.phase === 'matchDelay') {
+      onCardFlip?.()
+      onPairResult?.('match')
+    } else if (prevPhase === 'oneSelected' && state.phase === 'mismatchDelay') {
+      onCardFlip?.()
+      onPairResult?.('mismatch')
+    }
+  }, [state.phase, onCardFlip, onPairResult])
+
+  useEffect(() => {
+    if (state.phase === 'matchDelay') {
+      const t = setTimeout(() => dispatch({ type: 'MATCH_TIMEOUT' }), 300)
+      return () => clearTimeout(t)
+    }
+    if (state.phase === 'mismatchDelay') {
+      const t = setTimeout(() => dispatch({ type: 'MISMATCH_TIMEOUT' }), 900)
+      return () => clearTimeout(t)
+    }
+  }, [state.phase])
+
+  useEffect(() => {
+    let cancelled = false
     const load = async () => {
       try {
-        const data = await fetchCardsByCategory(category, pairCount);
-        const duplicated = shuffle([...data, ...data.map((c) => ({ ...c }))]);
+        const data = await fetchCardsByCategory(category, pairCount)
+        const duplicated = shuffle([...data, ...data.map((c) => ({ ...c }))])
         if (!cancelled) {
-          setCards(duplicated);
-          setSelectedCards([]);
-          setMatchedPairs(new Set());
-          setAttempts(0);
-          setError(null);
+          setCards(duplicated)
+          setError(null)
         }
       } catch {
         if (!cancelled)
-          setError('No se pudieron cargar las imágenes. Inténtalo de nuevo.');
-      }
-    };
-    load();
-    return () => { cancelled = true; };
-  }, [category, pairCount]);
-
-  useEffect(() => {
-    return () => {
-      timeoutRef.current.forEach(clearTimeout);
-      timeoutRef.current = [];
-    };
-  }, []);
-
-  const handleCardClick = useCallback((card: ImageData) => {
-    if (matchedRef.current.has(card.id)) return;
-    if (selectedRef.current.includes(card)) return;
-    if (selectedRef.current.length >= 2) return;
-
-    const newSelected = [...selectedRef.current, card];
-    setSelectedCards(newSelected);
-    onCardFlip?.();
-
-    if (newSelected.length === 2) {
-      setAttempts((n) => n + 1);
-      const [a] = newSelected;
-      timeoutRef.current.forEach(clearTimeout);
-      timeoutRef.current = [];
-      if (a.id === card.id) {
-        onPairResult?.('match');
-        const t1 = setTimeout(() => {
-          setMatchedPairs((p) => new Set(p).add(a.id));
-          setSelectedCards([]);
-        }, 300);
-        timeoutRef.current.push(t1);
-      } else {
-        onPairResult?.('mismatch');
-        const t2 = setTimeout(() => setSelectedCards([]), 900);
-        timeoutRef.current.push(t2);
+          setError('No se pudieron cargar las imágenes. Inténtalo de nuevo.')
       }
     }
-  }, [onCardFlip, onPairResult]);
+    load()
+    return () => { cancelled = true }
+  }, [category, pairCount])
+
+  const handleCardClick = useCallback(
+    (card: ImageData, index: number) => {
+      dispatch({ type: 'SELECT_CARD', index, id: card.id })
+    },
+    [],
+  )
 
   const isFlipped = useCallback(
-    (card: ImageData) =>
-      selectedRef.current.includes(card) || matchedRef.current.has(card.id),
-    [],
-  );
+    (_card: ImageData, index: number) =>
+      index === state.selectedFirstIdx ||
+      index === state.selectedSecondIdx ||
+      state.matchedIds.includes(_card.id),
+    [state.selectedFirstIdx, state.selectedSecondIdx, state.matchedIds],
+  )
 
   const isMatched = useCallback(
-    (card: ImageData) => matchedRef.current.has(card.id),
-    [],
-  );
+    (_card: ImageData) => state.matchedIds.includes(_card.id),
+    [state.matchedIds],
+  )
 
   const isSelected = useCallback(
-    (card: ImageData) => selectedRef.current.includes(card),
-    [],
-  );
+    (_card: ImageData, index: number) =>
+      index === state.selectedFirstIdx ||
+      index === state.selectedSecondIdx,
+    [state.selectedFirstIdx, state.selectedSecondIdx],
+  )
 
-  const totalPairs = cards.length / 2;
+  const totalPairs = cards.length / 2
 
   return {
     cards,
@@ -104,8 +104,8 @@ export const useGame = (
     isFlipped,
     isMatched,
     isSelected,
-    attempts,
-    matchedPairs,
+    attempts: state.attempts,
+    matchedIds: state.matchedIds,
     totalPairs,
-  };
-};
+  }
+}

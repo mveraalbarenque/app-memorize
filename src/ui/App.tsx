@@ -4,7 +4,6 @@ import { useTheme } from '@/ui/hooks/useTheme';
 import { DEFAULT_CATEGORY } from './components/Categories/categories';
 import CategoryModal from './components/CategoryModal';
 import FloatButtons from './components/FloatButtons';
-import LiquidFilter from './components/LiquidFilter';
 import MenuScreen from './screens/MenuScreen';
 import styles from './styles.module.css';
 
