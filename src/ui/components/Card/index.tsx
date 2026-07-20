@@ -42,12 +42,11 @@ const Card = memo((props: Props) => {
     onClick: handleClick,
     role: 'button',
     tabIndex: 0,
-    'aria-label': card.name,
     onKeyDown: handleKeyDown,
   };
 
   return (
-    <div {...propsCard}>
+    <div {...propsCard} aria-label={card.name}>
       <div className={styles.inner}>
         <div className={styles.front}>
           <img src="/card-back.svg" alt="" decoding="sync" />

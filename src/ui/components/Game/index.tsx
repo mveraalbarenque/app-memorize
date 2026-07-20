@@ -1,29 +1,30 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { Level } from '@/core/constants';
-import type { ImageData } from '@/core/types';
-import { LEVELS } from '@/core/constants';
-import { useGame } from '@/application/useGame';
-import { useTimer } from '@/application/hooks/useTimer';
-import { formatTime } from '@/application/services/format';
-import Cards from '../Cards';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { Level } from '@/core/constants'
+import type { ImageData } from '@/core/types'
 
-import styles from './styles.module.css';
+import { LEVELS } from '@/core/constants'
+import { useGame } from '@/application/useGame'
+import { useTimer } from '@/application/hooks/useTimer'
+import { formatTime } from '@/application/services/format'
+import Cards from '../Cards'
+
+import styles from './styles.module.css'
 
 interface Props {
-  category: string;
-  level: Level;
-  levelIdx: number;
-  levelRange: [number, number];
-  playerName: string;
-  paused?: boolean;
-  hideUI?: boolean;
-  onLevelComplete: (time: number, attempts: number) => void;
-  onCardFlip?: () => void;
-  onPairResult?: (result: 'match' | 'mismatch') => void;
+  category: string
+  level: Level
+  levelIdx: number
+  levelRange: [number, number]
+  playerName: string
+  paused?: boolean
+  hideUI?: boolean
+  onLevelComplete: (time: number, attempts: number) => void
+  onCardFlip?: () => void
+  onPairResult?: (result: 'match' | 'mismatch') => void
 }
 
-const Game = (props: Props) => {
-  const { category, level, levelIdx, levelRange, playerName, paused = false, hideUI = false, onLevelComplete, onCardFlip, onPairResult } = props;
+const Game = memo((props: Props) => {
+  const { category, level, levelIdx, levelRange, playerName, paused = false, hideUI = false, onLevelComplete, onCardFlip, onPairResult } = props
 
   const {
     cards,
@@ -34,44 +35,44 @@ const Game = (props: Props) => {
     isSelected,
     attempts,
     totalPairs,
-    matchedPairs,
-  } = useGame(category, level.pairs, onCardFlip, onPairResult);
+    matchedIds,
+  } = useGame(category, level.pairs, onCardFlip, onPairResult)
 
-  const [isMobile, setIsMobile] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const done = matchedPairs.size === totalPairs && totalPairs > 0;
-  const doneRef = useRef(false);
-  const { cs } = useTimer(!done && !isPaused && !paused);
+  const [isMobile, setIsMobile] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const done = matchedIds.length === totalPairs && totalPairs > 0
+  const doneRef = useRef(false)
+  const { cs } = useTimer(!done && !isPaused && !paused)
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
-  const togglePause = useCallback(() => setIsPaused((p) => !p), []);
+  const handleTogglePause = useCallback(() => setIsPaused((p) => !p), [])
 
-  const wrappedHandleCardClick = useCallback(
-    (card: ImageData) => {
-      if (isPaused || paused) return;
-      handleCardClick(card);
+  const handleWrappedCardClick = useCallback(
+    (card: ImageData, index: number) => {
+      if (isPaused || paused) return
+      handleCardClick(card, index)
     },
-    [isPaused, paused, handleCardClick]
-  );
+    [isPaused, paused, handleCardClick],
+  )
 
-  const fmt = useMemo(() => formatTime(cs), [cs]);
+  const fmt = useMemo(() => formatTime(cs), [cs])
 
   useEffect(() => {
     if (done && !doneRef.current) {
-      doneRef.current = true;
-      onLevelComplete(cs, attempts);
+      doneRef.current = true
+      onLevelComplete(cs, attempts)
     }
-  }, [done, cs, attempts, onLevelComplete]);
+  }, [done, cs, attempts, onLevelComplete])
 
-  const swapOnMobile = [1, 2, 3, 5].includes(levelIdx);
-  const columns = swapOnMobile && isMobile ? level.rows : level.cols;
+  const swapOnMobile = [1, 2, 3, 5].includes(levelIdx)
+  const columns = swapOnMobile && isMobile ? level.rows : level.cols
 
   const propsCards = useMemo(
     () => ({
@@ -79,33 +80,37 @@ const Game = (props: Props) => {
       isFlipped,
       isMatched,
       isSelected,
-      onCardClick: wrappedHandleCardClick,
+      onCardClick: handleWrappedCardClick,
       columns,
     }),
-    [cards, isFlipped, isMatched, isSelected, wrappedHandleCardClick, columns]
-  );
+    [cards, isFlipped, isMatched, isSelected, handleWrappedCardClick, columns],
+  )
 
   return (
     <main className={styles.area}>
       {!hideUI && (
         <button
           className={styles.pauseBtn}
-          onClick={togglePause}
-          title={isPaused ? 'Reanudar' : 'Pausar'}
+          onClick={handleTogglePause}
+          aria-label={isPaused ? 'Reanudar' : 'Pausar'}
         >
           <span className={styles.pauseIcon}>
             <img
               src={isPaused ? '/icons/play.svg' : '/icons/pause.svg'}
-              alt={isPaused ? 'Reanudar' : 'Pausar'}
+              alt=""
             />
           </span>
         </button>
       )}
       <div className={styles.cardArea}>
         {error ? (
-          <p className={styles.message}>{error}</p>
-        ) : !cards.length ? (
-          <p className={styles.message}>Cargando...</p>
+          <p className={styles.message} role="alert">{error}</p>
+        ) : !cards.length && !error ? (
+          <div className={styles.skeletonGrid} style={{ gridTemplateColumns: `repeat(${columns}, minmax(var(--card-size), 1fr))` }}>
+            {Array.from({ length: level.pairs * 2 }).map((_, i) => (
+              <div key={i} className={styles.skeletonCard} />
+            ))}
+          </div>
         ) : (
           <div className={styles.cardContainer}>
             <Cards {...propsCards} />
@@ -118,17 +123,17 @@ const Game = (props: Props) => {
           <div className={styles.botRow}>
             <span className={styles.botPlayer}>{playerName}</span>
             <div className={styles.levelNav}>
-              <span className={styles.botPlayer}>Nivel Actual: </span>
+              <span className={[styles.botPlayer, styles.levelLabelHiddenMobile].filter(Boolean).join(' ')}>Nivel Actual: </span>
               {LEVELS.filter((_, i) => i >= levelRange[0] - 1 && i <= levelRange[1] - 1).map((_, i) => {
-                const actualIdx = i + levelRange[0] - 1;
+                const actualIdx = i + levelRange[0] - 1
                 return (
                   <span
                     key={actualIdx}
-                    className={`${styles.levelDot}${actualIdx === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
+                    className={[styles.levelDot, actualIdx === levelIdx ? styles.levelDotActive : ''].filter(Boolean).join(' ')}
                   >
                     {actualIdx + 1}
                   </span>
-                );
+                )
               })}
             </div>
           </div>
@@ -136,7 +141,7 @@ const Game = (props: Props) => {
             <span>
               Pares{' '}
               <strong>
-                {matchedPairs.size}/{totalPairs}
+                {matchedIds.length}/{totalPairs}
               </strong>
             </span>
             <span>
@@ -147,12 +152,12 @@ const Game = (props: Props) => {
             </span>
           </div>
           <div aria-live="polite" aria-atomic="true" className={styles.srOnly}>
-            {matchedPairs.size} pares de {totalPairs}, {attempts} intentos
+            {matchedIds.length} pares de {totalPairs}, {attempts} intentos
           </div>
         </div>
       )}
     </main>
-  );
-};
+  )
+})
 
 export default Game;

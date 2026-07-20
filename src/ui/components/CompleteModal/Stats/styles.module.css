@@ -13,7 +13,8 @@
 .statCard {
   display: flex;
   flex-direction: column;
-  background: var(--bg-body);
+  background: var(--stat-card-bg);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: 12px;
   padding: 1rem;
   flex: 1;

@@ -1,71 +1,90 @@
-import { memo, useCallback, useEffect, useState } from 'react'
-import styles from './styles.module.css'
+import { memo, useCallback, useRef } from 'react';
+import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
+import { useCountdown } from '@/ui/hooks/useCountdown';
+import CountdownCircle from '@/ui/components/CountdownCircle';
+
+import styles from './styles.module.css';
 
 interface LevelTime {
-  level: number
-  label: string
-  time: string
+  level: number;
+  label: string;
+  time: string;
 }
 
 interface Props {
-  matchedPairs: number
-  attempts: number
-  time: string
-  levelLabel: string
-  onNextLevel: (() => void) | undefined
-  onRestart: () => void
-  levelTimes: LevelTime[]
+  matchedPairs: number;
+  attempts: number;
+  time: string;
+  levelLabel: string;
+  onNextLevel: (() => void) | undefined;
+  onRestart: () => void;
+  levelTimes: LevelTime[];
 }
 
-const COUNTDOWN_START = 5
+const COUNTDOWN_START = 5;
 
 const InfoModal = memo((props: Props) => {
-  const { matchedPairs, attempts, time, levelLabel, onNextLevel, onRestart, levelTimes } = props
+  const {
+    matchedPairs,
+    attempts,
+    time,
+    levelLabel,
+    onNextLevel,
+    onRestart,
+    levelTimes,
+  } = props;
+  const trapRef = useFocusTrap(true);
+  const skipAutoRef = useRef(false);
+  const isLast = !onNextLevel;
 
-  const [countdown, setCountdown] = useState(COUNTDOWN_START)
-  const isLast = !onNextLevel
-
-  useEffect(() => {
-    if (countdown <= 0) return
-    const id = setInterval(() => setCountdown((c) => c - 1), 1000)
-    return () => clearInterval(id)
-  }, [countdown])
-
-  useEffect(() => {
-    if (countdown > 0) return
+  const handleDone = useCallback(() => {
+    if (skipAutoRef.current) return
     if (onNextLevel) onNextLevel()
     else onRestart()
-  }, [countdown, onNextLevel, onRestart])
+  }, [onNextLevel, onRestart])
+
+  const { countdown, progress } = useCountdown(COUNTDOWN_START, true, handleDone)
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (onNextLevel) onNextLevel()
-        else onRestart()
+        skipAutoRef.current = true;
+        if (onNextLevel) onNextLevel();
+        else onRestart();
       }
     },
     [onNextLevel, onRestart]
-  )
+  );
 
-  const size = 64
-  const strokeWidth = 4
-  const radius = (size - strokeWidth) / 2
-  const circumference = 2 * Math.PI * radius
-  const progress = countdown / COUNTDOWN_START
+  const propsModal = {
+    className: styles.modal,
+    role: 'dialog' as const,
+    onKeyDown: handleKeyDown,
+  }
 
   return (
-    <div
-      className={styles.modal}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Juego completado"
-      onKeyDown={handleKeyDown}
-    >
+    <div {...propsModal} aria-modal="true" aria-label={isLast ? 'Juego completado' : 'Nivel completado'} ref={trapRef}>
       {!isLast && <span className={styles.badge}>Nivel: {levelLabel}</span>}
       <h2 className={styles.title}>
         <div>
           <p>{isLast ? '¡Juego completado!' : '¡Completado!'}</p>
-          <p>{isLast ? '🏆 🏆 🏆' : '🎉 🎉 🎉'}</p>
+          <div className={styles.celebrationIcons}>
+            <img
+              src="/icons/confetti.svg"
+              alt=""
+              className={styles.celebIcon}
+            />
+            <img
+              src="/icons/confetti.svg"
+              alt=""
+              className={styles.celebIcon}
+            />
+            <img
+              src="/icons/confetti.svg"
+              alt=""
+              className={styles.celebIcon}
+            />
+          </div>
         </div>
       </h2>
 
@@ -96,34 +115,9 @@ const InfoModal = memo((props: Props) => {
         </div>
       )}
 
-      <div className={styles.countdownWrap}>
-        <svg width={size} height={size}>
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="rgba(128,128,128,0.2)"
-            strokeWidth={strokeWidth}
-          />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={circumference * (1 - progress)}
-            strokeLinecap="round"
-            transform={`rotate(-90 ${size / 2} ${size / 2})`}
-            className={styles.countdownCircle}
-          />
-        </svg>
-        <span className={styles.countdownNum}>{countdown}</span>
-      </div>
+      <CountdownCircle countdown={countdown} progress={progress} className={styles.countdownWrap} />
     </div>
-  )
-})
+  );
+});
 
-export default InfoModal
+export default InfoModal;

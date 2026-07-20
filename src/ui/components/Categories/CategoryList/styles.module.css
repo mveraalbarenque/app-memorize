@@ -18,6 +18,11 @@
   transition: all 0.2s;
 }
 
+.catBtn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .catBtn:hover {
   border-color: var(--accent);
   background: var(--bg-card);

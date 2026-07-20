@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import type { CatEntry } from '../categories'
+
 import styles from './styles.module.css'
 
 interface Props {
