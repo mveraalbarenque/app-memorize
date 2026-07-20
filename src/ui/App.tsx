@@ -1,22 +1,15 @@
 import { lazy, Suspense, useCallback, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
 import type { Difficulty } from './components/Categories/categories';
-import { DEFAULT_CATEGORY } from './components/Categories/categories';
 import { useTheme } from '@/ui/hooks/useTheme';
-import ErrorBoundary from './components/ErrorBoundary';
+import { DEFAULT_CATEGORY } from './components/Categories/categories';
 import CategoryModal from './components/CategoryModal';
 import FloatButtons from './components/FloatButtons';
-import MenuScreen from './screens/MenuScreen';
 
+import MenuScreen from './screens/MenuScreen';
 import styles from './styles.module.css';
 
 const GameScreen = lazy(() => import('./screens/GameScreen'));
-
-const Spinner = () => (
-  <div className={styles.spinnerWrap}>
-    <div className={styles.spinner} />
-  </div>
-);
 
 const App = () => {
   const { theme, toggleTheme } = useTheme();
@@ -53,31 +46,48 @@ const App = () => {
   }, []);
 
   const renderScreen = () => {
-    const propsMenuScreen = { onStart: handleStart, category, difficulty: gameDifficulty };
-    const propsGameScreen = {
-      players: gamePlayers, category: gameCategory,
+    const propsMenuScreen = {
+      onStart: handleStart,
+      category,
       difficulty: gameDifficulty,
-      onBackToMenu: handleBackToMenu, isMuted,
+    };
+
+    const propsGameScreen = {
+      players: gamePlayers,
+      category: gameCategory,
+      difficulty: gameDifficulty,
+      onBackToMenu: handleBackToMenu,
+      isMuted,
     };
     if (screen === 'menu') return <MenuScreen {...propsMenuScreen} />;
+
     return (
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={null}>
         <GameScreen key={gameKey} {...propsGameScreen} />
       </Suspense>
     );
   };
+  const propsCategoryModal = {
+    show: showCatModal,
+    onSelect: selectCategory,
+    category,
+  };
+
+  const propsFloatButtons = {
+    showCatButton: screen === 'menu',
+    isMuted,
+    onToggleSound: toggleSound,
+    onToggleTheme: toggleTheme,
+    onOpenCategories: () => setShowCatModal(true),
+    theme,
+  };
 
   return (
-    <ErrorBoundary>
-      <div className={styles.layout}>
-        <a href="#main-content" className="skip-link">Saltar al contenido</a>
-        <CategoryModal show={showCatModal} onSelect={selectCategory} category={category} />
-        <FloatButtons showCatButton={screen === 'menu'} isMuted={isMuted}
-          onToggleSound={toggleSound} onToggleTheme={toggleTheme}
-          onOpenCategories={() => setShowCatModal(true)} theme={theme} />
-        {renderScreen()}
-      </div>
-    </ErrorBoundary>
+    <div className={styles.layout}>
+      <CategoryModal {...propsCategoryModal} />
+      <FloatButtons {...propsFloatButtons} />
+      {renderScreen()}
+    </div>
   );
 };
 

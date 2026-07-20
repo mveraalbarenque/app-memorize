@@ -11,7 +11,7 @@ const DarkMode = memo((props: Props) => {
   const { onToggleTheme, theme } = props;
 
   const propsBtnDarkMode = {
-    className: styles.fab,
+    className: [styles.fab, styles.fabDark].join(' '),
     onClick: onToggleTheme,
   };
 
