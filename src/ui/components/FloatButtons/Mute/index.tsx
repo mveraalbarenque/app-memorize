@@ -11,7 +11,7 @@ const Mute = memo((props: Props) => {
   const { isMuted, onToggleSound } = props;
 
   const propsBtnMute = {
-    className: styles.fab,
+    className: [styles.fab, styles.fabMute].join(' '),
     onClick: onToggleSound,
   };
 
