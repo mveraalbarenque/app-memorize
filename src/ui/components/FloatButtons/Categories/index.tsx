@@ -10,7 +10,7 @@ const Categories = memo((props: Props) => {
   const { onOpenCategories } = props;
 
   const propsBntCategories = {
-    className: styles.fab,
+    className: [styles.fab, styles.fabCat].join(' '),
     onClick: onOpenCategories,
   };
 
