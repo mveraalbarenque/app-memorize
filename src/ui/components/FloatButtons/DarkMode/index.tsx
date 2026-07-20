@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import styles from '../styles.module.css';
 
 interface Props {
@@ -12,7 +13,6 @@ const DarkMode = memo((props: Props) => {
   const propsBtnDarkMode = {
     className: styles.fab,
     onClick: onToggleTheme,
-    'aria-label': theme === 'dark' ? 'Modo claro' : 'Modo oscuro',
   };
 
   const propsImgDarkMode = {
@@ -21,7 +21,7 @@ const DarkMode = memo((props: Props) => {
   };
 
   return (
-    <button {...propsBtnDarkMode}>
+    <button {...propsBtnDarkMode} aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
       <span className={styles.fabIcon}>
         <img {...propsImgDarkMode} />
       </span>

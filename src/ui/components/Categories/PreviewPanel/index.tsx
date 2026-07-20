@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import type { ImageData } from '@/core/types'
+
 import styles from './styles.module.css'
 
 interface Props {

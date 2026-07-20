@@ -2,6 +2,7 @@ import { memo, useCallback, useRef } from 'react';
 import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
 import { useCountdown } from '@/ui/hooks/useCountdown';
 import CountdownCircle from '@/ui/components/CountdownCircle';
+
 import styles from './styles.module.css';
 
 interface LevelTime {
@@ -55,15 +56,14 @@ const InfoModal = memo((props: Props) => {
     [onNextLevel, onRestart]
   );
 
+  const propsModal = {
+    className: styles.modal,
+    role: 'dialog' as const,
+    onKeyDown: handleKeyDown,
+  }
+
   return (
-    <div
-      className={styles.modal}
-      role="dialog"
-      aria-modal="true"
-      aria-label={isLast ? 'Juego completado' : 'Nivel completado'}
-      onKeyDown={handleKeyDown}
-      ref={trapRef}
-    >
+    <div {...propsModal} aria-modal="true" aria-label={isLast ? 'Juego completado' : 'Nivel completado'} ref={trapRef}>
       {!isLast && <span className={styles.badge}>Nivel: {levelLabel}</span>}
       <h2 className={styles.title}>
         <div>

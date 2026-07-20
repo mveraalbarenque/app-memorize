@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
+
 import styles from './styles.module.css';
 
 interface Props {
@@ -34,12 +35,10 @@ const TurnModal = memo((props: Props) => {
   const propsOverlay = {
     className: styles.overlay,
     role: 'dialog' as const,
-    'aria-modal': 'true' as const,
-    'aria-label': `Turno de ${playerName}`,
   };
 
   return (
-    <div {...propsOverlay} ref={trapRef}>
+    <div {...propsOverlay} aria-modal="true" aria-label={`Turno de ${playerName}`} ref={trapRef}>
       <div className={styles.modal} onKeyDown={handleKeyDown}>
         <p className={styles.turnLabel}>Turno de</p>
         <p className={styles.playerName}>{playerName}</p>

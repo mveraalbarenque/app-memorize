@@ -2,6 +2,7 @@ import { memo, useCallback } from 'react';
 import type { Difficulty } from '../Categories/categories';
 import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
 import Categories from '../Categories';
+
 import styles from './styles.module.css';
 
 interface Props {
@@ -23,20 +24,19 @@ const CategoryModal = memo((props: Props) => {
 
   if (!show) return null;
 
+  const propsOverlay = {
+    className: styles.overlay,
+    role: 'dialog' as const,
+    onKeyDown: handleKeyDown,
+  }
+
   const propsCategories = {
     category,
     onSelectCategory: onSelect,
   };
 
   return (
-    <div
-      className={styles.overlay}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Seleccionar categoría"
-      ref={trapRef}
-      onKeyDown={handleKeyDown}
-    >
+    <div {...propsOverlay} aria-modal="true" aria-label="Seleccionar categoría" ref={trapRef}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalOverlay} />
         <div className={styles.modalInner}>

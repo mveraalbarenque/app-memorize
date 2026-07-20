@@ -37,12 +37,6 @@
   to { transform: scale(1); opacity: 1; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .overlay,
-  .modal {
-    animation: none;
-  }
-}
 
 .modalOverlay {
   position: absolute;

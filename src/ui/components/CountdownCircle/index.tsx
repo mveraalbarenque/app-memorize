@@ -20,9 +20,11 @@ const CountdownCircle = memo((props: Props) => {
 
   const classes = [styles.wrap, className].filter(Boolean).join(' ')
 
+  const propsSvg = { width: size, height: size }
+
   return (
     <div className={classes}>
-      <svg width={size} height={size}>
+      <svg {...propsSvg}>
         <circle
           cx={size / 2}
           cy={size / 2}

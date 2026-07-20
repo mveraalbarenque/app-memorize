@@ -26,12 +26,6 @@
   border-radius: 8px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .inner {
-    transition-duration: 0.01ms;
-  }
-}
-
 .flipped .inner {
   transform: rotateY(180deg);
 }
@@ -81,17 +75,5 @@
 
   .card:active {
     scale: 0.95;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card:hover,
-  .card:active {
-    scale: 1;
-  }
-
-  .matched {
-    opacity: 0.6;
-    filter: grayscale(0.3);
   }
 }

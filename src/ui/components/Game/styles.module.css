@@ -197,13 +197,6 @@
   50% { opacity: 0.5; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .skeletonCard {
-    animation: none;
-    opacity: 0.2;
-  }
-}
-
 @media (min-width: 768px) {
   .skeletonGrid {
     gap: 0.85rem;
@@ -260,11 +253,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .area,
-  .cardContainer,
-  .bottomBar,
-  .levelDot {
-    transition-duration: 0.01ms;
-  }
-}

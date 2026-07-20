@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import styles from './styles.module.css';
 
 interface Props {
@@ -11,12 +12,24 @@ const ModeButtons = memo((props: Props) => {
   const { playerCount, onSolo, onOpenVs } = props;
 
   const propsBntSolo = {
-    className: `${styles.modeBtn} ${styles.soloBtn}${playerCount === 1 ? ` ${styles.modeActive}` : ''}`,
+    className: [
+      styles.modeBtn,
+      styles.soloBtn,
+      playerCount === 1 ? styles.modeActive : '',
+    ]
+      .filter(Boolean)
+      .join(' '),
     onClick: onSolo,
   };
 
   const propsBntVS = {
-    className: `${styles.modeBtn} ${styles.vsBtn}${playerCount > 1 ? ` ${styles.modeActive}` : ''}`,
+    className: [
+      styles.modeBtn,
+      styles.vsBtn,
+      playerCount > 1 ? styles.modeActive : '',
+    ]
+      .filter(Boolean)
+      .join(' '),
     onClick: onOpenVs,
   };
 

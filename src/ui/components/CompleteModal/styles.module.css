@@ -96,9 +96,3 @@
     padding: 2.5rem 3rem;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .modal {
-    animation: none;
-  }
-}

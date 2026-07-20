@@ -16,7 +16,7 @@ const Levels = memo(({ levelIdx, onSelectLevel }: Props) => {
         return (
           <button
             key={i}
-            className={`${styles.pairBtn} ${active ? styles.pairActive : ''}`}
+            className={[styles.pairBtn, active ? styles.pairActive : ''].filter(Boolean).join(' ')}
             onClick={() => onSelectLevel(i)}
             aria-current={active ? 'true' : undefined}
           >

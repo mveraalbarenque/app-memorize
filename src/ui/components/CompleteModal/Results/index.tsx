@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import type { PlayerResult } from '@/core/types';
+
 import Multi from './Tables/Multi';
 import Single from './Tables/Single';
 

@@ -1,0 +1,46 @@
+.footer {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  line-height: 1.8;
+  z-index: 1;
+  padding: 0.5rem 1rem;
+}
+
+.footer p {
+  font-size: 0.7rem;
+  color: white;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.credit {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  opacity: 0.9 !important;
+  color: #a5f3fc !important;
+  text-shadow:
+    0 0 4px rgba(103, 232, 249, 0.4),
+    0 0 12px rgba(103, 232, 249, 0.2),
+    0 0 24px rgba(6, 182, 212, 0.15);
+}
+
+@media (min-width: 768px) {
+  .footer p {
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    opacity: 0.65;
+  }
+
+  .credit {
+    font-size: 0.95rem !important;
+  }
+
+  .developer {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+  }
+}

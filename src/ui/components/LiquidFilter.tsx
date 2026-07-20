@@ -1,7 +1,9 @@
 import { memo } from 'react'
 
+import styles from './LiquidFilter.module.css'
+
 const LiquidFilter = memo(() => (
-  <svg style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, zIndex: -1 }} aria-hidden="true">
+  <svg className={styles.svg} aria-hidden="true">
     <filter id="liquidSpecular" x="-20%" y="-20%" width="140%" height="140%">
       <feSpecularLighting
         in="SourceAlpha"

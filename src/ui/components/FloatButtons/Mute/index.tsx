@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import styles from '../styles.module.css';
 
 interface Props {
@@ -12,7 +13,6 @@ const Mute = memo((props: Props) => {
   const propsBtnMute = {
     className: styles.fab,
     onClick: onToggleSound,
-    'aria-label': isMuted ? 'Activar sonido' : 'Silenciar',
   };
 
   const propsImgMute = {
@@ -21,7 +21,7 @@ const Mute = memo((props: Props) => {
   };
 
   return (
-    <button {...propsBtnMute}>
+    <button {...propsBtnMute} aria-label={isMuted ? 'Activar sonido' : 'Silenciar'}>
       <span className={styles.fabIcon}>
         <img {...propsImgMute} />
       </span>

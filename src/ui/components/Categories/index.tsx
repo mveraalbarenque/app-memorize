@@ -1,12 +1,13 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import type { Difficulty } from './categories';
+import type { ImageData } from '@/core/types';
 import { CATEGORIES, DIFFICULTIES } from './categories';
 import { fetchCardsByCategory } from '@/infrastructure/dataService';
-import type { ImageData } from '@/core/types';
 import Button from '@/ui/components/Button';
 import DifficultySelector from './DifficultySelector';
 import CategoryList from './CategoryList';
 import PreviewPanel from './PreviewPanel';
+
 import styles from './styles.module.css';
 
 interface Props {

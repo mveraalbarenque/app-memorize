@@ -25,9 +25,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .piece {
-    animation: none;
-    display: none;
-  }
-}

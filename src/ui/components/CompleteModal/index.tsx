@@ -4,6 +4,7 @@ import { useFocusTrap } from '@/ui/hooks/useFocusTrap';
 import Confetti from '../Confetti';
 import Stats from './Stats';
 import ResultsTable from './Results';
+
 import styles from './styles.module.css';
 
 interface Props {
@@ -43,17 +44,16 @@ const CompleteModal = memo((props: Props) => {
     [onBackToMenu, disabled]
   );
 
+  const propsModal = {
+    className: styles.modal,
+    role: 'dialog' as const,
+    onKeyDown: handleKeyDown,
+  }
+
   return (
     <>
       <Confetti images={cardImages} />
-      <div
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Partida Finalizada"
-        onKeyDown={handleKeyDown}
-        ref={trapRef}
-      >
+      <div {...propsModal} aria-modal="true" aria-label="Partida Finalizada" ref={trapRef}>
         <h2 className={styles.title}>
           <p>¡¡¡Partida Finalizada!!!</p>
           <div className={styles.celebrationIcons}>
@@ -66,7 +66,7 @@ const CompleteModal = memo((props: Props) => {
         <ResultsTable results={results} isMulti={results.length > 1} />
         <button
           ref={btnRef}
-          className={`${styles.btn}${disabled ? ` ${styles.disabled}` : ''}`}
+          className={[styles.btn, disabled ? styles.disabled : ''].filter(Boolean).join(' ')}
           onClick={onBackToMenu}
           disabled={disabled}
           aria-disabled={disabled}

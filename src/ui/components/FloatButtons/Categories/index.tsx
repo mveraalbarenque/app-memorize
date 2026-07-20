@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import styles from '../styles.module.css';
 
 interface Props {
@@ -11,7 +12,6 @@ const Categories = memo((props: Props) => {
   const propsBntCategories = {
     className: styles.fab,
     onClick: onOpenCategories,
-    'aria-label': 'Categorías',
   };
 
   const propsImgCategorie = {
@@ -20,7 +20,7 @@ const Categories = memo((props: Props) => {
   };
 
   return (
-    <button {...propsBntCategories}>
+    <button {...propsBntCategories} aria-label="Categorías">
       <span className={styles.fabIcon}>
         <img {...propsImgCategorie} />
       </span>

@@ -156,9 +156,3 @@
     font-size: 1.3rem;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .modal {
-    animation: none;
-  }
-}

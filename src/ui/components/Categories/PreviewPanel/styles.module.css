@@ -46,13 +46,6 @@
   50% { opacity: 0.5; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .previewSkeleton {
-    animation: none;
-    opacity: 0.2;
-  }
-}
-
 .previewCardName {
   font-size: 0.5rem;
   font-weight: 600;

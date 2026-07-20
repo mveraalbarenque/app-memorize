@@ -1,6 +1,7 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, memo, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
 import type { Difficulty } from '@/ui/components/Categories/categories';
+
 import { useGameSession } from '@/application/useGameSession';
 import { formatTime } from '@/application/services/format';
 import { fetchAllImages } from '@/infrastructure/dataService';
@@ -8,6 +9,7 @@ import { getLevelRange } from '../components/Categories/categories';
 import { useSounds } from '@/application/hooks/useSounds';
 import Game from '../components/Game';
 import Confetti from '../components/Confetti';
+
 import styles from '../styles.module.css';
 
 const CompleteModal = lazy(() => import('../components/CompleteModal'));
@@ -28,7 +30,7 @@ interface Props {
   isMuted: boolean;
 }
 
-const GameScreen = (props: Props) => {
+const GameScreen = memo((props: Props) => {
   const { players, category, difficulty, onBackToMenu, isMuted } = props;
 
   const levelRange = getLevelRange(category, difficulty);
@@ -190,6 +192,6 @@ const GameScreen = (props: Props) => {
       )}
     </div>
   );
-};
+});
 
 export default GameScreen;

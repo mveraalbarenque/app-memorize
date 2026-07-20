@@ -7,6 +7,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import CategoryModal from './components/CategoryModal';
 import FloatButtons from './components/FloatButtons';
 import MenuScreen from './screens/MenuScreen';
+
 import styles from './styles.module.css';
 
 const GameScreen = lazy(() => import('./screens/GameScreen'));

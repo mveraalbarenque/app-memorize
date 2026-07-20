@@ -15,16 +15,6 @@
   to { opacity: 1; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .overlay {
-    animation: none;
-  }
-
-  .spinner {
-    animation-duration: 0.01ms;
-  }
-}
-
 .spinnerWrap {
   display: flex;
   align-items: center;

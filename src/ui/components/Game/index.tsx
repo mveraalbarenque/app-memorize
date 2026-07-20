@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Level } from '@/core/constants'
 import type { ImageData } from '@/core/types'
+
 import { LEVELS } from '@/core/constants'
 import { useGame } from '@/application/useGame'
 import { useTimer } from '@/application/hooks/useTimer'
@@ -51,9 +52,9 @@ const Game = memo((props: Props) => {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  const togglePause = useCallback(() => setIsPaused((p) => !p), [])
+  const handleTogglePause = useCallback(() => setIsPaused((p) => !p), [])
 
-  const wrappedHandleCardClick = useCallback(
+  const handleWrappedCardClick = useCallback(
     (card: ImageData, index: number) => {
       if (isPaused || paused) return
       handleCardClick(card, index)
@@ -79,10 +80,10 @@ const Game = memo((props: Props) => {
       isFlipped,
       isMatched,
       isSelected,
-      onCardClick: wrappedHandleCardClick,
+      onCardClick: handleWrappedCardClick,
       columns,
     }),
-    [cards, isFlipped, isMatched, isSelected, wrappedHandleCardClick, columns],
+    [cards, isFlipped, isMatched, isSelected, handleWrappedCardClick, columns],
   )
 
   return (
@@ -90,7 +91,7 @@ const Game = memo((props: Props) => {
       {!hideUI && (
         <button
           className={styles.pauseBtn}
-          onClick={togglePause}
+          onClick={handleTogglePause}
           aria-label={isPaused ? 'Reanudar' : 'Pausar'}
         >
           <span className={styles.pauseIcon}>
@@ -122,13 +123,13 @@ const Game = memo((props: Props) => {
           <div className={styles.botRow}>
             <span className={styles.botPlayer}>{playerName}</span>
             <div className={styles.levelNav}>
-              <span className={`${styles.botPlayer} ${styles.levelLabelHiddenMobile}`}>Nivel Actual: </span>
+              <span className={[styles.botPlayer, styles.levelLabelHiddenMobile].filter(Boolean).join(' ')}>Nivel Actual: </span>
               {LEVELS.filter((_, i) => i >= levelRange[0] - 1 && i <= levelRange[1] - 1).map((_, i) => {
                 const actualIdx = i + levelRange[0] - 1
                 return (
                   <span
                     key={actualIdx}
-                    className={`${styles.levelDot}${actualIdx === levelIdx ? ` ${styles.levelDotActive}` : ''}`}
+                    className={[styles.levelDot, actualIdx === levelIdx ? styles.levelDotActive : ''].filter(Boolean).join(' ')}
                   >
                     {actualIdx + 1}
                   </span>

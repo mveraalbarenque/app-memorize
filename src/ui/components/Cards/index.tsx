@@ -1,6 +1,7 @@
 import { memo, useMemo } from 'react';
 import type { ImageData } from '@/core/types';
 import Card from '../Card';
+
 import styles from './styles.module.css';
 
 interface Props {

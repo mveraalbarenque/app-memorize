@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react';
+
 import styles from './styles.module.css';
 
 interface Piece {

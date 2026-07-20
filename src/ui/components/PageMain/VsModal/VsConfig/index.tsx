@@ -1,30 +1,37 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback } from 'react';
 
-import styles from './styles.module.css'
+import styles from '../styles.module.css';
 
 interface Props {
-  vsCount: number
-  vsNames: string[]
-  defaultNames: string[]
-  onChangeCount: (count: number) => void
-  onChangeName: (idx: number, name: string) => void
-  onAccept: () => void
-  onClose: () => void
+  vsCount: number;
+  vsNames: string[];
+  defaultNames: string[];
+  onChangeCount: (count: number) => void;
+  onChangeName: (idx: number, name: string) => void;
+  onAccept: () => void;
+  onClose: () => void;
 }
 
 const VsConfig = memo((props: Props) => {
-  const { vsCount, vsNames, defaultNames, onChangeCount, onChangeName, onAccept, onClose } = props
+  const {
+    vsCount,
+    vsNames,
+    defaultNames,
+    onChangeCount,
+    onChangeName,
+    onAccept,
+    onClose,
+  } = props;
 
   const handleAccept = useCallback(() => {
-    onAccept()
-  }, [onAccept])
+    onAccept();
+  }, [onAccept]);
 
   const propsCountBtn = (n: number) => ({
     className: [styles.vsCountBtn, n === vsCount ? styles.vsCountActive : '']
       .filter(Boolean)
       .join(' '),
-    'aria-pressed': n === vsCount,
-  })
+  });
 
   return (
     <>
@@ -32,7 +39,12 @@ const VsConfig = memo((props: Props) => {
 
       <div className={styles.vsCountRow}>
         {[2, 3, 4].map((n) => (
-          <button key={n} onClick={() => onChangeCount(n)} {...propsCountBtn(n)}>
+          <button
+            key={n}
+            onClick={() => onChangeCount(n)}
+            aria-pressed={n === vsCount}
+            {...propsCountBtn(n)}
+          >
             {n}
           </button>
         ))}
@@ -62,7 +74,7 @@ const VsConfig = memo((props: Props) => {
         </button>
       </div>
     </>
-  )
-})
+  );
+});
 
-export default VsConfig
+export default VsConfig;

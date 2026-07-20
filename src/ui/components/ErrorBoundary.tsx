@@ -1,6 +1,8 @@
 import { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 
+import styles from './ErrorBoundary.module.css'
+
 interface Props {
   children: ReactNode
 }
@@ -24,23 +26,10 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          justifyContent: 'center', minHeight: '100dvh', padding: '2rem',
-          background: 'var(--bg-body)', color: 'var(--text)',
-          fontFamily: "'Nunito', sans-serif", textAlign: 'center', gap: '1rem',
-        }}>
-          <h1 style={{ fontSize: '2rem', color: 'var(--accent)' }}>¡Ups!</h1>
+        <div className={styles.container} role="alert">
+          <h1 className={styles.title}>¡Ups!</h1>
           <p>Algo salió mal. Intenta recargar la página.</p>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: '0.75rem 2rem', border: 'none', borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--accent), var(--accent-hover))',
-              color: 'var(--text-light)', fontWeight: 800, cursor: 'pointer',
-              fontSize: '1rem',
-            }}
-          >
+          <button className={styles.btn} onClick={() => window.location.reload()}>
             Recargar
           </button>
         </div>

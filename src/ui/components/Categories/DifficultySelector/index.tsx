@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import type { Difficulty } from '../categories'
+
 import styles from './styles.module.css'
 
 interface Props {

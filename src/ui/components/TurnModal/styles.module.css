@@ -82,9 +82,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .overlay,
-  .modal {
-    animation: none;
-  }
-}

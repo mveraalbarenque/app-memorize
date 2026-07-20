@@ -1,4 +1,5 @@
 import { memo } from 'react'
+
 import styles from './styles.module.css'
 
 type Variant = 'primary' | 'success' | 'warning' | 'danger'
@@ -38,8 +39,10 @@ const Button = memo((props: Props & React.ButtonHTMLAttributes<HTMLButtonElement
     .filter(Boolean)
     .join(' ')
 
+  const propsBtn = { className: classes, ...rest }
+
   return (
-    <button className={classes} {...rest}>
+    <button {...propsBtn}>
       {iconPosition === 'left' && iconEl}
       {children}
       {iconPosition === 'right' && iconEl}
