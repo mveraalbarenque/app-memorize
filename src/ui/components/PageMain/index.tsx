@@ -2,8 +2,11 @@ import { memo, useCallback, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
 import { DEFAULT_NAMES } from '@/core/constants';
 import Button from '@/ui/components/Button';
+
 import ModeButtons from './ModeButtons';
 import VsModal from './VsModal';
+import Footer from './Footer';
+
 import styles from './styles.module.css';
 
 const VS_STORAGE_KEY = 'vs-config';
@@ -27,7 +30,7 @@ interface Props {
   onStart: (players: PlayerConfig[]) => void;
 }
 
-const Menu = memo((props: Props) => {
+const PageMain = memo((props: Props) => {
   const { onStart } = props;
 
   const [saved] = useState(loadVsConfig);
@@ -40,15 +43,15 @@ const Menu = memo((props: Props) => {
     setPlayers([{ name: DEFAULT_NAMES[0] }]);
   }, []);
 
-  const openVsModal = useCallback(() => {
+  const handleOpenVsModal = useCallback(() => {
     setShowVsModal(true);
   }, []);
 
-  const closeVsModal = useCallback(() => {
+  const handleCloseVsModal = useCallback(() => {
     setShowVsModal(false);
   }, []);
 
-  const changeVsCount = useCallback((count: number) => {
+  const handleChangeVsCount = useCallback((count: number) => {
     setVsCount(count);
     setVsNames((prev) =>
       DEFAULT_NAMES.slice(0, count).map((d, i) => prev[i] || d)
@@ -59,26 +62,29 @@ const Menu = memo((props: Props) => {
     setVsNames((prev) => prev.map((n, i) => (i === idx ? name : n)));
   }, []);
 
-  const handleVsDone = useCallback((playersList: PlayerConfig[]) => {
-    localStorage.setItem(
-      VS_STORAGE_KEY,
-      JSON.stringify({ count: vsCount, names: vsNames })
-    );
-    setPlayers(playersList);
-    setShowVsModal(false);
-  }, [vsCount, vsNames]);
+  const handleVsDone = useCallback(
+    (playersList: PlayerConfig[]) => {
+      localStorage.setItem(
+        VS_STORAGE_KEY,
+        JSON.stringify({ count: vsCount, names: vsNames })
+      );
+      setPlayers(playersList);
+      handleCloseVsModal();
+    },
+    [vsCount, vsNames, handleCloseVsModal]
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === 'Escape') closeVsModal();
+      if (e.key === 'Escape') handleCloseVsModal();
     },
-    [closeVsModal]
+    [handleCloseVsModal]
   );
 
   const propsModeButtons = {
     playerCount: players.length,
     onSolo: handleSolo,
-    onOpenVs: openVsModal,
+    onOpenVs: handleOpenVsModal,
   };
 
   const propsVsModal = {
@@ -86,10 +92,10 @@ const Menu = memo((props: Props) => {
     vsCount,
     vsNames,
     defaultNames: DEFAULT_NAMES,
-    onChangeCount: changeVsCount,
+    onChangeCount: handleChangeVsCount,
     onChangeName: handleVsName,
     onDone: handleVsDone,
-    onClose: closeVsModal,
+    onClose: handleCloseVsModal,
     onKeyDown: handleKeyDown,
   };
 
@@ -104,7 +110,7 @@ const Menu = memo((props: Props) => {
   };
 
   return (
-    <div className={styles.menu}>
+    <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.cardOverlay} />
         <div className={styles.cardInner}>
@@ -113,10 +119,10 @@ const Menu = memo((props: Props) => {
           <Button {...propsBtnStart}>A Jugar</Button>
         </div>
       </div>
-
+      <Footer />
       <VsModal {...propsVsModal} />
     </div>
   );
 });
 
-export default Menu;
+export default PageMain;

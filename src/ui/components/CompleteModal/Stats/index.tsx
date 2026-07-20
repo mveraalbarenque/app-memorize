@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import type { PlayerResult } from '@/core/types';
+
 import SingleStats from './SingleStats';
 import PlayerStatsCard from './PlayerStatsCard';
 
@@ -48,16 +49,19 @@ const Stats = memo(({ results }: Props) => {
     return () => clearInterval(intervalRef.current);
   }, [isMulti, results.length]);
 
-  const stopAuto = useCallback(() => {
+  const restartAuto = useCallback(() => {
     clearInterval(intervalRef.current);
-  }, []);
+    intervalRef.current = window.setInterval(() => {
+      setCardIndex((i) => (i + 1) % results.length);
+    }, INTERVAL_MS);
+  }, [results.length]);
 
-  const goToCard = useCallback(
+  const handleGoToCard = useCallback(
     (i: number) => {
-      stopAuto();
       setCardIndex(i);
+      restartAuto();
     },
-    [stopAuto]
+    [restartAuto]
   );
 
   if (!isMulti) return <SingleStats result={results[0]} />;
@@ -78,8 +82,8 @@ const Stats = memo(({ results }: Props) => {
       <div className={styles.dots}>
         {results.map((_, i) => {
           const propsButton = {
-            className: `${styles.dot}${i === cardIndex ? ` ${styles.dotActive}` : ''}`,
-            onClick: () => goToCard(i),
+            className: [styles.dot, i === cardIndex ? styles.dotActive : ''].filter(Boolean).join(' '),
+            onClick: () => handleGoToCard(i),
           };
           const ariaLabel = `Ver jugador ${i + 1}`;
           return <button key={i} aria-label={ariaLabel} {...propsButton} />;

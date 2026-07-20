@@ -4,7 +4,7 @@
   padding: 2rem 1.5rem 1.5rem;
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: scaleIn 1.6s ease;
+  animation: scaleIn 0.4s ease;
   max-width: 320px;
   width: calc(100% - 2rem);
   position: fixed;
@@ -56,22 +56,17 @@
   line-height: 1.2;
 }
 
-.title p:last-child {
-  font-size: 2rem;
-  line-height: 1;
-  animation: bounce 1s ease infinite;
+.celebrationIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row !important;
 }
 
-@keyframes bounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-4px);
-  }
+.celebIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: block;
 }
 
 .stats {
@@ -82,7 +77,8 @@
 }
 
 .statCard {
-  background: var(--bg-body);
+  background: var(--stat-card-bg);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: 12px;
   padding: 0.6rem 0.5rem;
   flex: 1;
@@ -139,23 +135,7 @@
 }
 
 .countdownWrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   margin-top: 1.25rem;
-}
-
-.countdownCircle {
-  transition: stroke-dashoffset 1s linear;
-}
-
-.countdownNum {
-  position: absolute;
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
 }
 
 @media (min-width: 768px) {

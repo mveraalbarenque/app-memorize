@@ -1,14 +1,22 @@
 import { lazy, Suspense, useCallback, useState } from 'react';
 import type { PlayerConfig } from '@/core/types';
-import { useTheme } from '@/ui/hooks/useTheme';
+import type { Difficulty } from './components/Categories/categories';
 import { DEFAULT_CATEGORY } from './components/Categories/categories';
+import { useTheme } from '@/ui/hooks/useTheme';
+import ErrorBoundary from './components/ErrorBoundary';
 import CategoryModal from './components/CategoryModal';
 import FloatButtons from './components/FloatButtons';
-import LiquidFilter from './components/LiquidFilter';
 import MenuScreen from './screens/MenuScreen';
+
 import styles from './styles.module.css';
 
 const GameScreen = lazy(() => import('./screens/GameScreen'));
+
+const Spinner = () => (
+  <div className={styles.spinnerWrap}>
+    <div className={styles.spinner} />
+  </div>
+);
 
 const App = () => {
   const { theme, toggleTheme } = useTheme();
@@ -17,20 +25,23 @@ const App = () => {
   const [gameKey, setGameKey] = useState(0);
   const [gamePlayers, setGamePlayers] = useState<PlayerConfig[]>([]);
   const [gameCategory, setGameCategory] = useState('');
+  const [gameDifficulty, setGameDifficulty] = useState<Difficulty>('easy');
   const [isMuted, setIsMuted] = useState(false);
   const [showCatModal, setShowCatModal] = useState(false);
   const [category, setCategory] = useState(DEFAULT_CATEGORY);
 
   const toggleSound = useCallback(() => setIsMuted((m) => !m), []);
 
-  const selectCategory = useCallback((cat: string) => {
+  const selectCategory = useCallback((cat: string, diff?: Difficulty) => {
     setCategory(cat);
+    if (diff) setGameDifficulty(diff);
     setShowCatModal(false);
   }, []);
 
-  const handleStart = useCallback((players: PlayerConfig[], cat: string) => {
+  const handleStart = useCallback((players: PlayerConfig[], cat: string, diff: Difficulty) => {
     setGamePlayers(players);
     setGameCategory(cat);
+    setGameDifficulty(diff);
     setGameKey((k) => k + 1);
     setScreen('game');
   }, []);
@@ -42,46 +53,31 @@ const App = () => {
   }, []);
 
   const renderScreen = () => {
-    const propsMenuScreen = {
-      onStart: handleStart,
-      category,
-    };
-
+    const propsMenuScreen = { onStart: handleStart, category, difficulty: gameDifficulty };
     const propsGameScreen = {
-      players: gamePlayers,
-      category: gameCategory,
-      onBackToMenu: handleBackToMenu,
-      isMuted,
+      players: gamePlayers, category: gameCategory,
+      difficulty: gameDifficulty,
+      onBackToMenu: handleBackToMenu, isMuted,
     };
     if (screen === 'menu') return <MenuScreen {...propsMenuScreen} />;
-
     return (
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <GameScreen key={gameKey} {...propsGameScreen} />
       </Suspense>
     );
   };
-  const propsCategoryModal = {
-    show: showCatModal,
-    onSelect: selectCategory,
-    category,
-  };
-
-  const propsFloatButtons = {
-    showCatButton: screen === 'menu',
-    isMuted,
-    onToggleSound: toggleSound,
-    onToggleTheme: toggleTheme,
-    onOpenCategories: () => setShowCatModal(true),
-    theme,
-  };
 
   return (
-    <div className={styles.layout}>
-      <CategoryModal {...propsCategoryModal} />
-      <FloatButtons {...propsFloatButtons} />
-      {renderScreen()}
-    </div>
+    <ErrorBoundary>
+      <div className={styles.layout}>
+        <a href="#main-content" className="skip-link">Saltar al contenido</a>
+        <CategoryModal show={showCatModal} onSelect={selectCategory} category={category} />
+        <FloatButtons showCatButton={screen === 'menu'} isMuted={isMuted}
+          onToggleSound={toggleSound} onToggleTheme={toggleTheme}
+          onOpenCategories={() => setShowCatModal(true)} theme={theme} />
+        {renderScreen()}
+      </div>
+    </ErrorBoundary>
   );
 };
 

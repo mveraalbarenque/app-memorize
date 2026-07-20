@@ -1,23 +1,30 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import type { PlayerConfig } from '@/core/types';
-import Menu from '../components/Menu';
+import type { Difficulty } from '@/ui/components/Categories/categories';
+
+import PageMain from '../components/PageMain';
 
 interface Props {
   category: string;
-  onStart: (players: PlayerConfig[], category: string) => void;
+  difficulty: Difficulty;
+  onStart: (
+    players: PlayerConfig[],
+    category: string,
+    difficulty: Difficulty
+  ) => void;
 }
 
-const MenuScreen = (props: Props) => {
-  const { category, onStart } = props;
+const MenuScreen = memo((props: Props) => {
+  const { category, difficulty, onStart } = props;
 
   const handleStart = useCallback(
     (players: PlayerConfig[]) => {
-      onStart(players, category);
+      onStart(players, category, difficulty);
     },
-    [onStart, category],
+    [onStart, category, difficulty]
   );
 
-  return <Menu onStart={handleStart} />;
-};
+  return <PageMain onStart={handleStart} />;
+});
 
 export default MenuScreen;
